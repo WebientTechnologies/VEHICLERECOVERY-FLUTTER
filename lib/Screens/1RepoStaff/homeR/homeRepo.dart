@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
+import 'package:vinayak/core/constants/helper.dart';
+import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
@@ -22,14 +24,22 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   VehicleSearchController sc = Get.put(VehicleSearchController());
   TextEditingController last4digit = TextEditingController();
   TextEditingController chasisNoCont = TextEditingController();
+  GlobalKey<ScaffoldState> _globalkey = new GlobalKey<ScaffoldState>();
 
   bool showlastdata = false;
   bool showChasisNo = false;
+  bool isOnline = false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     hc.getAllDashboardApiData();
+    checkMode();
+  }
+
+  Future checkMode() async {
+    isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+    setState(() {});
   }
 
   @override
@@ -37,7 +47,36 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: ColorConstants.back,
-        appBar: MyAppBar(),
+        appBar: AppBar(
+          toolbarHeight: 40,
+          title: const Text('Vinayak Recovery'),
+          actions: [
+            Switch(
+                value: isOnline,
+                onChanged: (value) async {
+                  await Helper.setBoolPreferences(
+                      SharedPreferencesVar.isOnline, value);
+                  setState(() {
+                    isOnline = value;
+                  });
+                })
+          ],
+          titleTextStyle: TextStyle(
+            color: ColorConstants.white,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
+          backgroundColor: ColorConstants.aqua,
+          leading: IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+          ),
+        ),
         body: LayoutBuilder(builder: (ctx, constraints) {
           var height = constraints.maxHeight;
           var width = constraints.maxWidth;
@@ -45,7 +84,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             children: [
               Center(
                 child: Container(
-                  width: width * 0.33,
                   height: height * 0.15,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -56,11 +94,11 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   ),
                 ),
               ),
-              Text(
-                'Vinayak Recovery',
-                style: TextStyle(
-                    color: ColorConstants.aqua, fontSize: height * 0.03),
-              ),
+              // Text(
+              //   'Vinayak Recovery',
+              //   style: TextStyle(
+              //       color: ColorConstants.aqua, fontSize: height * 0.03),
+              // ),
               SizedBox(
                 height: 20,
               ),
@@ -128,12 +166,14 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     child: Center(
                       child: TextFormField(
                         controller: last4digit,
+                        maxLength: 4,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          hintText: 'Last 4 Digits',
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 16.0),
-                          border: InputBorder.none,
-                        ),
+                            hintText: 'Last 4 Digits',
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            border: InputBorder.none,
+                            counterText: ''),
                         onChanged: (value) {
                           if (value.length == 4) {
                             sc.getAllSearchByLastDigitData(

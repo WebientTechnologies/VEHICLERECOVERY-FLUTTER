@@ -27,7 +27,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
   bool showlastdata = false;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     hc.getAllDashboardApiData();
   }
@@ -45,7 +44,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
             children: [
               Center(
                 child: Container(
-                  width: width * 0.33,
+                  width: width * 0.9,
                   height: height * 0.15,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -128,12 +127,14 @@ class _HomeSCreenState extends State<HomeSCreen> {
                     child: Center(
                       child: TextFormField(
                         controller: last4digit,
-                        decoration: InputDecoration(
-                          hintText: 'Last 4 Digits',
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 16.0),
-                          border: InputBorder.none,
-                        ),
+                        maxLength: 4,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                            hintText: 'Last 4 Digits',
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 16.0),
+                            border: InputBorder.none,
+                            counterText: ''),
                         onChanged: (value) {
                           if (value.length == 4) {
                             sc.getAllSearchByLastDigitData(
