@@ -176,13 +176,17 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 vertical: 12.0, horizontal: 16.0),
                             border: InputBorder.none,
                             counterText: ''),
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           if (value.length == 4) {
-                            sc.getAllSearchByLastDigitData(
-                                last4digit.value.text);
-                            setState(() {
-                              showlastdata = true;
-                            });
+                            bool isOnline = await Helper.getBoolPreferences(
+                                SharedPreferencesVar.isOnline);
+                            if (isOnline) {
+                              sc.getAllSearchByLastDigitData(
+                                  last4digit.value.text);
+                              setState(() {
+                                showlastdata = true;
+                              });
+                            } else {}
                           } else {
                             setState(() {
                               showlastdata = false;
