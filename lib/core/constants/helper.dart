@@ -38,7 +38,7 @@ class Helper {
 
   static getBoolPreferences(String key) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey(key) ? prefs.getBool(key) : false;
+    return prefs.containsKey(key) ? prefs.getBool(key) : true;
   }
 
   static getStringPreferences(String key) async {

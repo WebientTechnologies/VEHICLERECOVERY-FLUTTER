@@ -1,6 +1,6 @@
 class VehicleModel {
+  int? id;
   String? loadStatus;
-  String? id;
   String? bankName;
   String? branch;
   String? agreementNo;
@@ -18,28 +18,28 @@ class VehicleModel {
   String? fileName;
   String? createdAt;
   String? updatedAt;
-  int? v;
 
-  VehicleModel(this.id,
-      {this.loadStatus,
-      this.bankName,
-      this.branch,
-      this.agreementNo,
-      this.customerName,
-      this.regNo,
-      this.chasisNo,
-      this.engineNo,
-      this.callCenterNo1,
-      this.callCenterNo1Name,
-      this.callCenterNo2,
-      this.callCenterNo2Name,
-      this.lastDigit,
-      this.month,
-      this.status,
-      this.fileName,
-      this.createdAt,
-      this.updatedAt,
-      this.v});
+  VehicleModel(
+    this.id, {
+    this.loadStatus,
+    this.bankName,
+    this.branch,
+    this.agreementNo,
+    this.customerName,
+    this.regNo,
+    this.chasisNo,
+    this.engineNo,
+    this.callCenterNo1,
+    this.callCenterNo1Name,
+    this.callCenterNo2,
+    this.callCenterNo2Name,
+    this.lastDigit,
+    this.month,
+    this.status,
+    this.fileName,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   factory VehicleModel.fromSqfliteDatabase(Map<String, dynamic> json) =>
       VehicleModel(
@@ -62,6 +62,5 @@ class VehicleModel {
         fileName: json["fileName"],
         createdAt: json["createdAt"],
         updatedAt: json["updatedAt"],
-        v: json["v"],
       );
 }

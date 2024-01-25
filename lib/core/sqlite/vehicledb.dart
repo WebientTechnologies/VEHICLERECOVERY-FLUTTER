@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:sqflite/sqflite.dart';
+import 'package:vinayak/core/sqlite/models/vehicle_model.dart';
 
 import 'database_helper.dart';
 
@@ -29,35 +30,34 @@ class VehicleDb {
           "fileName" text null,
           "createdAt" text null,
           "updatedAt" text null,
-          "v" integer null,
           primary key("id" AUTOINCREMENT)
           )
       ''');
   }
 
-  Future<int> createVehicle(
-      String loadStatus,
-      bankName,
-      branch,
-      agreementNo,
-      customerName,
-      regNo,
-      chasisNo,
-      engineNo,
-      callCenterNo1,
-      callCenterNo1Name,
-      callCenterNo2,
-      callCenterNo2Name,
-      lastDigit,
-      month,
-      status,
-      fileName,
-      createdAt,
-      updatedAt,
-      v) async {
+  Future<int> insertVehicle(
+    String loadStatus,
+    bankName,
+    branch,
+    agreementNo,
+    customerName,
+    regNo,
+    chasisNo,
+    engineNo,
+    callCenterNo1,
+    callCenterNo1Name,
+    callCenterNo2,
+    callCenterNo2Name,
+    lastDigit,
+    month,
+    status,
+    fileName,
+    createdAt,
+    updatedAt,
+  ) async {
     final db = await DatabaseHelper().database;
     int id = await db.rawInsert('''
-      INSERT OR REPLACE INTO $tableName VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      INSERT OR REPLACE INTO $tableName (loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ''', [
       loadStatus,
       bankName,
@@ -77,7 +77,6 @@ class VehicleDb {
       fileName,
       createdAt,
       updatedAt,
-      v
     ]);
     print('vehicle created');
     print(id);
@@ -145,13 +144,14 @@ class VehicleDb {
     ''');
   }
 
-  // Future<List<FileModel>> fetchAllRaw() async {
-  //   final db = await DatabaseHelper().database;
-  //   final files = await db.rawQuery('''
-  //   select id,project_id,name,path,ischecked,folderid,upload_status from $tableName
-  //   ''');
-  //   return files.map((e) => FileModel.fromSqfliteDatabase(e)).toList();
-  // }
+  Future<List<VehicleModel>> fetchAll() async {
+    final db = await DatabaseHelper().database;
+    final files = await db.rawQuery('''
+    select * from $tableName
+    ''');
+    print(files);
+    return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
+  }
 
   // Future<List<FileModel>> fetchByFileId(int fileid) async {
   //   final db = await DatabaseHelper().database;

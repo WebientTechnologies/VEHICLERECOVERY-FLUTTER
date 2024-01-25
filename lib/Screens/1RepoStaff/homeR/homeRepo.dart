@@ -1,9 +1,11 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/constants/helper.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
+import 'package:vinayak/core/sqlite/vehicledb.dart';
 import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
@@ -28,7 +30,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
   bool showlastdata = false;
   bool showChasisNo = false;
-  bool isOnline = false;
+  bool isOnline = true;
   @override
   void initState() {
     // TODO: implement initState
@@ -361,10 +363,26 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                           borderRadius:
                                               BorderRadius.circular(18)),
                                       child: Center(
-                                        child: Text(
-                                          'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyles.normalheadWhite20DM,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            DeviceInfoPlugin deviceInfo =
+                                                DeviceInfoPlugin();
+                                            AndroidDeviceInfo androidInfo =
+                                                await deviceInfo.androidInfo;
+                                            String deviceId = androidInfo.id;
+
+                                            print(deviceId);
+
+                                            final vehicleDb = VehicleDb();
+
+                                            await vehicleDb.fetchAll();
+                                          },
+                                          child: Text(
+                                            'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                TextStyles.normalheadWhite20DM,
+                                          ),
                                         ),
                                       ),
                                     )

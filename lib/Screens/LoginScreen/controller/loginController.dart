@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,7 +24,12 @@ class LoginController extends GetxController {
     try {
       showLoadingDialog(context);
 
-      var deviceId = await Helper.getStringPreferences('deviceId');
+      //var deviceId = await Helper.getStringPreferences('deviceId');
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      String deviceId = androidInfo.id;
+
+      print(deviceId);
 
       var data = {
         'email': emailcont.value.text,
