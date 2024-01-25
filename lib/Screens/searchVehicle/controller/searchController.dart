@@ -8,11 +8,16 @@ import 'package:http/http.dart' as http;
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/constants/helper.dart';
 import '../../../core/response/status.dart';
+import '../../../core/sqlite/models/vehicle_model.dart';
 import '../model/chasisnoModel.dart';
 import '../model/searchLastmodel.dart';
 
 class VehicleSearchController extends GetxController {
   var _api = NetworkApi();
+
+  RxList<VehicleModel> offlineData = <VehicleModel>[].obs;
+  RxList<VehicleModel> offlineDataFiltered = <VehicleModel>[].obs;
+
   final rxRequestsearchbyLastStatus = Status.LOADING.obs;
   void setRxRequestSearchByLastStatus(Status value) =>
       rxRequestsearchbyLastStatus.value = value;
@@ -48,6 +53,26 @@ class VehicleSearchController extends GetxController {
       // print(error);
       setRxRequestSearchByLastStatus(Status.ERROR);
     });
+  }
+
+  void searchOfflineLastDigitData(String lastDigit) {
+    setRxRequestSearchByChasisNoStatus(Status.LOADING);
+    setRxRequestSearchByLastStatus(Status.LOADING);
+    offlineDataFiltered.value = offlineData
+        .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
+        .toList();
+    setRxRequestSearchByLastStatus(Status.COMPLETED);
+    setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
+    print('offline data ${offlineDataFiltered.length}');
+  }
+
+  void searchOfflineChasisData(String chasisNo) {
+    setRxRequestSearchByChasisNoStatus(Status.LOADING);
+    offlineDataFiltered.value = offlineData
+        .where((p0) => p0.chasisNo!.toLowerCase().contains(chasisNo))
+        .toList();
+    setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
+    print('offline data ${offlineDataFiltered.length}');
   }
 
 //chasis no

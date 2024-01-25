@@ -6,7 +6,10 @@ import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/textfield.dart';
+import '../../core/constants/helper.dart';
+import '../../core/constants/shared_preferences_var.dart';
 import '../../core/response/status.dart';
+import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
 
 class HomeSCreen extends StatefulWidget {
@@ -23,12 +26,23 @@ class _HomeSCreenState extends State<HomeSCreen> {
   TextEditingController last4digit = TextEditingController();
   TextEditingController chasisNoCont = TextEditingController();
   bool showChasisNo = false;
-
+  bool isOnline = true;
+  String mode = "Online";
   bool showlastdata = false;
   @override
   void initState() {
     super.initState();
     hc.getAllDashboardApiData();
+    checkMode();
+  }
+
+  Future checkMode() async {
+    isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+
+    final vehicleDb = VehicleDb();
+    sc.offlineData.value = await vehicleDb.fetchAll();
+    print(sc.offlineData.length);
+    setState(() {});
   }
 
   @override
@@ -36,7 +50,51 @@ class _HomeSCreenState extends State<HomeSCreen> {
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: ColorConstants.back,
-        appBar: MyAppBar(),
+        appBar: AppBar(
+          toolbarHeight: 40,
+          title: const Text('Vinayak Recovery'),
+          actions: [
+            Row(
+              children: [
+                Text(
+                  mode,
+                  style: TextStyle(
+                      color: ColorConstants.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Switch(
+                    value: isOnline,
+                    onChanged: (value) async {
+                      await Helper.setBoolPreferences(
+                          SharedPreferencesVar.isOnline, value);
+                      setState(() {
+                        isOnline = value;
+                        mode = value ? "Online" : "Offline";
+                      });
+                    }),
+              ],
+            )
+          ],
+          titleTextStyle: TextStyle(
+            color: ColorConstants.white,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
+          backgroundColor: ColorConstants.aqua,
+          leading: IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+          ),
+        ),
         body: LayoutBuilder(builder: (ctx, constraints) {
           var height = constraints.maxHeight;
           var width = constraints.maxWidth;
@@ -44,7 +102,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
             children: [
               Center(
                 child: Container(
-                  width: width * 0.9,
                   height: height * 0.15,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -54,11 +111,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
                     ),
                   ),
                 ),
-              ),
-              Text(
-                'Vinayak Recovery',
-                style: TextStyle(
-                    color: ColorConstants.aqua, fontSize: height * 0.03),
               ),
               SizedBox(
                 height: 20,
@@ -135,13 +187,22 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 vertical: 12.0, horizontal: 16.0),
                             border: InputBorder.none,
                             counterText: ''),
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           if (value.length == 4) {
-                            sc.getAllSearchByLastDigitData(
-                                last4digit.value.text);
-                            setState(() {
-                              showlastdata = true;
-                            });
+                            bool isOnline = await Helper.getBoolPreferences(
+                                SharedPreferencesVar.isOnline);
+                            if (isOnline) {
+                              sc.getAllSearchByLastDigitData(
+                                  last4digit.value.text);
+                              setState(() {
+                                showlastdata = true;
+                              });
+                            } else {
+                              sc.searchOfflineLastDigitData(value);
+                              setState(() {
+                                showlastdata = true;
+                              });
+                            }
                           } else {
                             setState(() {
                               showlastdata = false;
@@ -222,44 +283,83 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         child: Text('SOmething went wrong'),
                       );
                     case Status.COMPLETED:
-                      return Expanded(
-                        child: GridView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
-                                  childAspectRatio: 5),
-                          itemCount: sc.searchbylastModel.value.data!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                    arguments: [
-                                      sc.searchbylastModel.value.data?[index],
-                                      'officeStaff'
-                                    ]);
-                              },
-                              child: Container(
-                                  height: 40,
-                                  width: width * 0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    sc.searchbylastModel.value.data?[index]
-                                            .regNo ??
-                                        '',
-                                    style:
-                                        TextStyle(color: ColorConstants.aqua),
-                                  ))),
-                            );
-                          },
-                        ),
-                      );
+                      if (isOnline) {
+                        return Expanded(
+                          child: GridView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    childAspectRatio: 5),
+                            itemCount: sc.searchbylastModel.value.data!.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                      arguments: [
+                                        sc.searchbylastModel.value.data?[index],
+                                        'officeStaff'
+                                      ]);
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: width * 0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      sc.searchbylastModel.value.data?[index]
+                                              .regNo ??
+                                          '',
+                                      style:
+                                          TextStyle(color: ColorConstants.aqua),
+                                    ))),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return Expanded(
+                          child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    childAspectRatio: 5),
+                            itemCount: sc.offlineDataFiltered.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                      arguments: [
+                                        sc.offlineDataFiltered[index],
+                                        'officeStaff'
+                                      ]);
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: width * 0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      sc.offlineDataFiltered[index].regNo ?? '',
+                                      style:
+                                          TextStyle(color: ColorConstants.aqua),
+                                    ))),
+                              );
+                            },
+                          ),
+                        );
+                      }
                   }
                 }),
               if (showlastdata == false && showChasisNo == false)
@@ -322,10 +422,39 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                           borderRadius:
                                               BorderRadius.circular(18)),
                                       child: Center(
-                                        child: Text(
-                                          'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyles.normalheadWhite20DM,
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            final vehicleDb = VehicleDb();
+
+                                            // await vehicleDb.insertVehicle(
+                                            //     'dataId',
+                                            //     'loadStatus',
+                                            //     'bankName',
+                                            //     'branch',
+                                            //     'agreementNo',
+                                            //     'customerName',
+                                            //     'regNo',
+                                            //     'mychasisnoooooo',
+                                            //     'engineNo',
+                                            //     'callCenterNo1',
+                                            //     'callCenterNo1Name',
+                                            //     'callCenterNo2',
+                                            //     'callCenterNo2Name',
+                                            //     'lastDigit',
+                                            //     'month',
+                                            //     'status',
+                                            //     'fileName',
+                                            //     'createdAt',
+                                            //     'updatedAt');
+
+                                            await vehicleDb.fetchAll();
+                                          },
+                                          child: Text(
+                                            'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
+                                            textAlign: TextAlign.center,
+                                            style:
+                                                TextStyles.normalheadWhite20DM,
+                                          ),
                                         ),
                                       ),
                                     )

@@ -1,5 +1,6 @@
 class VehicleModel {
   int? id;
+  String? dataId;
   String? loadStatus;
   String? bankName;
   String? branch;
@@ -21,6 +22,7 @@ class VehicleModel {
 
   VehicleModel(
     this.id, {
+    this.dataId,
     this.loadStatus,
     this.bankName,
     this.branch,
@@ -44,6 +46,7 @@ class VehicleModel {
   factory VehicleModel.fromSqfliteDatabase(Map<String, dynamic> json) =>
       VehicleModel(
         json["id"],
+        dataId: json["dataId"],
         loadStatus: json["loadStatus"],
         bankName: json["bankName"],
         branch: json["branch"],

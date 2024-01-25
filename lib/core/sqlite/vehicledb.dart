@@ -12,6 +12,7 @@ class VehicleDb {
     await database.execute('''
         CREATE TABLE IF NOT EXISTS vehicles(
           "id" integer null,
+          "dataId" text null,
           "loadStatus" text null,
           "bankName" text null,
           "branch" text null,
@@ -36,7 +37,8 @@ class VehicleDb {
   }
 
   Future<int> insertVehicle(
-    String loadStatus,
+    String dataId,
+    loadStatus,
     bankName,
     branch,
     agreementNo,
@@ -57,8 +59,9 @@ class VehicleDb {
   ) async {
     final db = await DatabaseHelper().database;
     int id = await db.rawInsert('''
-      INSERT OR REPLACE INTO $tableName (loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      INSERT OR REPLACE INTO $tableName (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ''', [
+      dataId,
       loadStatus,
       bankName,
       branch,
@@ -79,7 +82,6 @@ class VehicleDb {
       updatedAt,
     ]);
     print('vehicle created');
-    print(id);
     return id;
   }
 
@@ -149,6 +151,15 @@ class VehicleDb {
     final files = await db.rawQuery('''
     select * from $tableName
     ''');
+    print(files);
+    return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
+  }
+
+  Future<List<VehicleModel>> fetchByReg(String lastDigit) async {
+    final db = await DatabaseHelper().database;
+    final files = await db.rawQuery('''
+    select * from $tableName where lastDigit LIKE ?
+    ''', ['%$lastDigit%']);
     print(files);
     return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
   }

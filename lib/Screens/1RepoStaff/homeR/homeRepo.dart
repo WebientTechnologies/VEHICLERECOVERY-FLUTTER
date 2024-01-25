@@ -31,6 +31,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   bool showlastdata = false;
   bool showChasisNo = false;
   bool isOnline = true;
+  String mode = "Online";
   @override
   void initState() {
     // TODO: implement initState
@@ -41,6 +42,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
   Future checkMode() async {
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+
+    final vehicleDb = VehicleDb();
+    sc.offlineData.value = await vehicleDb.fetchAll();
+    print(sc.offlineData.length);
     setState(() {});
   }
 
@@ -53,15 +58,30 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
           toolbarHeight: 40,
           title: const Text('Vinayak Recovery'),
           actions: [
-            Switch(
-                value: isOnline,
-                onChanged: (value) async {
-                  await Helper.setBoolPreferences(
-                      SharedPreferencesVar.isOnline, value);
-                  setState(() {
-                    isOnline = value;
-                  });
-                })
+            Row(
+              children: [
+                Text(
+                  mode,
+                  style: TextStyle(
+                      color: ColorConstants.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Switch(
+                    value: isOnline,
+                    onChanged: (value) async {
+                      await Helper.setBoolPreferences(
+                          SharedPreferencesVar.isOnline, value);
+                      setState(() {
+                        isOnline = value;
+                        mode = value ? "Online" : "Offline";
+                      });
+                    }),
+              ],
+            )
           ],
           titleTextStyle: TextStyle(
             color: ColorConstants.white,
@@ -129,20 +149,35 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         ),
                         onChanged: (value) {
                           if (value.length >= 12) {
-                            sc.getAllSearchByChasisApiData(
-                                chasisNoCont.value.text);
+                            if (isOnline) {
+                              sc.getAllSearchByChasisApiData(
+                                  chasisNoCont.value.text);
 
-                            if (sc.searchbyChasisNoModel.value.data != null &&
-                                sc.searchbyChasisNoModel.value.data!
-                                    .isNotEmpty) {
-                              setState(() {
-                                showChasisNo = true;
-                                showlastdata = false;
-                              });
+                              if (sc.searchbyChasisNoModel.value.data != null &&
+                                  sc.searchbyChasisNoModel.value.data!
+                                      .isNotEmpty) {
+                                setState(() {
+                                  showChasisNo = true;
+                                  showlastdata = false;
+                                });
+                              } else {
+                                setState(() {
+                                  showlastdata = false;
+                                });
+                              }
                             } else {
-                              setState(() {
-                                showlastdata = false;
-                              });
+                              sc.searchOfflineChasisData(value);
+
+                              if (sc.offlineData.isNotEmpty) {
+                                setState(() {
+                                  showChasisNo = true;
+                                  showlastdata = false;
+                                });
+                              } else {
+                                setState(() {
+                                  showlastdata = false;
+                                });
+                              }
                             }
                           } else {
                             setState(() {
@@ -186,7 +221,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               setState(() {
                                 showlastdata = true;
                               });
-                            } else {}
+                            } else {
+                              sc.searchOfflineLastDigitData(value);
+                              setState(() {
+                                showlastdata = true;
+                              });
+                            }
                           } else {
                             setState(() {
                               showlastdata = false;
@@ -198,7 +238,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               if (showChasisNo == true && showlastdata == false)
@@ -213,46 +253,85 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         child: Text('SOmething went wrong'),
                       );
                     case Status.COMPLETED:
-                      return Expanded(
-                        child: GridView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
-                                  childAspectRatio: 5),
-                          itemCount:
-                              sc.searchbyChasisNoModel.value.data!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                    arguments: [
+                      if (isOnline) {
+                        return Expanded(
+                          child: GridView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    childAspectRatio: 5),
+                            itemCount:
+                                sc.searchbyChasisNoModel.value.data!.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                      arguments: [
+                                        sc.searchbyChasisNoModel.value
+                                            .data?[index],
+                                        'repoAgent'
+                                      ]);
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: width * 0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    child: Center(
+                                        child: Text(
                                       sc.searchbyChasisNoModel.value
-                                          .data?[index],
-                                      'repoAgent'
-                                    ]);
-                              },
-                              child: Container(
-                                  height: 40,
-                                  width: width * 0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    sc.searchbyChasisNoModel.value.data?[index]
-                                            .regNo ??
-                                        '',
-                                    style:
-                                        TextStyle(color: ColorConstants.aqua),
-                                  ))),
-                            );
-                          },
-                        ),
-                      );
+                                              .data?[index].regNo ??
+                                          '',
+                                      style:
+                                          TextStyle(color: ColorConstants.aqua),
+                                    ))),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return Expanded(
+                          child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    childAspectRatio: 5),
+                            itemCount: sc.offlineDataFiltered.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                      arguments: [
+                                        sc.offlineDataFiltered[index],
+                                        'repoAgent'
+                                      ]);
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: width * 0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      sc.offlineDataFiltered[index].regNo ?? '',
+                                      style:
+                                          TextStyle(color: ColorConstants.aqua),
+                                    ))),
+                              );
+                            },
+                          ),
+                        );
+                      }
                   }
                 }),
               if (showlastdata == true && showChasisNo == false)
@@ -267,44 +346,83 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         child: Text('SOmething went wrong'),
                       );
                     case Status.COMPLETED:
-                      return Expanded(
-                        child: GridView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
-                                  childAspectRatio: 5),
-                          itemCount: sc.searchbylastModel.value.data!.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                    arguments: [
-                                      sc.searchbylastModel.value.data?[index],
-                                      'repoAgent'
-                                    ]);
-                              },
-                              child: Container(
-                                  height: 40,
-                                  width: width * 0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    sc.searchbylastModel.value.data?[index]
-                                            .regNo ??
-                                        '',
-                                    style:
-                                        TextStyle(color: ColorConstants.aqua),
-                                  ))),
-                            );
-                          },
-                        ),
-                      );
+                      if (isOnline) {
+                        return Expanded(
+                          child: GridView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    childAspectRatio: 5),
+                            itemCount: sc.searchbylastModel.value.data!.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                      arguments: [
+                                        sc.searchbylastModel.value.data?[index],
+                                        'repoAgent'
+                                      ]);
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: width * 0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      sc.searchbylastModel.value.data?[index]
+                                              .regNo ??
+                                          '',
+                                      style:
+                                          TextStyle(color: ColorConstants.aqua),
+                                    ))),
+                              );
+                            },
+                          ),
+                        );
+                      } else {
+                        return Expanded(
+                          child: GridView.builder(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisSpacing: 16.0,
+                                    crossAxisSpacing: 16.0,
+                                    childAspectRatio: 5),
+                            itemCount: sc.offlineDataFiltered.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                      arguments: [
+                                        sc.offlineDataFiltered[index],
+                                        'repoAgent'
+                                      ]);
+                                },
+                                child: Container(
+                                    height: 40,
+                                    width: width * 0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      sc.offlineDataFiltered[index].regNo ?? '',
+                                      style:
+                                          TextStyle(color: ColorConstants.aqua),
+                                    ))),
+                              );
+                            },
+                          ),
+                        );
+                      }
                   }
                 }),
               if (showlastdata == false && showChasisNo == false)
@@ -378,6 +496,27 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                             print(deviceId);
 
                                             final vehicleDb = VehicleDb();
+
+                                            // await vehicleDb.insertVehicle(
+                                            //     'dataId',
+                                            //     'loadStatus',
+                                            //     'bankName',
+                                            //     'branch',
+                                            //     'agreementNo',
+                                            //     'customerName',
+                                            //     'regNo',
+                                            //     'mychasisnoooooo',
+                                            //     'engineNo',
+                                            //     'callCenterNo1',
+                                            //     'callCenterNo1Name',
+                                            //     'callCenterNo2',
+                                            //     'callCenterNo2Name',
+                                            //     'lastDigit',
+                                            //     'month',
+                                            //     'status',
+                                            //     'fileName',
+                                            //     'createdAt',
+                                            //     'updatedAt');
 
                                             await vehicleDb.fetchAll();
                                           },
