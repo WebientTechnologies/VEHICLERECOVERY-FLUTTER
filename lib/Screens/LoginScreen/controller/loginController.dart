@@ -32,7 +32,7 @@ class LoginController extends GetxController {
       print(deviceId);
 
       var data = {
-        'email': emailcont.value.text,
+        'username': emailcont.value.text,
         'password': passcont.value.text.trim(),
         'deviceId': 'null',
       };

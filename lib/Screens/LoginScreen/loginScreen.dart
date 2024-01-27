@@ -24,10 +24,10 @@ class _LoginScreenState extends State<LoginScreen> {
   // Function to validate email
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return 'Please enter your username';
     }
     if (!GetUtils.isEmail(value)) {
-      return 'Please enter a valid email address';
+      return 'Please enter a valid username';
     }
 
     lc.emailError.value = '';
@@ -38,28 +38,28 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> handleButtonClick() async {
     String? emailError = validateEmail(lc.emailcont.value.text);
 
-    if (emailError != null) {
-      // Display error toast
-      Fluttertoast.showToast(
-        msg: emailError,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    } else {
-      // Continue with your button click logic
-      var deviceId = await Helper.getStringPreferences('deviceId');
+    // if (emailError != null) {
+    //   // Display error toast
+    //   Fluttertoast.showToast(
+    //     msg: emailError,
+    //     toastLength: Toast.LENGTH_SHORT,
+    //     gravity: ToastGravity.BOTTOM,
+    //     timeInSecForIosWeb: 1,
+    //     backgroundColor: Colors.red,
+    //     textColor: Colors.white,
+    //     fontSize: 16.0,
+    //   );
+    // } else {
+    // Continue with your button click logic
+    var deviceId = await Helper.getStringPreferences('deviceId');
 
-      if (deviceId == null) {
-        String deviceID = Uuid().v4();
-        await Helper.setStringPreferences('deviceId', deviceID);
-      }
-
-      lc.login(context);
+    if (deviceId == null) {
+      String deviceID = Uuid().v4();
+      await Helper.setStringPreferences('deviceId', deviceID);
     }
+
+    lc.login(context);
+    //}
   }
 
   @override
@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               controller: lc.emailcont.value,
                               borderColor: ColorConstants.aqua,
                               borderWidth: 2,
-                              hintText: 'Email',
+                              hintText: 'Username',
                               borderRadius: 18,
                               validator: validateEmail,
                             ),

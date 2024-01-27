@@ -492,7 +492,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                   SizedBox(height: 10), // Add padding here
                   TextFieldWidget(
                     controller: arc.usernameController.value,
-                    hintText: 'UserName',
+                    hintText: 'Username',
                     width: width * 0.95,
                     borderRadius: 18,
                     height: 40,
