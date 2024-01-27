@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       } else {
         ssc.loadAllData.value = true;
-        ssc.getAllDashboardApiData(1);
+        //ssc.getAllDashboardApiData(1);
       }
     } else {
       Get.offAllNamed(AppRoutes.signin);
@@ -66,46 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorConstants.aqua,
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 50,
-          ),
-          Image.asset('assets/images/logo.jpg'),
-          const SizedBox(
-            height: 100,
-          ),
-          Obx(() {
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Text(
-                    'Loading all data please wait. This will only happen once if its get completed. And do not press back button.',
-                    style: TextStyle(
-                      color: ColorConstants.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Text(
-                    'Downloading ${ssc.downloadedData.value}/${ssc.totalData.value}',
-                    style: TextStyle(
-                      color: ColorConstants.white,
-                    )),
-                const SizedBox(
-                  height: 20,
-                ),
-                Center(
-                  child: CircularProgressIndicator(
-                    color: ColorConstants.white,
-                  ),
-                )
-              ],
-            );
-          })
-        ],
-      ),
+      body: Center(child: Image.asset('assets/images/logo.jpg')),
     );
   }
 }

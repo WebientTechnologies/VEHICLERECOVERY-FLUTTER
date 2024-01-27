@@ -11,6 +11,7 @@ import 'package:vinayak/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
 import '../../../core/response/status.dart';
 import '../../searchVehicle/controller/searchController.dart';
+import '../../splashSCreen/controller/splashscreen_controller.dart';
 import 'controller/repoHomeController.dart';
 
 class HomeScreenRepoStaff extends StatefulWidget {
@@ -27,6 +28,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   TextEditingController last4digit = TextEditingController();
   TextEditingController chasisNoCont = TextEditingController();
   GlobalKey<ScaffoldState> _globalkey = new GlobalKey<ScaffoldState>();
+  SplashScreenController ssc = Get.put(SplashScreenController());
 
   bool showlastdata = false;
   bool showChasisNo = false;
@@ -38,6 +40,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
+    init();
   }
 
   Future checkMode() async {
@@ -47,6 +50,24 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     sc.offlineData.value = await vehicleDb.fetchAll();
     print(sc.offlineData.length);
     setState(() {});
+  }
+
+  Future init() async {
+    String token =
+        await Helper.getStringPreferences(SharedPreferencesVar.token);
+    if (token.length > 5) {
+      String lastUpdateDate = await Helper.getStringPreferences(
+          SharedPreferencesVar.lastUpdateDate);
+
+      print(lastUpdateDate);
+
+      if (lastUpdateDate.length > 4) {
+        ssc.loadPartialData.value = true;
+      } else {
+        ssc.loadAllData.value = true;
+        ssc.getAllDashboardApiData(1);
+      }
+    }
   }
 
   @override

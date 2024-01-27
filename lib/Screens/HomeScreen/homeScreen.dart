@@ -11,6 +11,7 @@ import '../../core/constants/shared_preferences_var.dart';
 import '../../core/response/status.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
+import '../splashSCreen/controller/splashscreen_controller.dart';
 
 class HomeSCreen extends StatefulWidget {
   const HomeSCreen({super.key});
@@ -23,6 +24,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   HomeController hc = Get.put(HomeController());
   VehicleSearchController sc = Get.put(VehicleSearchController());
+  SplashScreenController ssc = Get.put(SplashScreenController());
+
   TextEditingController last4digit = TextEditingController();
   TextEditingController chasisNoCont = TextEditingController();
   bool showChasisNo = false;
@@ -34,6 +37,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
+    init();
   }
 
   Future checkMode() async {
@@ -43,6 +47,24 @@ class _HomeSCreenState extends State<HomeSCreen> {
     sc.offlineData.value = await vehicleDb.fetchAll();
     print(sc.offlineData.length);
     setState(() {});
+  }
+
+  Future init() async {
+    String token =
+        await Helper.getStringPreferences(SharedPreferencesVar.token);
+    if (token.length > 5) {
+      String lastUpdateDate = await Helper.getStringPreferences(
+          SharedPreferencesVar.lastUpdateDate);
+
+      print(lastUpdateDate);
+
+      if (lastUpdateDate.length > 4) {
+        ssc.loadPartialData.value = true;
+      } else {
+        ssc.loadAllData.value = true;
+        ssc.getAllDashboardApiData(1);
+      }
+    }
   }
 
   @override

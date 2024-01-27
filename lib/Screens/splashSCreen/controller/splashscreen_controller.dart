@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
@@ -18,12 +19,12 @@ class SplashScreenController extends GetxController {
 
   RxBool loadAllData = false.obs;
   RxBool loadPartialData = true.obs;
-  RxInt totalPages = 50.obs;
+  RxInt totalPages = 0.obs;
   RxInt currentPage = 1.obs;
-  RxInt totalData = 5000.obs;
+  RxInt totalData = 0.obs;
   RxInt downloadedData = 0.obs;
 
-  UserController uc = Get.find<UserController>();
+  UserController uc = Get.put(UserController(), permanent: true);
 
   final rxRequestStatus = Status.LOADING.obs;
   void setRxRequestStatus(Status value) => rxRequestStatus.value = value;
@@ -41,13 +42,39 @@ class SplashScreenController extends GetxController {
     return VehicleDataModel.fromJson(response);
   }
 
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  void _updateNotification(int totalFiles, int uploadedFiles) async {
+    String title = 'Downloading data (' +
+        (uploadedFiles / totalFiles * 100).toStringAsFixed(2) +
+        '%)';
+    String content = "Downloaded $uploadedFiles of $totalFiles data";
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      content,
+      NotificationDetails(
+        android: AndroidNotificationDetails('channel_id', 'channel_name',
+            channelDescription: 'channel_description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ongoing: true,
+            showProgress: true,
+            maxProgress: totalFiles,
+            progress: uploadedFiles,
+            playSound: false),
+      ),
+    );
+  }
+
   void getAllDashboardApiData(int pageNo) {
     getAllDashboardApi(pageNo).then((value) async {
       setDashboardList(value);
 
       final vehicleDb = VehicleDb();
-      // totalData.value = getSearchByLastDigitModel.value.totalRecords!;
-      // totalPages.value = getSearchByLastDigitModel.value.totalPages!;
+      totalData.value = getSearchByLastDigitModel.value.totalRecords!;
+      totalPages.value = getSearchByLastDigitModel.value.totalPages!;
 
       if (getSearchByLastDigitModel.value.data != null) {
         for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
@@ -72,12 +99,11 @@ class SplashScreenController extends GetxController {
               getSearchByLastDigitModel.value.data![i].fileName,
               getSearchByLastDigitModel.value.data![i].createdAt,
               getSearchByLastDigitModel.value.data![i].updatedAt);
+          _updateNotification(totalData.value, downloadedData.value);
         }
       }
 
       if (totalPages == currentPage) {
-        setRxRequestStatus(Status.COMPLETED);
-
         var now = DateTime.now();
         var formatter = DateFormat('yyyy-MM-dd');
         String formattedDate = formatter.format(now);
@@ -96,11 +122,37 @@ class SplashScreenController extends GetxController {
         currentPage.value++;
         getAllDashboardApiData(currentPage.value);
       }
-    }).onError((error, stackTrace) {
+
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Data downloaded',
+        "Data downloaded successfully",
+        const NotificationDetails(
+          android: AndroidNotificationDetails('channel_id', 'channel_name',
+              channelDescription: 'channel_description',
+              importance: Importance.max,
+              priority: Priority.high,
+              ongoing: true,
+              playSound: false),
+        ),
+      );
+    }).onError((error, stackTrace) async {
       print(stackTrace);
       print('--------------------');
       print(error);
-      setRxRequestStatus(Status.ERROR);
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Error while downloading data',
+        "Data downloaded failed",
+        const NotificationDetails(
+          android: AndroidNotificationDetails('channel_id', 'channel_name',
+              channelDescription: 'channel_description',
+              importance: Importance.max,
+              priority: Priority.high,
+              ongoing: true,
+              playSound: false),
+        ),
+      );
     });
   }
 }
