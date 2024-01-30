@@ -20,7 +20,7 @@ class SearchLDVehicleDetails extends StatefulWidget {
 class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   VehicleSearchController sc = Get.put(VehicleSearchController());
   dynamic data;
-  bool isRepoAgent = false;
+  bool isRepoAgent = false, isOnline = false;
   String role = '';
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UserController uc = Get.put(UserController());
@@ -29,11 +29,12 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
     super.initState();
     data = Get.arguments[0];
     role = Get.arguments[1];
+    isOnline = Get.arguments[2];
     if (role == 'officeStaff') {
       isRepoAgent = false;
     } else {
       isRepoAgent = true;
-      sc.updateSearchList(data.id);
+      sc.updateSearchList(isOnline ? data.id : data.id);
     }
     print(data.chasisNo);
 

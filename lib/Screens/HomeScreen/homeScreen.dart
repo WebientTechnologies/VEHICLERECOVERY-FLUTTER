@@ -269,7 +269,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     arguments: [
                                       sc.searchbyChasisNoModel.value
                                           .data?[index],
-                                      'officeStaff'
+                                      'officeStaff',
+                                      isOnline
                                     ]);
                               },
                               child: Container(
@@ -322,7 +323,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   Get.toNamed(AppRoutes.searchedVehicleDetails,
                                       arguments: [
                                         sc.searchbylastModel.value.data?[index],
-                                        'officeStaff'
+                                        'officeStaff',
+                                        isOnline
                                       ]);
                                 },
                                 child: Container(
@@ -361,7 +363,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   Get.toNamed(AppRoutes.searchedVehicleDetails,
                                       arguments: [
                                         sc.offlineDataFiltered[index],
-                                        'officeStaff'
+                                        'officeStaff',
+                                        isOnline
                                       ]);
                                 },
                                 child: Container(

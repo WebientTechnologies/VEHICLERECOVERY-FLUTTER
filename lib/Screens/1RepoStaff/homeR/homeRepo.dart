@@ -40,7 +40,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
-    init();
+    // init();
   }
 
   Future checkMode() async {
@@ -293,7 +293,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                       arguments: [
                                         sc.searchbyChasisNoModel.value
                                             .data?[index],
-                                        'repoAgent'
+                                        'repoAgent',
+                                        isOnline
                                       ]);
                                 },
                                 child: Container(
@@ -332,7 +333,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   Get.toNamed(AppRoutes.searchedVehicleDetails,
                                       arguments: [
                                         sc.offlineDataFiltered[index],
-                                        'repoAgent'
+                                        'repoAgent',
+                                        isOnline
                                       ]);
                                 },
                                 child: Container(

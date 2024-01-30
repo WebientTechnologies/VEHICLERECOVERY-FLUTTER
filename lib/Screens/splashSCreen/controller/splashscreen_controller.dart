@@ -57,13 +57,14 @@ class SplashScreenController extends GetxController {
       NotificationDetails(
         android: AndroidNotificationDetails('channel_id', 'channel_name',
             channelDescription: 'channel_description',
-            importance: Importance.max,
-            priority: Priority.high,
+            importance: Importance.min,
+            priority: Priority.min,
             ongoing: true,
             showProgress: true,
             maxProgress: totalFiles,
             progress: uploadedFiles,
-            playSound: false),
+            playSound: false,
+            enableVibration: false),
       ),
     );
   }
@@ -123,19 +124,20 @@ class SplashScreenController extends GetxController {
         getAllDashboardApiData(currentPage.value);
       }
 
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Data downloaded',
-        "Data downloaded successfully",
-        const NotificationDetails(
-          android: AndroidNotificationDetails('channel_id', 'channel_name',
-              channelDescription: 'channel_description',
-              importance: Importance.max,
-              priority: Priority.high,
-              ongoing: true,
-              playSound: false),
-        ),
-      );
+      // await flutterLocalNotificationsPlugin.show(
+      //   0,
+      //   'Data downloaded',
+      //   "Data downloaded successfully",
+      //   const NotificationDetails(
+      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
+      //         channelDescription: 'channel_description',
+      //         importance: Importance.min,
+      //         priority: Priority.min,
+      //         ongoing: true,
+      //         playSound: false,
+      //         enableVibration: false),
+      //   ),
+      // );
     }).onError((error, stackTrace) async {
       print(stackTrace);
       print('--------------------');
@@ -147,10 +149,11 @@ class SplashScreenController extends GetxController {
         const NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
               channelDescription: 'channel_description',
-              importance: Importance.max,
-              priority: Priority.high,
+              importance: Importance.min,
+              priority: Priority.min,
               ongoing: true,
-              playSound: false),
+              playSound: false,
+              enableVibration: false),
         ),
       );
     });

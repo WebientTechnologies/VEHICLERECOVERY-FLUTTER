@@ -46,17 +46,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
       print(lastUpdateDate);
 
-      if (lastUpdateDate.length > 4) {
-        ssc.loadPartialData.value = true;
-        if (uc.userDetails['role'] == 'repo-agent') {
-          Get.offAll(HomeScreenRepoStaff());
-        } else {
-          Get.toNamed(AppRoutes.home);
-        }
+      // if (lastUpdateDate.length > 4) {
+      ssc.loadPartialData.value = true;
+      if (uc.userDetails['role'] == 'repo-agent') {
+        Get.offAll(HomeScreenRepoStaff());
       } else {
-        ssc.loadAllData.value = true;
-        //ssc.getAllDashboardApiData(1);
+        Get.toNamed(AppRoutes.home);
       }
+      // } else {
+      //ssc.loadAllData.value = true;
+      //ssc.getAllDashboardApiData(1);
+      // }
     } else {
       Get.offAllNamed(AppRoutes.signin);
     }

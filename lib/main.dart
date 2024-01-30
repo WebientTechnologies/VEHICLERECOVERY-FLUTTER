@@ -45,12 +45,13 @@ Future<void> initializeService() async {
   final service = FlutterBackgroundService();
 
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      notificationChannelId, // id
-      'Vinayak vehicle recovery', // title
-      description:
-          'This channel is used for important notifications.', // description
-      importance: Importance.low, // importance must be at low or higher level
-      playSound: false);
+    notificationChannelId, // id
+    'Vinayak vehicle recovery', // title
+    description:
+        'This channel is used for important notifications.', // description
+    importance: Importance.low, // importance must be at low or higher level
+    playSound: false,
+  );
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -118,8 +119,14 @@ Future<void> onStart(ServiceInstance service) async {
       'Running in background',
       const NotificationDetails(
           android: AndroidNotificationDetails(
-              notificationChannelId, 'MY FOREGROUND SERVICE',
-              ongoing: true, playSound: false),
+            importance: Importance.min,
+            priority: Priority.min,
+            notificationChannelId,
+            'MY FOREGROUND SERVICE',
+            ongoing: true,
+            playSound: false,
+            enableVibration: false,
+          ),
           iOS: DarwinNotificationDetails(subtitle: 'Vinayak vehicle recovery')),
     );
     //  }
