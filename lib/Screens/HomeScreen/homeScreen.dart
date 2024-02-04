@@ -62,7 +62,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
         ssc.loadPartialData.value = true;
       } else {
         ssc.loadAllData.value = true;
-        ssc.getAllDashboardApiData(1);
+        int offlinePageNumber = await Helper.getIntPreferences(
+            SharedPreferencesVar.offlinePageNumber);
+        ssc.getAllDashboardApiData(
+            offlinePageNumber > 0 ? offlinePageNumber : 1);
       }
     }
   }

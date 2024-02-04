@@ -40,7 +40,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
-    // init();
+    init();
   }
 
   Future checkMode() async {
@@ -65,7 +65,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
         ssc.loadPartialData.value = true;
       } else {
         ssc.loadAllData.value = true;
-        ssc.getAllDashboardApiData(1);
+        int offlinePageNumber = await Helper.getIntPreferences(
+            SharedPreferencesVar.offlinePageNumber);
+        ssc.getAllDashboardApiData(
+            offlinePageNumber > 0 ? offlinePageNumber : 1);
       }
     }
   }

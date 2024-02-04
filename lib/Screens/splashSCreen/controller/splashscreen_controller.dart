@@ -45,11 +45,13 @@ class SplashScreenController extends GetxController {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  void _updateNotification(int totalFiles, int uploadedFiles) async {
+  void _updateNotification(int totalData, int uploadedData) async {
+    // int offlineCount =
+    //     await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
     String title = 'Downloading data (' +
-        (uploadedFiles / totalFiles * 100).toStringAsFixed(2) +
+        (uploadedData / totalData * 100).toStringAsFixed(2) +
         '%)';
-    String content = "Downloaded $uploadedFiles of $totalFiles data";
+    String content = "Downloaded $uploadedData of $totalData data";
     await flutterLocalNotificationsPlugin.show(
       0,
       title,
@@ -61,8 +63,8 @@ class SplashScreenController extends GetxController {
             priority: Priority.min,
             ongoing: true,
             showProgress: true,
-            maxProgress: totalFiles,
-            progress: uploadedFiles,
+            maxProgress: totalData,
+            progress: uploadedData,
             playSound: false,
             enableVibration: false),
       ),
@@ -72,6 +74,10 @@ class SplashScreenController extends GetxController {
   void getAllDashboardApiData(int pageNo) {
     getAllDashboardApi(pageNo).then((value) async {
       setDashboardList(value);
+      downloadedData.value =
+          await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
+      await Helper.setIntPreferences(
+          SharedPreferencesVar.offlinePageNumber, currentPage.value);
 
       final vehicleDb = VehicleDb();
       totalData.value = getSearchByLastDigitModel.value.totalRecords!;
@@ -80,6 +86,8 @@ class SplashScreenController extends GetxController {
       if (getSearchByLastDigitModel.value.data != null) {
         for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
           downloadedData.value++;
+          await Helper.setIntPreferences(
+              SharedPreferencesVar.offlineCount, downloadedData.value);
           await vehicleDb.insertVehicle(
               getSearchByLastDigitModel.value.data![i].sId!,
               getSearchByLastDigitModel.value.data![i].loadStatus,

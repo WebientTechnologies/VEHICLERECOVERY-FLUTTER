@@ -3,4 +3,6 @@ class SharedPreferencesVar {
   static const String uid = 'uid';
   static const String isOnline = 'isOnline';
   static const String lastUpdateDate = 'lastUpdateDate';
+  static const String offlinePageNumber = 'offlinePageNumber';
+  static const String offlineCount = 'offlineCount';
 }
