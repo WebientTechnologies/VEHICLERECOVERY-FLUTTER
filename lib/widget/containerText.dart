@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ContainerWidget extends StatelessWidget {
   final double borderRadius;
@@ -42,11 +44,17 @@ class ContainerWidget extends StatelessWidget {
           ),
         ),
         child: Center(
-          child: Text(
-            hintText,
-            style: TextStyle(
-              fontSize: fontSize,
-              color: textColor,
+          child: GestureDetector(
+            onLongPress: () async {
+              await Clipboard.setData(ClipboardData(text: hintText));
+              Fluttertoast.showToast(msg: 'Copied $hintText');
+            },
+            child: Text(
+              hintText,
+              style: TextStyle(
+                fontSize: fontSize,
+                color: textColor,
+              ),
             ),
           ),
         ),

@@ -43,7 +43,7 @@ class HoldRepoDetailsWidget extends StatelessWidget {
             mainAxisSpacing: 0.0,
             childAspectRatio: 2,
           ),
-          itemCount: 8,
+          itemCount: 7,
           itemBuilder: (BuildContext context, int index) {
             return _buildItem(index);
           },
@@ -54,21 +54,21 @@ class HoldRepoDetailsWidget extends StatelessWidget {
 
   Widget _buildItem(int index) {
     switch (index) {
+      // case 0:
+      //   return _buildItemWidget('ID', id);
       case 0:
-        return _buildItemWidget('ID', id);
-      case 1:
         return _buildItemWidget('Bank Name', bankName);
-      case 2:
+      case 1:
         return _buildItemWidget('Cust. Name', custName);
-      case 3:
+      case 2:
         return _buildItemWidget('Reg. No', regNo);
-      case 4:
+      case 3:
         return _buildItemWidget('Chasis No', chasisNo);
-      case 5:
+      case 4:
         return _buildItemWidget('Model', model);
-      case 6:
+      case 5:
         return _buildItemWidget('Seezer Name', seezerName);
-      case 7:
+      case 6:
         return _buildItemWidget('Upload Date', uploadDate);
       default:
         return Container();
@@ -91,8 +91,8 @@ class HoldRepoDetailsWidget extends StatelessWidget {
           ),
           GestureDetector(
             onLongPress: () async {
-              await Clipboard.setData(ClipboardData(text: value)).then((value) {
-                Fluttertoast.showToast(msg: 'Copied to Clipboard');
+              await Clipboard.setData(ClipboardData(text: value)).then((v) {
+                Fluttertoast.showToast(msg: 'Copied $value');
               });
             },
             child: Text(

@@ -294,7 +294,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                         sc.searchbyChasisNoModel.value
                                             .data?[index],
                                         'repoAgent',
-                                        isOnline
+                                        isOnline,
                                       ]);
                                 },
                                 child: Container(
@@ -334,7 +334,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                       arguments: [
                                         sc.offlineDataFiltered[index],
                                         'repoAgent',
-                                        isOnline
+                                        isOnline,
                                       ]);
                                 },
                                 child: Container(
@@ -386,7 +386,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   Get.toNamed(AppRoutes.searchedVehicleDetails,
                                       arguments: [
                                         sc.searchbylastModel.value.data?[index],
-                                        'repoAgent'
+                                        'repoAgent',
+                                        isOnline
                                       ]);
                                 },
                                 child: Container(
@@ -425,7 +426,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   Get.toNamed(AppRoutes.searchedVehicleDetails,
                                       arguments: [
                                         sc.offlineDataFiltered[index],
-                                        'repoAgent'
+                                        'repoAgent',
+                                        isOnline
                                       ]);
                                 },
                                 child: Container(

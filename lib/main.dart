@@ -11,6 +11,7 @@ import 'package:workmanager/workmanager.dart';
 import 'Screens/splashSCreen/controller/splashscreen_controller.dart';
 import 'core/constants/helper.dart';
 import 'core/constants/shared_preferences_var.dart';
+import 'core/global_controller/network_controller.dart';
 
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
@@ -143,6 +144,7 @@ Future<void> main() async {
       );
   await initializeService();
   runApp(const MyApp());
+  NetworkController nc = Get.put(NetworkController(), permanent: true);
 }
 
 class MyApp extends StatefulWidget {

@@ -29,16 +29,17 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
     super.initState();
     data = Get.arguments[0];
     role = Get.arguments[1];
+    print('lengthhhh ${Get.arguments.length}');
     isOnline = Get.arguments[2];
     if (role == 'officeStaff') {
       isRepoAgent = false;
     } else {
       isRepoAgent = true;
-      sc.updateSearchList(isOnline ? data.id : data.id);
+      sc.updateSearchList(isOnline ? data.id : data.id.toString());
     }
-    print(data.chasisNo);
+    //print(data.chasisNo);
 
-    print(data.id);
+    //print(data.id);
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
