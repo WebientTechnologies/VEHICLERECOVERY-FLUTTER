@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vinayak/Screens/contact_info/contact_info.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/widget/myappbar.dart';
+
+import '../../core/constants/helper.dart';
+import '../../routes/app_routes.dart';
+import '../changePassword/changePassword.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -19,32 +24,29 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     uc.loadUserDetails();
+    print(uc.userDetails);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: ColorConstants.midBrown),
+        title: Text(
+          'Profile',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+        ),
+      ),
       body: LayoutBuilder(
         builder: (ctx, constraints) {
           var height = constraints.maxHeight;
           var width = constraints.maxWidth;
           return Column(
             children: [
-              Container(
+              SizedBox(
                 height: height * 0.33,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.blue,
-                      ColorConstants.back,
-                      ColorConstants.aqua,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -53,13 +55,13 @@ class _ProfileState extends State<Profile> {
                       width: 120,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: ColorConstants.aqua,
+                        color: ColorConstants.midBrown,
                         border: Border.all(
                           color: Colors.white,
                           width: 4,
                         ),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.account_circle,
                         size: 80,
                         color: Colors.white,
@@ -72,14 +74,14 @@ class _ProfileState extends State<Profile> {
                       alignment: Alignment.bottomCenter,
                       child: Container(
                         height: 50,
-                        decoration: BoxDecoration(),
+                        decoration: const BoxDecoration(),
                         child: Text(
                           uc.userDetails['role'] == 'office-staff'
                               ? uc.userDetails['staf']['name']
                               : uc.userDetails['agent']['name'],
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: ColorConstants.aqua,
+                            color: ColorConstants.black,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -89,109 +91,109 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
-              Container(
-                width: width * 0.4,
-                height: height * 0.06,
-                color: ColorConstants.aqua,
-                child: Center(
-                  child: Text(
-                    'Account Info',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+              const Divider(),
+              GestureDetector(
+                onTap: () {
+                  Get.to(const ContactInfo());
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.person,
+                        color: ColorConstants.midBrown,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Contact Info',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: ColorConstants.midBrown,
+                      )
+                    ],
                   ),
                 ),
               ),
-              Container(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildAccountInfoRow(
-                      label: 'Name',
-                      value: uc.userDetails['role'] == 'office-staff'
-                          ? uc.userDetails['staf']['name']
-                          : uc.userDetails['agent']['name'],
-                      icon: Icons.person,
-                    ),
-                    _buildAccountInfoRow(
-                      label: 'Email',
-                      value: uc.userDetails['role'] == 'office-staff'
-                          ? uc.userDetails['staf']['email']
-                          : uc.userDetails['agent']['email'],
-                      icon: Icons.email,
-                    ),
-                    _buildAccountInfoRow(
-                      label: 'Mobile',
-                      value: uc.userDetails['role'] == 'office-staff'
-                          ? uc.userDetails['staf']['mobile']
-                          : uc.userDetails['agent']['mobile'],
-                      icon: Icons.phone,
-                    ),
-                    _buildAccountInfoRow(
-                      label: 'Address',
-                      value: uc.userDetails['role'] == 'office-staff'
-                          ? uc.userDetails['staf']['addressLine1']
-                          : uc.userDetails['agent']['addressLine1'],
-                      icon: Icons.location_on,
-                    ),
-                    _buildAccountInfoRow(
-                      label: 'DOB',
-                      value: '',
-                      icon: Icons.calendar_today,
-                    ),
-                  ],
+              const Divider(),
+              GestureDetector(
+                onTap: () {
+                  Get.to(ChangePassword(
+                    width: Get.width,
+                    height: Get.height,
+                  ));
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.password,
+                        color: ColorConstants.midBrown,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Change Password',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: ColorConstants.midBrown,
+                      )
+                    ],
+                  ),
                 ),
               ),
+              const Divider(),
+              GestureDetector(
+                onTap: () async {
+                  UserController uc = Get.find<UserController>();
+                  uc.deleteUserDetails();
+                  await Helper.setStringPreferences('token', '');
+                  Get.offAllNamed(AppRoutes.signin);
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.logout,
+                        color: ColorConstants.midBrown,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                      const Spacer(),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: ColorConstants.midBrown,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(),
             ],
           );
         },
-      ),
-      drawer: uc.userDetails['role'] == 'repo-agent'
-          ? MyRepoAgentDrawer()
-          : MyDrawer(),
-    );
-  }
-
-  Widget _buildAccountInfoRow({
-    required String label,
-    required String value,
-    required IconData icon,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            icon,
-            color: ColorConstants.aqua,
-            size: 40,
-          ),
-          SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  color: ColorConstants.aqua,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  color: ColorConstants.aqua,
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ],
       ),
     );
   }

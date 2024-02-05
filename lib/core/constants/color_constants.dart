@@ -19,4 +19,8 @@ class ColorConstants {
   static Color yellowF2C200 = const Color(0xFFF2C200);
   static Color maroon = const Color(0xFF9a2143);
   static Color cream = const Color(0xFFfbf8f2);
+
+  static Color lightBrown = const Color(0xFFE4DCD7);
+  static Color midBrown = const Color(0xFFC67C4E);
+  static Color coalBlack = const Color(0xFF313131);
 }

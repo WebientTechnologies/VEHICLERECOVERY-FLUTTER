@@ -161,7 +161,7 @@ class _MyAppState extends State<MyApp> {
       title: 'Vinayak vehicle recovery',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF018786)),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFC67C4E)),
         useMaterial3: true,
       ),
       // home: LoginScreen(),

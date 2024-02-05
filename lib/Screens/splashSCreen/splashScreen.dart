@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
+import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
 import 'package:vinayak/Screens/splashSCreen/controller/splashscreen_controller.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 
@@ -49,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // if (lastUpdateDate.length > 4) {
       ssc.loadPartialData.value = true;
       if (uc.userDetails['role'] == 'repo-agent') {
-        Get.offAll(HomeScreenRepoStaff());
+        Get.offAll(const RepoAgentContainer());
       } else {
         Get.toNamed(AppRoutes.home);
       }
@@ -65,8 +66,33 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstants.aqua,
-      body: Center(child: Image.asset('assets/images/logo.jpg')),
+      backgroundColor: ColorConstants.lightBrown,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(
+            height: 100,
+          ),
+          Image.asset(
+            'assets/images/vad.png',
+            width: 200,
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Center(
+            child: Text(
+              'Best vehicle recovery that everyone trusts',
+              style: TextStyle(
+                color: ColorConstants.white,
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

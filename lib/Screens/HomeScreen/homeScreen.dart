@@ -37,7 +37,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
-    init();
+    //init();
   }
 
   Future checkMode() async {
@@ -74,7 +74,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        backgroundColor: ColorConstants.back,
         appBar: AppBar(
           toolbarHeight: 40,
           title: const Text('Vinayak Recovery'),

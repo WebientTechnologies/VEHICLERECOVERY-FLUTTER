@@ -1,7 +1,6 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/constants/helper.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
@@ -27,7 +26,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   VehicleSearchController sc = Get.put(VehicleSearchController());
   TextEditingController last4digit = TextEditingController();
   TextEditingController chasisNoCont = TextEditingController();
-  GlobalKey<ScaffoldState> _globalkey = new GlobalKey<ScaffoldState>();
   SplashScreenController ssc = Get.put(SplashScreenController());
 
   bool showlastdata = false;
@@ -36,11 +34,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   String mode = "Online";
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
-    init();
+    //init();
   }
 
   Future checkMode() async {
@@ -76,57 +73,63 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: ColorConstants.back,
-        appBar: AppBar(
-          toolbarHeight: 40,
-          title: const Text('Vinayak Recovery'),
-          actions: [
-            Row(
-              children: [
-                Text(
-                  mode,
-                  style: TextStyle(
-                      color: ColorConstants.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Switch(
-                    value: isOnline,
-                    onChanged: (value) async {
-                      await Helper.setBoolPreferences(
-                          SharedPreferencesVar.isOnline, value);
-                      setState(() {
-                        isOnline = value;
-                        mode = value ? "Online" : "Offline";
-                      });
-                    }),
-              ],
-            )
-          ],
-          titleTextStyle: TextStyle(
-            color: ColorConstants.white,
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-          ),
-          backgroundColor: ColorConstants.aqua,
-          leading: IconButton(
-            onPressed: () {
-              _scaffoldKey.currentState?.openDrawer();
-            },
-            icon: Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
+      key: _scaffoldKey,
+      appBar: AppBar(
+        toolbarHeight: 40,
+        title: const Text('Vinayak Recovery'),
+        actions: [
+          Row(
+            children: [
+              Text(
+                mode,
+                style: TextStyle(
+                    color: ColorConstants.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Switch(
+                  value: isOnline,
+                  onChanged: (value) async {
+                    await Helper.setBoolPreferences(
+                        SharedPreferencesVar.isOnline, value);
+                    setState(() {
+                      isOnline = value;
+                      mode = value ? "Online" : "Offline";
+                    });
+                  }),
+            ],
+          )
+        ],
+        titleTextStyle: TextStyle(
+          color: ColorConstants.white,
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+        ),
+        backgroundColor: ColorConstants.aqua,
+        leading: IconButton(
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.white,
           ),
         ),
-        body: LayoutBuilder(builder: (ctx, constraints) {
-          var height = constraints.maxHeight;
-          var width = constraints.maxWidth;
-          return Column(
+      ),
+      body: LayoutBuilder(builder: (ctx, constraints) {
+        var height = constraints.maxHeight;
+        var width = constraints.maxWidth;
+        return Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/vad.png',
+                  ),
+                  scale: 1.5)),
+          child: Column(
             children: [
               Center(
                 child: Container(
@@ -155,21 +158,24 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     height: 50,
                     width: width * 0.43,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColorConstants.coalBlack,
                       borderRadius: BorderRadius.circular(22),
-                      border: Border.all(
-                        color: ColorConstants.aqua,
-                        width: 2,
-                      ),
                     ),
                     child: Center(
                       child: TextFormField(
+                        cursorColor: ColorConstants.white,
+                        style: TextStyle(color: ColorConstants.white),
                         controller: chasisNoCont,
                         decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.search_rounded,
+                            color: ColorConstants.white,
+                          ),
                           hintText: 'Chasis No.',
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 12.0, horizontal: 16.0),
                           border: InputBorder.none,
+                          hintStyle: TextStyle(color: ColorConstants.white),
                         ),
                         onChanged: (value) {
                           if (value.length >= 12) {
@@ -217,12 +223,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     height: 50,
                     width: width * 0.43,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: ColorConstants.coalBlack,
                       borderRadius: BorderRadius.circular(22),
-                      border: Border.all(
-                        color: ColorConstants.aqua,
-                        width: 2,
-                      ),
                     ),
                     child: Center(
                       child: TextFormField(
@@ -230,11 +232,17 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         maxLength: 4,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            hintText: 'Last 4 Digits',
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 16.0),
-                            border: InputBorder.none,
-                            counterText: ''),
+                          prefixIcon: Icon(
+                            Icons.search_rounded,
+                            color: ColorConstants.white,
+                          ),
+                          hintText: 'Last 4 Digits',
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 16.0),
+                          border: InputBorder.none,
+                          counterText: '',
+                          hintStyle: TextStyle(color: ColorConstants.white),
+                        ),
                         onChanged: (value) async {
                           if (value.length == 4) {
                             bool isOnline = await Helper.getBoolPreferences(
@@ -460,7 +468,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       height: 50,
                       width: width * 0.95,
                       decoration: BoxDecoration(
-                          color: ColorConstants.aqua,
+                          color: ColorConstants.midBrown,
                           borderRadius: BorderRadius.circular(18)),
                       child: Center(
                         child: Text(
@@ -475,10 +483,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     Obx(() {
                       switch (hc.rxRequestDashboardStatus.value) {
                         case Status.LOADING:
-                          return Center();
+                          return const Center();
                         case Status.ERROR:
-                          return Center(
-                            child: Text('SOmething went wrong'),
+                          return const Center(
+                            child: Text('Something went wrong'),
                           );
                         case Status.COMPLETED:
                           return Column(
@@ -505,54 +513,32 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     //     ),
                                     //   ),
                                     // ),
-                                    Container(
-                                      height: Get.height * 0.1,
-                                      width: width * 0.43,
-                                      decoration: BoxDecoration(
-                                          color: ColorConstants.aqua,
-                                          borderRadius:
-                                              BorderRadius.circular(18)),
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            DeviceInfoPlugin deviceInfo =
-                                                DeviceInfoPlugin();
-                                            AndroidDeviceInfo androidInfo =
-                                                await deviceInfo.androidInfo;
-                                            String deviceId = androidInfo.id;
+                                    Card(
+                                      elevation: 10,
+                                      child: Container(
+                                        height: 150,
+                                        width: width * 0.43,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.midBrown,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              DeviceInfoPlugin deviceInfo =
+                                                  DeviceInfoPlugin();
+                                              AndroidDeviceInfo androidInfo =
+                                                  await deviceInfo.androidInfo;
+                                              String deviceId = androidInfo.id;
 
-                                            print(deviceId);
-
-                                            final vehicleDb = VehicleDb();
-
-                                            // await vehicleDb.insertVehicle(
-                                            //     'dataId',
-                                            //     'loadStatus',
-                                            //     'bankName',
-                                            //     'branch',
-                                            //     'agreementNo',
-                                            //     'customerName',
-                                            //     'regNo',
-                                            //     'mychasisnoooooo',
-                                            //     'engineNo',
-                                            //     'callCenterNo1',
-                                            //     'callCenterNo1Name',
-                                            //     'callCenterNo2',
-                                            //     'callCenterNo2Name',
-                                            //     'lastDigit',
-                                            //     'month',
-                                            //     'status',
-                                            //     'fileName',
-                                            //     'createdAt',
-                                            //     'updatedAt');
-
-                                            await vehicleDb.fetchAll();
-                                          },
-                                          child: Text(
-                                            'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyles.normalheadWhite20DM,
+                                              print(deviceId);
+                                            },
+                                            child: Text(
+                                              'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyles
+                                                  .normalheadWhite20DM,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -564,33 +550,39 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Container(
-                                    height: Get.height * 0.1,
-                                    width: width * 0.43,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'REPO DATA\n${hc.dashboardModel.value.repoCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
+                                  Card(
+                                    elevation: 10,
+                                    child: Container(
+                                      height: 150,
+                                      width: width * 0.43,
+                                      decoration: BoxDecoration(
+                                          color: ColorConstants.midBrown,
+                                          borderRadius:
+                                              BorderRadius.circular(18)),
+                                      child: Center(
+                                        child: Text(
+                                          'REPO DATA\n${hc.dashboardModel.value.repoCount}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyles.normalheadWhite20DM,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: Get.height * 0.1,
-                                    width: width * 0.43,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'RELEASE DATA\n${hc.dashboardModel.value.releaseCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
+                                  Card(
+                                    elevation: 10,
+                                    child: Container(
+                                      height: 150,
+                                      width: width * 0.43,
+                                      decoration: BoxDecoration(
+                                          color: ColorConstants.midBrown,
+                                          borderRadius:
+                                              BorderRadius.circular(18)),
+                                      child: Center(
+                                        child: Text(
+                                          'RELEASE DATA\n${hc.dashboardModel.value.releaseCount}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyles.normalheadWhite20DM,
+                                        ),
                                       ),
                                     ),
                                   )
@@ -603,8 +595,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   ],
                 ),
             ],
-          );
-        }),
-        drawer: MyRepoAgentDrawer());
+          ),
+        );
+      }),
+      drawer: MyRepoAgentDrawer(),
+    );
   }
 }
