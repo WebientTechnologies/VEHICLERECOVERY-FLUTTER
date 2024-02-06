@@ -22,7 +22,7 @@ class _SearchDataReportsState extends State<SearchDataReports> {
   @override
   void initState() {
     super.initState();
-    src.getAllSearchDataRepoData('', 1, false, false);
+    src.getAllSearchDataRepoData('', 1, false, true);
 
     // Add a listener to detect when the user scrolls to the end of the list
     _scrollController.addListener(() {

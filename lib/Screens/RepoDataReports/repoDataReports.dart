@@ -26,7 +26,7 @@ class _RepoDataReportsState extends State<RepoDataReports> {
   @override
   void initState() {
     super.initState();
-    rrc.getRepoReportData('', 1, false, false);
+    rrc.getRepoReportData('', 1, false, true);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==

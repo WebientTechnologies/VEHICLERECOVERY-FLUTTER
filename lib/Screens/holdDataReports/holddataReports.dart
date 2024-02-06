@@ -25,7 +25,7 @@ class _HoldDataReportsState extends State<HoldDataReports> {
   @override
   void initState() {
     super.initState();
-    hdc.getHoldRepoData('', currentPage, false, true);
+    hdc.getHoldRepoData('', 1, false, true);
 
     // Add a listener to detect when user scrolls to the end of the list
     _scrollController.addListener(() {
@@ -33,7 +33,8 @@ class _HoldDataReportsState extends State<HoldDataReports> {
           _scrollController.position.maxScrollExtent) {
         // Load more data when user reaches the end
         currentPage++;
-        hdc.getHoldRepoData('', currentPage, false, true);
+        hdc.getHoldRepoData(
+            hdc.searchCont.value.text, currentPage, false, true);
       }
     });
   }

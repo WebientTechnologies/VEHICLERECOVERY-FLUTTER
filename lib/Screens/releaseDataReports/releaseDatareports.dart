@@ -26,7 +26,7 @@ class _ReleaseDataReportsState extends State<ReleaseDataReports> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    rrc.getAllReleaseReportData('', 1, false, false);
+    rrc.getAllReleaseReportData('', 1, false, true);
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {

@@ -45,7 +45,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    //init();
+    init();
   }
 
   Future checkMode() async {
