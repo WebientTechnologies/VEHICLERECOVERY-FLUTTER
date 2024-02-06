@@ -48,14 +48,14 @@ class _ReleaseDataReportsState extends State<ReleaseDataReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldkey,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: ColorConstants.midBrown),
-        title: Text(
-          'Release data report',
-          style: TextStyle(
-              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
-        ),
-      ),
+      // appBar: AppBar(
+      //   iconTheme: IconThemeData(color: ColorConstants.midBrown),
+      //   title: Text(
+      //     'Release data report',
+      //     style: TextStyle(
+      //         fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+      //   ),
+      // ),
       body: RefreshIndicator(
         onRefresh: () async {
           rrc.data.clear();

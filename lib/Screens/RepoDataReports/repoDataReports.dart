@@ -50,14 +50,14 @@ class _RepoDataReportsState extends State<RepoDataReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: ColorConstants.midBrown),
-        title: Text(
-          'Repo data report',
-          style: TextStyle(
-              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
-        ),
-      ),
+      // appBar: AppBar(
+      //   iconTheme: IconThemeData(color: ColorConstants.midBrown),
+      //   title: Text(
+      //     'Repo data report',
+      //     style: TextStyle(
+      //         fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+      //   ),
+      // ),
       body: RefreshIndicator(
         onRefresh: () async {
           rrc.data.clear();

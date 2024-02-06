@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/repo_agent_container/controller/repo_agent_controller.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
+import 'package:vinayak/core/global_controller/user_controller.dart';
 
 class RepoAgentContainer extends StatefulWidget {
   const RepoAgentContainer({super.key});
@@ -12,6 +13,7 @@ class RepoAgentContainer extends StatefulWidget {
 
 class _RepoAgentContainerState extends State<RepoAgentContainer> {
   RepoAgentController rac = Get.put(RepoAgentController());
+  UserController uc = Get.put(UserController(), permanent: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

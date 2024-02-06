@@ -55,14 +55,14 @@ class _HoldDataReportsState extends State<HoldDataReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffold,
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: ColorConstants.midBrown),
-        title: Text(
-          'Hold data report',
-          style: TextStyle(
-              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
-        ),
-      ),
+      // appBar: AppBar(
+      //   iconTheme: IconThemeData(color: ColorConstants.midBrown),
+      //   title: Text(
+      //     'Hold data report',
+      //     style: TextStyle(
+      //         fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+      //   ),
+      // ),
       body: LayoutBuilder(builder: (ctx, constraints) {
         return RefreshIndicator(
           onRefresh: _refreshData,

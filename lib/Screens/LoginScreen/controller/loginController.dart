@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
+import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
 import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../core/constants/api_endpoints.dart';
@@ -104,7 +105,7 @@ class LoginController extends GetxController {
     );
 
     uc.saveUserDetails(responseBody);
-    Get.offAll(HomeScreenRepoStaff());
+    Get.offAll(const RepoAgentContainer());
   }
 
   void handleLoginError(dynamic error) {
