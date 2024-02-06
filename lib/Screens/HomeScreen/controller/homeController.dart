@@ -7,6 +7,11 @@ import '../../../core/response/status.dart';
 
 class HomeController extends GetxController {
   var _api = NetworkApi();
+
+  RxList<String> greeting =
+      <String>['Good Morning', 'Good Afternoon', 'Good Evening'].obs;
+  RxInt selectedGreeting = 0.obs;
+
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
       rxRequestDashboardStatus.value = value;

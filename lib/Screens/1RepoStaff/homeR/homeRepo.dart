@@ -86,7 +86,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: false,
       body: LayoutBuilder(builder: (ctx, constraints) {
         var height = constraints.maxHeight;
         var width = constraints.maxWidth;
@@ -171,24 +171,21 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   height: 50,
                   width: width * 0.43,
                   decoration: BoxDecoration(
-                    color: ColorConstants.coalBlack,
-                    borderRadius: BorderRadius.circular(22),
-                  ),
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
                     child: TextFormField(
-                      cursorColor: ColorConstants.white,
-                      style: TextStyle(color: ColorConstants.white),
                       controller: chasisNoCont,
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.search_rounded,
-                          color: ColorConstants.white,
+                          color: ColorConstants.black,
                         ),
                         hintText: 'Chasis No.',
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
                         border: InputBorder.none,
-                        hintStyle: TextStyle(color: ColorConstants.white),
+                        hintStyle: TextStyle(color: ColorConstants.aqua),
                       ),
                       onChanged: (value) {
                         if (value.length >= 12) {

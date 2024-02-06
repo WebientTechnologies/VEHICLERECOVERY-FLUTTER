@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
 import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
 import 'package:vinayak/Screens/splashSCreen/controller/splashscreen_controller.dart';
+import 'package:vinayak/Screens/staff_container/staff_container.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 
 import '../../core/constants/helper.dart';
@@ -52,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       if (uc.userDetails['role'] == 'repo-agent') {
         Get.offAll(const RepoAgentContainer());
       } else {
-        Get.toNamed(AppRoutes.home);
+        Get.offAll(const StaffContainer());
       }
       // } else {
       //ssc.loadAllData.value = true;

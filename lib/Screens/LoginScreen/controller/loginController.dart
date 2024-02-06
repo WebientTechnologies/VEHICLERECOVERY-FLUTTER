@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
 import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
+import 'package:vinayak/Screens/staff_container/staff_container.dart';
 import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../core/constants/api_endpoints.dart';
@@ -52,7 +53,7 @@ class LoginController extends GetxController {
 
         if (responseBody.toString().contains('staf')) {
           await handleLoginSuccess(responseBody);
-          Get.offAllNamed(AppRoutes.home);
+          Get.offAll(const StaffContainer());
           return true;
         } else {
           if (responseBody.toString().contains('agent')) {

@@ -5,9 +5,9 @@ import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
-import 'package:vinayak/widget/textfield.dart';
 import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
+import '../../core/global_controller/user_controller.dart';
 import '../../core/response/status.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
@@ -37,6 +37,14 @@ class _HomeSCreenState extends State<HomeSCreen> {
     super.initState();
     hc.getAllDashboardApiData();
     checkMode();
+    DateTime today = DateTime.now();
+    if (today.hour > 0 && today.hour < 12) {
+      hc.selectedGreeting.value = 0;
+    } else if (today.hour >= 12 && today.hour < 16) {
+      hc.selectedGreeting.value = 1;
+    } else {
+      hc.selectedGreeting.value = 2;
+    }
     //init();
   }
 
@@ -124,15 +132,68 @@ class _HomeSCreenState extends State<HomeSCreen> {
           var width = constraints.maxWidth;
           return Column(
             children: [
-              Center(
-                child: Container(
-                  height: height * 0.15,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/logo.jpg'),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.centerLeft,
-                    ),
+              Container(
+                width: Get.width * 1,
+                color: ColorConstants.coalBlack,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      GetX(
+                        init: UserController(),
+                        builder: (cc) {
+                          return Text(
+                            'Hey ${cc.userDetails['role'] == 'office-staff' ? cc.userDetails['staf']['name'] ?? '' : cc.userDetails['agent']['name'] ?? ''}',
+                            style:
+                                TextStyle(color: ColorConstants.midGreyEAEAEA),
+                          );
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(() => Text(
+                                hc.greeting[hc.selectedGreeting.value],
+                                style: TextStyle(
+                                    color: ColorConstants.lightGreyF5F5F5,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500),
+                              )),
+                          Row(
+                            children: [
+                              Text(
+                                mode,
+                                style: TextStyle(
+                                    color: ColorConstants.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Switch(
+                                  value: isOnline,
+                                  onChanged: (value) async {
+                                    await Helper.setBoolPreferences(
+                                        SharedPreferencesVar.isOnline, value);
+                                    setState(() {
+                                      isOnline = value;
+                                      mode = value ? "Online" : "Offline";
+                                    });
+                                  }),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Image.asset('assets/images/logo_t.png')
+                    ],
                   ),
                 ),
               ),
@@ -258,7 +319,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
+                                  crossAxisCount: 3,
                                   mainAxisSpacing: 16.0,
                                   crossAxisSpacing: 16.0,
                                   childAspectRatio: 5),
@@ -300,21 +361,21 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 Obx(() {
                   switch (sc.rxRequestsearchbyLastStatus.value) {
                     case Status.LOADING:
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     case Status.ERROR:
-                      return Center(
+                      return const Center(
                         child: Text('SOmething went wrong'),
                       );
                     case Status.COMPLETED:
                       if (isOnline) {
                         return Expanded(
                           child: GridView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
+                                    crossAxisCount: 3,
                                     mainAxisSpacing: 16.0,
                                     crossAxisSpacing: 16.0,
                                     childAspectRatio: 5),
@@ -330,10 +391,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       ]);
                                 },
                                 child: Container(
-                                    height: 40,
+                                    height: 0,
                                     width: width * 0,
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: ColorConstants.aqua,
                                       borderRadius: BorderRadius.circular(18),
                                     ),
                                     child: Center(
@@ -341,8 +402,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       sc.searchbylastModel.value.data?[index]
                                               .regNo ??
                                           '',
-                                      style:
-                                          TextStyle(color: ColorConstants.aqua),
+                                      style: TextStyle(
+                                          color: ColorConstants.white),
                                     ))),
                               );
                             },
@@ -354,7 +415,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
+                                    crossAxisCount: 3,
                                     mainAxisSpacing: 16.0,
                                     crossAxisSpacing: 16.0,
                                     childAspectRatio: 5),
@@ -405,82 +466,84 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
                     Obx(() {
                       switch (hc.rxRequestDashboardStatus.value) {
                         case Status.LOADING:
-                          return Center();
+                          return const Center();
                         case Status.ERROR:
-                          return Center(
-                            child: Text('SOmething went wrong'),
+                          return const Center(
+                            child: Text('Something went wrong'),
                           );
                         case Status.COMPLETED:
                           return Column(
                             children: [
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
+                                    const EdgeInsets.only(top: 10, left: 20),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Container(
-                                      height: Get.height * 0.1,
-                                      width: width * 0.43,
-                                      decoration: BoxDecoration(
-                                          color: ColorConstants.aqua,
-                                          borderRadius:
-                                              BorderRadius.circular(18)),
-                                      child: Center(
-                                        child: Text(
-                                          'SEARCH DATA\n${hc.dashboardModel.value.searchCount}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyles.normalheadWhite20DM,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      height: Get.height * 0.1,
-                                      width: width * 0.43,
-                                      decoration: BoxDecoration(
-                                          color: ColorConstants.aqua,
-                                          borderRadius:
-                                              BorderRadius.circular(18)),
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            final vehicleDb = VehicleDb();
-
-                                            // await vehicleDb.insertVehicle(
-                                            //     'dataId',
-                                            //     'loadStatus',
-                                            //     'bankName',
-                                            //     'branch',
-                                            //     'agreementNo',
-                                            //     'customerName',
-                                            //     'regNo',
-                                            //     'mychasisnoooooo',
-                                            //     'engineNo',
-                                            //     'callCenterNo1',
-                                            //     'callCenterNo1Name',
-                                            //     'callCenterNo2',
-                                            //     'callCenterNo2Name',
-                                            //     'lastDigit',
-                                            //     'month',
-                                            //     'status',
-                                            //     'fileName',
-                                            //     'createdAt',
-                                            //     'updatedAt');
-
-                                            await vehicleDb.fetchAll();
-                                          },
+                                    Card(
+                                      elevation: 10,
+                                      child: Container(
+                                        height: 150,
+                                        width: width * 0.43,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
                                           child: Text(
-                                            'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
+                                            'SEARCH DATA\n${hc.dashboardModel.value.searchCount}',
                                             textAlign: TextAlign.center,
                                             style:
                                                 TextStyles.normalheadWhite20DM,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Card(
+                                      elevation: 10,
+                                      child: Container(
+                                        height: 150,
+                                        width: width * 0.43,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              final vehicleDb = VehicleDb();
+
+                                              // await vehicleDb.insertVehicle(
+                                              //     'dataId',
+                                              //     'loadStatus',
+                                              //     'bankName',
+                                              //     'branch',
+                                              //     'agreementNo',
+                                              //     'customerName',
+                                              //     'regNo',
+                                              //     'mychasisnoooooo',
+                                              //     'engineNo',
+                                              //     'callCenterNo1',
+                                              //     'callCenterNo1Name',
+                                              //     'callCenterNo2',
+                                              //     'callCenterNo2Name',
+                                              //     'lastDigit',
+                                              //     'month',
+                                              //     'status',
+                                              //     'fileName',
+                                              //     'createdAt',
+                                              //     'updatedAt');
+
+                                              await vehicleDb.fetchAll();
+                                            },
+                                            child: Text(
+                                              'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyles
+                                                  .normalheadWhite20DM,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -489,36 +552,42 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Container(
-                                    height: Get.height * 0.1,
-                                    width: width * 0.43,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'REPO DATA\n${hc.dashboardModel.value.repoCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
+                                  Card(
+                                    elevation: 10,
+                                    child: Container(
+                                      margin: const EdgeInsets.only(
+                                          top: 0, left: 20),
+                                      height: 150,
+                                      width: width * 0.43,
+                                      decoration: BoxDecoration(
+                                          color: ColorConstants.aqua,
+                                          borderRadius:
+                                              BorderRadius.circular(18)),
+                                      child: Center(
+                                        child: Text(
+                                          'REPO DATA\n${hc.dashboardModel.value.repoCount}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyles.normalheadWhite20DM,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: Get.height * 0.1,
-                                    width: width * 0.43,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'RELEASE DATA\n${hc.dashboardModel.value.releaseCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
+                                  Card(
+                                    elevation: 10,
+                                    child: Container(
+                                      height: 150,
+                                      width: width * 0.43,
+                                      decoration: BoxDecoration(
+                                          color: ColorConstants.aqua,
+                                          borderRadius:
+                                              BorderRadius.circular(18)),
+                                      child: Center(
+                                        child: Text(
+                                          'RELEASE DATA\n${hc.dashboardModel.value.releaseCount}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyles.normalheadWhite20DM,
+                                        ),
                                       ),
                                     ),
                                   )
