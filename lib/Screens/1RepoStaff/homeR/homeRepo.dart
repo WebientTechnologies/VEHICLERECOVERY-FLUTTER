@@ -48,7 +48,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
       hc.selectedGreeting.value = 2;
     }
     hc.getAllDashboardApiData();
-    //init();
+    init();
   }
 
   Future checkMode() async {
