@@ -72,7 +72,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
       resizeToAvoidBottomInset: false,
       appBar: isLogin
           ? AppBar(
-              title: Text('Agent Registration'),
+              title: const Text('Agent Registration'),
               titleTextStyle: TextStyle(
                 color: ColorConstants.white,
                 fontSize: 22,
@@ -81,7 +81,14 @@ class _AgentReisterationState extends State<AgentReisteration> {
               backgroundColor: ColorConstants.aqua,
               automaticallyImplyLeading: false,
             )
-          : MyAppBar(),
+          : AppBar(
+              iconTheme: IconThemeData(color: ColorConstants.aqua),
+              title: Text(
+                'Profile',
+                style: TextStyle(
+                    fontWeight: FontWeight.w500, color: ColorConstants.aqua),
+              ),
+            ),
       body: LayoutBuilder(
         builder: (ctx, constraints) {
           var height = constraints.maxHeight;
@@ -601,7 +608,6 @@ class _AgentReisterationState extends State<AgentReisteration> {
           );
         },
       ),
-      drawer: isLogin ? SizedBox.shrink() : MyDrawer(),
     );
   }
 

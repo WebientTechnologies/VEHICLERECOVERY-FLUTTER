@@ -24,11 +24,11 @@ class _ContactInfoState extends State<ContactInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: ColorConstants.midBrown),
+        iconTheme: IconThemeData(color: ColorConstants.aqua),
         title: Text(
           'Contact Info',
           style: TextStyle(
-              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
         ),
       ),
       body: Container(
@@ -88,7 +88,7 @@ Widget _buildAccountInfoRow({
       children: [
         Icon(
           icon,
-          color: ColorConstants.midBrown,
+          color: ColorConstants.aqua,
           size: 40,
         ),
         SizedBox(width: 20),
@@ -98,7 +98,7 @@ Widget _buildAccountInfoRow({
             Text(
               label,
               style: TextStyle(
-                color: ColorConstants.midBrown,
+                color: ColorConstants.aqua,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),

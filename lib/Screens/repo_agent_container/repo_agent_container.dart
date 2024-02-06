@@ -20,7 +20,7 @@ class _RepoAgentContainerState extends State<RepoAgentContainer> {
       body: SafeArea(child: Obx(() => rac.screens[rac.index.value])),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
-            selectedLabelStyle: TextStyle(color: ColorConstants.midBrown),
+            selectedLabelStyle: TextStyle(color: ColorConstants.aqua),
             currentIndex: rac.index.value,
             onTap: rac.setIndex,
             items: [
@@ -28,20 +28,20 @@ class _RepoAgentContainerState extends State<RepoAgentContainer> {
                   icon: Icon(
                     Icons.home_filled,
                     color: rac.index.value == 0
-                        ? ColorConstants.midBrown
+                        ? ColorConstants.aqua
                         : ColorConstants.deepGrey808080,
                   ),
                   label: 'Home'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.insert_chart_rounded,
                       color: rac.index.value == 1
-                          ? ColorConstants.midBrown
+                          ? ColorConstants.aqua
                           : ColorConstants.deepGrey808080),
                   label: 'Reports'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person,
                       color: rac.index.value == 2
-                          ? ColorConstants.midBrown
+                          ? ColorConstants.aqua
                           : ColorConstants.deepGrey808080),
                   label: 'Profile'),
             ]),

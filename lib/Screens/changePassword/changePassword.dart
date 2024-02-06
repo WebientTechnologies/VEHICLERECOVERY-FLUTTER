@@ -35,10 +35,14 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: MyAppBar(),
-      drawer: uc.userDetails['role'] == 'repo-agent'
-          ? MyRepoAgentDrawer()
-          : MyDrawer(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: ColorConstants.aqua),
+        title: Text(
+          'Change Password',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
+        ),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Old Password',
                   style: TextStyle(fontSize: 17),
                 ),
@@ -64,7 +68,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(
                   height: widget.height * 0.02,
                 ),
-                Text(
+                const Text(
                   'New Password',
                   style: TextStyle(fontSize: 17),
                 ),
@@ -81,7 +85,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 SizedBox(
                   height: widget.height * 0.02,
                 ),
-                Text(
+                const Text(
                   'Confirm Password',
                   style: TextStyle(fontSize: 17),
                 ),

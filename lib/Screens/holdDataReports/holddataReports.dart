@@ -25,7 +25,7 @@ class _HoldDataReportsState extends State<HoldDataReports> {
   @override
   void initState() {
     super.initState();
-    hdc.getHoldRepoData('', currentPage, false, false);
+    hdc.getHoldRepoData('', currentPage, false, true);
 
     // Add a listener to detect when user scrolls to the end of the list
     _scrollController.addListener(() {
@@ -33,7 +33,7 @@ class _HoldDataReportsState extends State<HoldDataReports> {
           _scrollController.position.maxScrollExtent) {
         // Load more data when user reaches the end
         currentPage++;
-        hdc.getHoldRepoData('', currentPage, false, false);
+        hdc.getHoldRepoData('', currentPage, false, true);
       }
     });
   }
@@ -79,18 +79,18 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                       hintText: 'Search ',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                            color: ColorConstants.coalBlack, width: 1.0),
+                        borderSide:
+                            BorderSide(color: ColorConstants.aqua, width: 2.0),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                            color: ColorConstants.coalBlack, width: 1.0),
+                        borderSide:
+                            BorderSide(color: ColorConstants.aqua, width: 3.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide(
-                            color: ColorConstants.coalBlack, width: 1.0),
+                        borderSide:
+                            BorderSide(color: ColorConstants.aqua, width: 2.0),
                       ),
                     ),
                     style: TextStyle(height: 1),
@@ -123,8 +123,8 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                         itemCount: hdc.data.length,
                         itemBuilder: (ctx, index) {
                           Color bgColor = index % 2 == 0
-                              ? Colors.brown[400]!
-                              : ColorConstants.midBrown;
+                              ? ColorConstants.back
+                              : ColorConstants.aqua;
                           return HoldRepoDetailsWidget(
                             bankName: hdc.data[index].bankName ?? '',
                             chasisNo: hdc.data[index].chasisNo ?? '',

@@ -74,18 +74,18 @@ class _ReleaseDataReportsState extends State<ReleaseDataReports> {
                     hintText: 'Search ',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
-                      borderSide: BorderSide(
-                          color: ColorConstants.coalBlack, width: 1.0),
+                      borderSide:
+                          BorderSide(color: ColorConstants.aqua, width: 2.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
-                      borderSide: BorderSide(
-                          color: ColorConstants.coalBlack, width: 1.0),
+                      borderSide:
+                          BorderSide(color: ColorConstants.aqua, width: 3.0),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(18),
-                      borderSide: BorderSide(
-                          color: ColorConstants.coalBlack, width: 1.0),
+                      borderSide:
+                          BorderSide(color: ColorConstants.aqua, width: 2.0),
                     ),
                   ),
                   style: const TextStyle(height: 1),
@@ -119,8 +119,8 @@ class _ReleaseDataReportsState extends State<ReleaseDataReports> {
                       itemCount: rrc.data.length,
                       itemBuilder: (ctx, index) {
                         Color bgColor = index % 2 == 0
-                            ? Colors.brown[400]!
-                            : ColorConstants.midBrown;
+                            ? ColorConstants.back
+                            : ColorConstants.aqua;
                         return HoldRepoDetailsWidget(
                           regNo: rrc.data[index].regNo ?? '',
                           id: rrc.data[index].id ?? '',

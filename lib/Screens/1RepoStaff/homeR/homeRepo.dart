@@ -179,7 +179,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.search_rounded,
-                          color: ColorConstants.black,
+                          color: ColorConstants.aqua,
                         ),
                         hintText: 'Chasis No.',
                         contentPadding: const EdgeInsets.symmetric(
@@ -233,26 +233,25 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   height: 50,
                   width: width * 0.43,
                   decoration: BoxDecoration(
-                    color: ColorConstants.coalBlack,
-                    borderRadius: BorderRadius.circular(22),
-                  ),
+                      borderRadius: BorderRadius.circular(22),
+                      border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
                     child: TextFormField(
-                      style: TextStyle(color: ColorConstants.white),
+                      style: TextStyle(color: ColorConstants.aqua),
                       controller: last4digit,
                       maxLength: 4,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.search_rounded,
-                          color: ColorConstants.white,
+                          color: ColorConstants.aqua,
                         ),
                         hintText: 'Last 4 Digits',
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
                         border: InputBorder.none,
                         counterText: '',
-                        hintStyle: TextStyle(color: ColorConstants.white),
+                        hintStyle: TextStyle(color: ColorConstants.aqua),
                       ),
                       onChanged: (value) async {
                         if (value.length == 4) {
@@ -323,7 +322,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   height: 40,
                                   width: width * 0,
                                   decoration: BoxDecoration(
-                                    color: ColorConstants.midBrown,
+                                    color: ColorConstants.aqua,
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                   child: Center(
@@ -363,7 +362,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   height: 40,
                                   width: width * 0,
                                   decoration: BoxDecoration(
-                                    color: ColorConstants.midBrown,
+                                    color: ColorConstants.aqua,
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                   child: Center(
@@ -416,7 +415,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   height: 40,
                                   width: width * 0,
                                   decoration: BoxDecoration(
-                                    color: ColorConstants.midBrown,
+                                    color: ColorConstants.aqua,
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                   child: Center(
@@ -456,7 +455,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   height: 40,
                                   width: width * 0,
                                   decoration: BoxDecoration(
-                                    color: ColorConstants.midBrown,
+                                    color: ColorConstants.aqua,
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                   child: Center(
@@ -479,7 +478,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     height: 50,
                     width: width * 0.95,
                     decoration: BoxDecoration(
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                         borderRadius: BorderRadius.circular(18)),
                     child: Center(
                       child: Text(
@@ -529,7 +528,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                       height: 150,
                                       width: width * 0.43,
                                       decoration: BoxDecoration(
-                                          color: ColorConstants.midBrown,
+                                          color: ColorConstants.aqua,
                                           borderRadius:
                                               BorderRadius.circular(18)),
                                       child: Center(
@@ -565,7 +564,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     height: 150,
                                     width: width * 0.43,
                                     decoration: BoxDecoration(
-                                        color: ColorConstants.midBrown,
+                                        color: ColorConstants.aqua,
                                         borderRadius:
                                             BorderRadius.circular(18)),
                                     child: Center(
@@ -583,7 +582,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     height: 150,
                                     width: width * 0.43,
                                     decoration: BoxDecoration(
-                                        color: ColorConstants.midBrown,
+                                        color: ColorConstants.aqua,
                                         borderRadius:
                                             BorderRadius.circular(18)),
                                     child: Center(

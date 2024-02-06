@@ -8,6 +8,7 @@ import 'package:vinayak/widget/myappbar.dart';
 import '../../core/constants/helper.dart';
 import '../../routes/app_routes.dart';
 import '../changePassword/changePassword.dart';
+import '../repoAgent/repoagent.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -20,11 +21,20 @@ class _ProfileState extends State<Profile> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UserController uc = Get.put(UserController());
 
+  bool showExtra = false;
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     uc.loadUserDetails();
-    print(uc.userDetails);
+
+    load();
+  }
+
+  Future load() async {
+    showExtra = uc.userDetails['role'] == 'office-staff' ? true : false;
+    setState(() {});
   }
 
   @override
@@ -32,11 +42,11 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: ColorConstants.midBrown),
+        iconTheme: IconThemeData(color: ColorConstants.aqua),
         title: Text(
           'Profile',
           style: TextStyle(
-              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
         ),
       ),
       body: LayoutBuilder(
@@ -55,7 +65,7 @@ class _ProfileState extends State<Profile> {
                       width: 120,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                         border: Border.all(
                           color: Colors.white,
                           width: 4,
@@ -91,6 +101,70 @@ class _ProfileState extends State<Profile> {
                   ],
                 ),
               ),
+              if (showExtra) const Divider(),
+              if (showExtra)
+                GestureDetector(
+                  onTap: () {
+                    Get.to(const RepoAgent());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.people,
+                          color: ColorConstants.aqua,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Repo Agent Approval',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: ColorConstants.aqua,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              if (showExtra) const Divider(),
+              if (showExtra)
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(AppRoutes.agentRegi, arguments: ['homePage']);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person_add,
+                          color: ColorConstants.aqua,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Add Repo Agent',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: ColorConstants.aqua,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               const Divider(),
               GestureDetector(
                 onTap: () {
@@ -103,7 +177,7 @@ class _ProfileState extends State<Profile> {
                     children: [
                       Icon(
                         Icons.person,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                       ),
                       const SizedBox(
                         width: 10,
@@ -116,7 +190,7 @@ class _ProfileState extends State<Profile> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                       )
                     ],
                   ),
@@ -137,7 +211,7 @@ class _ProfileState extends State<Profile> {
                     children: [
                       Icon(
                         Icons.password,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                       ),
                       const SizedBox(
                         width: 10,
@@ -150,7 +224,7 @@ class _ProfileState extends State<Profile> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                       )
                     ],
                   ),
@@ -171,7 +245,7 @@ class _ProfileState extends State<Profile> {
                     children: [
                       Icon(
                         Icons.logout,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                       ),
                       const SizedBox(
                         width: 10,
@@ -184,7 +258,7 @@ class _ProfileState extends State<Profile> {
                       const Spacer(),
                       Icon(
                         Icons.arrow_forward_ios,
-                        color: ColorConstants.midBrown,
+                        color: ColorConstants.aqua,
                       )
                     ],
                   ),

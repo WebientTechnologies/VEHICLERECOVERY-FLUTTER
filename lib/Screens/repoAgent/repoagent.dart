@@ -28,8 +28,15 @@ class _RepoAgentState extends State<RepoAgent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: ColorConstants.aqua),
+        title: Text(
+          'Repo Agent Approval',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
+        ),
+      ),
       key: _scaffoldKey,
-      appBar: MyAppBar(),
       body: LayoutBuilder(builder: (ctx, constraints) {
         var height = constraints.maxHeight;
         var width = constraints.maxWidth;
@@ -87,7 +94,6 @@ class _RepoAgentState extends State<RepoAgent> {
           }
         });
       }),
-      drawer: MyDrawer(),
     );
   }
 }

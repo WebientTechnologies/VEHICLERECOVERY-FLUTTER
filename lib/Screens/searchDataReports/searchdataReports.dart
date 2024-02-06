@@ -45,7 +45,6 @@ class _SearchDataReportsState extends State<SearchDataReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: MyAppBar(),
       body: RefreshIndicator(
         onRefresh: () async {
           src.data.clear();
