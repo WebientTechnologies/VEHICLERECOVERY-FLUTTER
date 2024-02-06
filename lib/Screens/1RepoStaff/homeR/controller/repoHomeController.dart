@@ -8,6 +8,11 @@ import '../model/homeRepoModel.dart';
 
 class HomeRepoAgentController extends GetxController {
   var _api = NetworkApi();
+
+  RxList<String> greeting =
+      <String>['Good Morning', 'Good Afternoon', 'Good Evening'].obs;
+  RxInt selectedGreeting = 0.obs;
+
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
       rxRequestDashboardStatus.value = value;

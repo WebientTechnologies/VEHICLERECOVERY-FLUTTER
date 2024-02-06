@@ -55,7 +55,14 @@ class _HoldDataReportsState extends State<HoldDataReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffold,
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: ColorConstants.midBrown),
+        title: Text(
+          'Hold data report',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.midBrown),
+        ),
+      ),
       body: LayoutBuilder(builder: (ctx, constraints) {
         return RefreshIndicator(
           onRefresh: _refreshData,
@@ -72,18 +79,18 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                       hintText: 'Search ',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide:
-                            BorderSide(color: ColorConstants.aqua, width: 2.0),
+                        borderSide: BorderSide(
+                            color: ColorConstants.coalBlack, width: 1.0),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide:
-                            BorderSide(color: ColorConstants.aqua, width: 3.0),
+                        borderSide: BorderSide(
+                            color: ColorConstants.coalBlack, width: 1.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(18),
-                        borderSide:
-                            BorderSide(color: ColorConstants.aqua, width: 2.0),
+                        borderSide: BorderSide(
+                            color: ColorConstants.coalBlack, width: 1.0),
                       ),
                     ),
                     style: TextStyle(height: 1),
@@ -116,8 +123,8 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                         itemCount: hdc.data.length,
                         itemBuilder: (ctx, index) {
                           Color bgColor = index % 2 == 0
-                              ? ColorConstants.back
-                              : ColorConstants.aqua;
+                              ? Colors.brown[400]!
+                              : ColorConstants.midBrown;
                           return HoldRepoDetailsWidget(
                             bankName: hdc.data[index].bankName ?? '',
                             chasisNo: hdc.data[index].chasisNo ?? '',
@@ -141,9 +148,6 @@ class _HoldDataReportsState extends State<HoldDataReports> {
           ),
         );
       }),
-      drawer: uc.userDetails['role'] == 'repo-agent'
-          ? MyRepoAgentDrawer()
-          : MyDrawer(),
     );
   }
 }
