@@ -100,7 +100,13 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Vehicle Data',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
+        ),
+      ),
       body: LayoutBuilder(builder: (ctx, constraints) {
         var height = constraints.maxHeight;
         var width = constraints.maxWidth;
@@ -207,9 +213,6 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
           ),
         );
       }),
-      drawer: uc.userDetails['role'] == 'repo-agent'
-          ? MyRepoAgentDrawer()
-          : MyDrawer(),
     );
   }
 }

@@ -45,7 +45,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    init();
+    //init();
   }
 
   Future checkMode() async {
@@ -297,24 +297,24 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             if (showChasisNo == true && showlastdata == false)
               Obx(() {
                 switch (sc.rxRequestsearchbyChasisNoStatus.value) {
                   case Status.LOADING:
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   case Status.ERROR:
-                    return Center(
+                    return const Center(
                       child: Text('SOmething went wrong'),
                     );
                   case Status.COMPLETED:
                     return Expanded(
                       child: GridView.builder(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 3,
@@ -361,7 +361,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                     );
                   case Status.ERROR:
                     return const Center(
-                      child: Text('SOmething went wrong'),
+                      child: Text('Something went wrong'),
                     );
                   case Status.COMPLETED:
                     if (isOnline) {
@@ -371,8 +371,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
+                                  mainAxisSpacing: 8.0,
+                                  crossAxisSpacing: 8.0,
                                   childAspectRatio: 5),
                           itemCount: sc.searchbylastModel.value.data!.length,
                           itemBuilder: (context, index) {
@@ -397,8 +397,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     sc.searchbylastModel.value.data?[index]
                                             .regNo ??
                                         '',
-                                    style:
-                                        TextStyle(color: ColorConstants.white),
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontWeight: FontWeight.bold),
                                   ))),
                             );
                           },
@@ -411,8 +412,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
+                                  mainAxisSpacing: 8.0,
+                                  crossAxisSpacing: 8.0,
                                   childAspectRatio: 5),
                           itemCount: sc.offlineDataFiltered.length,
                           itemBuilder: (context, index) {
@@ -429,14 +430,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   height: 40,
                                   width: width * 0,
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: ColorConstants.aqua,
                                     borderRadius: BorderRadius.circular(18),
                                   ),
                                   child: Center(
                                       child: Text(
                                     sc.offlineDataFiltered[index].regNo ?? '',
-                                    style:
-                                        TextStyle(color: ColorConstants.aqua),
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontWeight: FontWeight.bold),
                                   ))),
                             );
                           },
@@ -473,14 +475,20 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         return Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 10, left: 20),
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 30),
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18)),
                                     elevation: 10,
                                     child: Container(
                                       height: 150,
-                                      width: width * 0.43,
+                                      width: 150,
                                       decoration: BoxDecoration(
                                           color: ColorConstants.aqua,
                                           borderRadius:
@@ -495,10 +503,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     ),
                                   ),
                                   Card(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18)),
                                     elevation: 10,
                                     child: Container(
                                       height: 150,
-                                      width: width * 0.43,
+                                      width: 150,
                                       decoration: BoxDecoration(
                                           color: ColorConstants.aqua,
                                           borderRadius:
@@ -545,14 +556,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               ),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18)),
                                   elevation: 10,
                                   child: Container(
-                                    margin:
-                                        const EdgeInsets.only(top: 0, left: 20),
                                     height: 150,
-                                    width: width * 0.43,
+                                    width: 150,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:
@@ -567,10 +579,12 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   ),
                                 ),
                                 Card(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18)),
                                   elevation: 10,
                                   child: Container(
                                     height: 150,
-                                    width: width * 0.43,
+                                    width: 150,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:

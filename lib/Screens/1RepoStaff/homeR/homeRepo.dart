@@ -48,7 +48,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
       hc.selectedGreeting.value = 2;
     }
     hc.getAllDashboardApiData();
-    init();
+    //init();
   }
 
   Future checkMode() async {
@@ -382,18 +382,18 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
               Obx(() {
                 switch (sc.rxRequestsearchbyLastStatus.value) {
                   case Status.LOADING:
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   case Status.ERROR:
-                    return Center(
+                    return const Center(
                       child: Text('SOmething went wrong'),
                     );
                   case Status.COMPLETED:
                     if (isOnline) {
                       return Expanded(
                         child: GridView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
@@ -423,8 +423,9 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     sc.searchbylastModel.value.data?[index]
                                             .regNo ??
                                         '',
-                                    style:
-                                        TextStyle(color: ColorConstants.white),
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontWeight: FontWeight.w500),
                                   ))),
                             );
                           },
@@ -525,8 +526,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   Card(
                                     elevation: 10,
                                     child: Container(
-                                      height: 150,
-                                      width: width * 0.43,
+                                      height: 130,
+                                      width: 130,
                                       decoration: BoxDecoration(
                                           color: ColorConstants.aqua,
                                           borderRadius:
@@ -561,8 +562,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 Card(
                                   elevation: 10,
                                   child: Container(
-                                    height: 150,
-                                    width: width * 0.43,
+                                    height: 130,
+                                    width: 130,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:
@@ -579,8 +580,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 Card(
                                   elevation: 10,
                                   child: Container(
-                                    height: 150,
-                                    width: width * 0.43,
+                                    height: 130,
+                                    width: 130,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:

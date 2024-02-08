@@ -125,7 +125,7 @@ class _SearchDataReportsState extends State<SearchDataReports> {
           ],
         ),
       ),
-      drawer: MyDrawer(),
+      // drawer: MyDrawer(),
     );
   }
 }

@@ -66,6 +66,7 @@ dependencies:
   uuid: ^4.3.3
   sqflite: ^2.3.0
   device_info_plus: ^9.1.1
+  fl_chart: ^0.66.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

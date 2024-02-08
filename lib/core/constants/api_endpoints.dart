@@ -32,4 +32,5 @@ class ApiEndpoints {
   static const String holdvehicleByrepoagent = '${baseurl}hold-request';
   static const String updateSearchRepoList = '${baseurl}search-vehicle';
   static const String updatedeviceid = '${baseurl}change-agent-device-by-staff';
+  static const String holdGraphData = '${baseurl}hold-graph';
 }
