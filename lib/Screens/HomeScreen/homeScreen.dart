@@ -198,7 +198,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -218,7 +218,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                   child: Center(
                     child: TextFormField(
                       controller: chasisNoCont,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Chasis No.',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
