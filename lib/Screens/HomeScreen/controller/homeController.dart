@@ -46,19 +46,29 @@ class HomeController extends GetxController {
     });
   }
 
-  Future<GraphWeekModel> _getGraphWeekApi() async {
-    // setRxRequestZoneStatus(Status.LOADING);
-    var response =
-        await _api.getApi('${ApiEndpoints.holdGraphData}?interval=week');
+  Future<GraphWeekModel> _getGraphWeekApi(String which) async {
+    //setRxRequestZoneStatus(Status.LOADING);
+    String url = "";
+    if (which == "hold") {
+      url = '${ApiEndpoints.holdGraphData}?interval=week';
+    } else if (which == "search") {
+      url = '${ApiEndpoints.searchGraphData}?interval=week';
+    } else if (which == "release") {
+      url = '${ApiEndpoints.releaseGraphData}?interval=week';
+    } else if (which == "repo") {
+      url = '${ApiEndpoints.repoGraphData}?interval=week';
+    }
+    var response = await _api.getApi(url);
 
     print(response);
 
     return GraphWeekModel.fromJson(response);
   }
 
-  void getGraphWeekApiData() {
-    _getGraphWeekApi().then((value) {
+  void getGraphWeekApiData(String which) {
+    _getGraphWeekApi(which).then((value) {
       setGraphWeekList(value);
+      weekData.clear();
       for (int i = 0; i < graphWeekModel.value.data!.length; i++) {
         weekData.add(Data(
             count: i,

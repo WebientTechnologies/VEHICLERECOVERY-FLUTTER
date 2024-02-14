@@ -29,13 +29,13 @@ class Data {
   Data({this.count, this.day, this.totalVehicle});
 
   Data.fromJson(Map<String, dynamic> json) {
-    day = json['day'];
+    day = json['range'];
     totalVehicle = json['totalVehicle'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['day'] = this.day;
+    data['range'] = this.day;
     data['totalVehicle'] = this.totalVehicle;
     return data;
   }

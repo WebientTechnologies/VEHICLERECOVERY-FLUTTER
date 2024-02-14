@@ -33,4 +33,7 @@ class ApiEndpoints {
   static const String updateSearchRepoList = '${baseurl}search-vehicle';
   static const String updatedeviceid = '${baseurl}change-agent-device-by-staff';
   static const String holdGraphData = '${baseurl}hold-graph';
+  static const String searchGraphData = '${baseurl}search-graph';
+  static const String releaseGraphData = '${baseurl}release-graph';
+  static const String repoGraphData = '${baseurl}repo-graph';
 }

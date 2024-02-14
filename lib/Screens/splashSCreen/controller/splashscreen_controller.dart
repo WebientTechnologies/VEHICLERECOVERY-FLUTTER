@@ -129,7 +129,9 @@ class SplashScreenController extends GetxController {
         setRxRequestStatus(Status.COMPLETED);
       } else {
         currentPage.value++;
-        getAllDashboardApiData(currentPage.value);
+        if (getSearchByLastDigitModel.value.data != null) {
+          getAllDashboardApiData(currentPage.value);
+        }
       }
 
       // await flutterLocalNotificationsPlugin.show(

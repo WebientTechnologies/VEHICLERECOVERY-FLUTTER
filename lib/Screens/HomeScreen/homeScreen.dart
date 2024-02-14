@@ -31,13 +31,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
   TextEditingController chasisNoCont = TextEditingController();
   bool showChasisNo = false;
   bool isOnline = true;
-  String mode = "Online";
+  String mode = "Online", lastUpdateDate = "";
   bool showlastdata = false;
   @override
   void initState() {
     super.initState();
     checkMode();
-    hc.getGraphWeekApiData();
+    hc.getGraphWeekApiData("search");
     //hc.getAllDashboardApiData();
     DateTime today = DateTime.now();
     if (today.hour > 0 && today.hour < 12) {
@@ -47,11 +47,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    //init();
+    init();
   }
 
   Future checkMode() async {
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+    lastUpdateDate =
+        await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
     mode = isOnline ? "Online" : "Offline";
     final vehicleDb = VehicleDb();
     sc.offlineData.value = await vehicleDb.fetchAll();
@@ -462,7 +464,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         borderRadius: BorderRadius.circular(18)),
                     child: Center(
                       child: Text(
-                        'LAST UPDATE',
+                        'LAST UPDATE $lastUpdateDate',
                         style: TextStyles.normalheadWhite20DM,
                       ),
                     ),
@@ -480,32 +482,41 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           length: 4,
                           child: Column(
                             children: [
-                              const TabBar(tabs: [
-                                Tab(
-                                  text: 'Search',
-                                ),
-                                Tab(
-                                  text: 'Release',
-                                ),
-                                Tab(
-                                  text: 'Hold',
-                                ),
-                                Tab(
-                                  text: 'Repo',
-                                ),
-                              ]),
+                              TabBar(
+                                  onTap: (i) {
+                                    switch (i) {
+                                      case 0:
+                                        hc.getGraphWeekApiData("search");
+                                        break;
+                                      case 1:
+                                        hc.getGraphWeekApiData("release");
+                                        break;
+                                      case 2:
+                                        hc.getGraphWeekApiData("hold");
+                                        break;
+                                      case 3:
+                                        hc.getGraphWeekApiData("repo");
+                                        break;
+                                    }
+                                  },
+                                  tabs: const [
+                                    Tab(
+                                      text: 'Search',
+                                    ),
+                                    Tab(
+                                      text: 'Release',
+                                    ),
+                                    Tab(
+                                      text: 'Hold',
+                                    ),
+                                    Tab(
+                                      text: 'Repo',
+                                    ),
+                                  ]),
                               SizedBox(
                                 width: 350,
                                 height: 250,
                                 child: TabBarView(children: [
-                                  const SizedBox(
-                                      width: 100,
-                                      height: 50,
-                                      child: Text('search')),
-                                  const SizedBox(
-                                      width: 100,
-                                      height: 50,
-                                      child: Text('release')),
                                   Column(
                                     children: [
                                       Container(
@@ -623,10 +634,357 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                      width: 100,
-                                      height: 50,
-                                      child: Text('Repo')),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: 370,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: 370,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: 370,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
+                                      ),
+                                    ],
+                                  ),
                                 ]),
                               ),
                             ],
