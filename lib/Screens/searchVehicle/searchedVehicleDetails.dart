@@ -164,32 +164,39 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Load Item',
-                            style: TextStyle(
-                                fontSize: height * 0.023,
-                                color: ColorConstants.aqua),
+                      Obx(
+                        () => Visibility(
+                          visible: sc.selectedLoadStatus.value
+                              .toLowerCase()
+                              .contains('g'),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Load Item',
+                                style: TextStyle(
+                                    fontSize: height * 0.023,
+                                    color: ColorConstants.aqua),
+                              ),
+                              Container(
+                                  width: Get.width * 0.5,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: ColorConstants.aqua, width: 2),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: TextFormField(
+                                      decoration: const InputDecoration(
+                                          hintText: 'Load Item',
+                                          border: InputBorder.none),
+                                      controller: sc.loadItemCont.value,
+                                    ),
+                                  ))
+                            ],
                           ),
-                          Container(
-                              width: Get.width * 0.5,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: ColorConstants.aqua, width: 2),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8.0),
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                      hintText: 'Load Item',
-                                      border: InputBorder.none),
-                                  controller: sc.loadItemCont.value,
-                                ),
-                              ))
-                        ],
+                        ),
                       ),
                       SizedBox(
                         height: Get.height * 0.03,
