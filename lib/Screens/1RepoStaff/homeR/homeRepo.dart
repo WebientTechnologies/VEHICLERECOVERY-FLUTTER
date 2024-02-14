@@ -191,7 +191,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         if (value.length >= 12) {
                           if (isOnline) {
                             sc.getAllSearchByChasisApiData(
-                                chasisNoCont.value.text);
+                                chasisNoCont.value.text.substring(0, 6));
 
                             if (sc.searchbyChasisNoModel.value.data != null &&
                                 sc.searchbyChasisNoModel.value.data!
@@ -205,6 +205,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 showlastdata = false;
                               });
                             }
+                            chasisNoCont.text = '';
                           } else {
                             sc.searchOfflineChasisData(value);
 
@@ -269,6 +270,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               showlastdata = true;
                             });
                           }
+                          last4digit.text = '';
                         } else {
                           setState(() {
                             showlastdata = false;

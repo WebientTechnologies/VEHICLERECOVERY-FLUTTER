@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
@@ -36,7 +37,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
   void initState() {
     super.initState();
     checkMode();
-    hc.getAllDashboardApiData();
+    hc.getGraphWeekApiData();
+    //hc.getAllDashboardApiData();
     DateTime today = DateTime.now();
     if (today.hour > 0 && today.hour < 12) {
       hc.selectedGreeting.value = 0;
@@ -223,9 +225,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         border: InputBorder.none,
                       ),
                       onChanged: (value) {
-                        if (value.length >= 12) {
+                        if (value.length >= 7) {
                           sc.getAllSearchByChasisApiData(
-                              chasisNoCont.value.text);
+                              chasisNoCont.value.text.substring(0, 6));
 
                           if (sc.searchbyChasisNoModel.value.data != null &&
                               sc.searchbyChasisNoModel.value.data!.isNotEmpty) {
@@ -238,6 +240,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               showlastdata = false;
                             });
                           }
+                          chasisNoCont.text = '';
                         } else {
                           setState(() {
                             showChasisNo = false;
@@ -286,6 +289,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               showlastdata = true;
                             });
                           }
+                          last4digit.text = '';
                         } else {
                           setState(() {
                             showlastdata = false;
@@ -370,7 +374,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 2,
                                   mainAxisSpacing: 8.0,
                                   crossAxisSpacing: 8.0,
                                   childAspectRatio: 5),
@@ -411,7 +415,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 2,
                                   mainAxisSpacing: 8.0,
                                   crossAxisSpacing: 8.0,
                                   childAspectRatio: 5),
@@ -472,135 +476,161 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           child: Text('Something went wrong'),
                         );
                       case Status.COMPLETED:
-                        return Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 30),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    elevation: 10,
-                                    child: Container(
-                                      height: 150,
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                          color: ColorConstants.aqua,
-                                          borderRadius:
-                                              BorderRadius.circular(18)),
-                                      child: Center(
-                                        child: Text(
-                                          'SEARCH DATA\n${hc.dashboardModel.value.searchCount}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyles.normalheadWhite20DM,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    elevation: 10,
-                                    child: Container(
-                                      height: 150,
-                                      width: 150,
-                                      decoration: BoxDecoration(
-                                          color: ColorConstants.aqua,
-                                          borderRadius:
-                                              BorderRadius.circular(18)),
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            final vehicleDb = VehicleDb();
-
-                                            // await vehicleDb.insertVehicle(
-                                            //     'dataId',
-                                            //     'loadStatus',
-                                            //     'bankName',
-                                            //     'branch',
-                                            //     'agreementNo',
-                                            //     'customerName',
-                                            //     'regNo',
-                                            //     'mychasisnoooooo',
-                                            //     'engineNo',
-                                            //     'callCenterNo1',
-                                            //     'callCenterNo1Name',
-                                            //     'callCenterNo2',
-                                            //     'callCenterNo2Name',
-                                            //     'lastDigit',
-                                            //     'month',
-                                            //     'status',
-                                            //     'fileName',
-                                            //     'createdAt',
-                                            //     'updatedAt');
-
-                                            await vehicleDb.fetchAll();
-                                          },
-                                          child: Text(
-                                            'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyles.normalheadWhite20DM,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18)),
-                                  elevation: 10,
-                                  child: Container(
-                                    height: 150,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'REPO DATA\n${hc.dashboardModel.value.repoCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
-                                      ),
-                                    ),
-                                  ),
+                        return DefaultTabController(
+                          length: 4,
+                          child: Column(
+                            children: [
+                              const TabBar(tabs: [
+                                Tab(
+                                  text: 'Search',
                                 ),
-                                Card(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18)),
-                                  elevation: 10,
-                                  child: Container(
-                                    height: 150,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'RELEASE DATA\n${hc.dashboardModel.value.releaseCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
+                                Tab(
+                                  text: 'Release',
+                                ),
+                                Tab(
+                                  text: 'Hold',
+                                ),
+                                Tab(
+                                  text: 'Repo',
+                                ),
+                              ]),
+                              SizedBox(
+                                width: 350,
+                                height: 250,
+                                child: TabBarView(children: [
+                                  const SizedBox(
+                                      width: 100,
+                                      height: 50,
+                                      child: Text('search')),
+                                  const SizedBox(
+                                      width: 100,
+                                      height: 50,
+                                      child: Text('release')),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: 370,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
-                          ],
+                                  const SizedBox(
+                                      width: 100,
+                                      height: 50,
+                                      child: Text('Repo')),
+                                ]),
+                              ),
+                            ],
+                          ),
                         );
                     }
                   }),
