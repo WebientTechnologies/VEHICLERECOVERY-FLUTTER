@@ -116,26 +116,39 @@ class VehicleSearchController extends GetxController {
     });
   }
 
-  Future<void> updateVehicleHoldRepo(String id) async {
-    var url = Uri.parse('${ApiEndpoints.holdvehicleByrepoagent}/$id');
+  Future<void> updateVehicleHoldRepo(BuildContext context, String id) async {
+    var url = Uri.parse('${ApiEndpoints.holdvehicleByrepoagent}');
 
     print(url);
 
     var token = await Helper.getStringPreferences('token');
     print(token);
-
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
     try {
+      var data = {
+        "id": id,
+        "loadStatus": selectedLoadStatus.value,
+        "loadItem": loadItemCont.value.text
+      };
+      print(data);
       var response = await http.put(
         url,
-        // body: jsonEncode(),
+        body: jsonEncode(data),
         headers: {
           'Authorization': 'Bearer $token',
-          // 'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
       );
 
       print(response.statusCode);
       print(response.body);
+      Get.back();
 
       if (response.statusCode == 200) {
         // Handle success
@@ -145,6 +158,7 @@ class VehicleSearchController extends GetxController {
       }
     } catch (error) {
       Fluttertoast.showToast(msg: 'Status not Updated');
+      Get.back();
 
       print('Error: $error');
       // Handle error
