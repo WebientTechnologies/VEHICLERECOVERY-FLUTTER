@@ -188,6 +188,17 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                           Icons.search_rounded,
                           color: ColorConstants.aqua,
                         ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            chasisNoCont.text = '';
+                            setState(() {
+                              showChasisNo = false;
+                              showlastdata = false;
+                            });
+                          },
+                          icon: const Icon(Icons.close),
+                          color: ColorConstants.aqua,
+                        ),
                         hintText: 'Chasis No.',
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
@@ -252,6 +263,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.search_rounded,
+                          color: ColorConstants.aqua,
+                        ),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            last4digit.text = '';
+                            setState(() {
+                              showlastdata = false;
+                            });
+                          },
+                          icon: const Icon(Icons.close),
                           color: ColorConstants.aqua,
                         ),
                         hintText: 'Last 4 Digits',
