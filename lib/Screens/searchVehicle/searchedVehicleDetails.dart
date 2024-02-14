@@ -87,7 +87,6 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
           ),
           ContainerWidget(
             width: width * 0.5,
-            height: height * 0.05,
             borderRadius: 18,
             borderColor: ColorConstants.aqua,
             hintText: value,
