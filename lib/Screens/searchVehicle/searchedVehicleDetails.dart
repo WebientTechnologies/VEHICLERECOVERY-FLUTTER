@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
@@ -123,7 +124,73 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                       buildInfoRow(
                           'Bank Name', height, width, data.bankName ?? ''),
                       buildInfoRow('Vehicle Maker', height, width, ''),
-                      buildInfoRow('Load Status', height, width, 'Empty'),
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Load Status',
+                            style: TextStyle(
+                                fontSize: height * 0.023,
+                                color: ColorConstants.aqua),
+                          ),
+                          Container(
+                            width: Get.width * 0.5,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: ColorConstants.aqua, width: 2),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Center(
+                              child: Obx(
+                                () => Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: DropdownButton(
+                                      underline: const SizedBox(),
+                                      isExpanded: true,
+                                      items: sc.loadStatus,
+                                      value: sc.selectedLoadStatus.value,
+                                      onChanged: (value) {
+                                        sc.selectedLoadStatus.value = value!;
+                                      }),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Load Item',
+                            style: TextStyle(
+                                fontSize: height * 0.023,
+                                color: ColorConstants.aqua),
+                          ),
+                          Container(
+                              width: Get.width * 0.5,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: ColorConstants.aqua, width: 2),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: TextFormField(
+                                  decoration: const InputDecoration(
+                                      hintText: 'Load Item',
+                                      border: InputBorder.none),
+                                  controller: sc.loadItemCont.value,
+                                ),
+                              ))
+                        ],
+                      ),
                       SizedBox(
                         height: Get.height * 0.03,
                       ),
@@ -156,15 +223,6 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                       _buildClickableContainer(height, '+917027820555'),
                       SizedBox(
                         height: height * 0.15,
-                      ),
-                      PCIconButton(
-                        onPressed: () {
-                          sc.updateVehicleHoldRepo(data.id);
-                        },
-                        text: 'Hold',
-                        height: Get.height * 0.05,
-                        textColor: Colors.white,
-                        backgroundColor: ColorConstants.aqua,
                       ),
                     ],
                   )
@@ -213,6 +271,46 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
           ),
         );
       }),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            PCIconButton(
+              onPressed: () {
+                sc.updateVehicleHoldRepo(data.id);
+              },
+              text: 'Hold',
+              width: Get.width * 0.8,
+              height: Get.height * 0.05,
+              textColor: Colors.white,
+              backgroundColor: ColorConstants.aqua,
+            ),
+            IconButton(
+                onPressed: () async {
+                  String msg =
+                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Detail:${data.loadStatus}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+''';
+                  final url = "https://wa.me/919075069326?text=$msg";
+
+//do not forgot to enter your country code instead of 91 and instead of XXXXXXXXXX enter phone number.
+
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(Uri.parse(url));
+                  } else {
+                    Fluttertoast.showToast(msg: 'Something went wrong');
+                  }
+                  if (!await launchUrl(Uri.parse(url)))
+                    throw 'Could not launch $url';
+                },
+                icon: Icon(
+                  Icons.message,
+                  color: ColorConstants.aqua,
+                  size: 40,
+                ))
+          ],
+        ),
+      ),
     );
   }
 }

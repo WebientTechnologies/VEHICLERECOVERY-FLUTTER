@@ -1,4 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
@@ -9,6 +10,7 @@ import 'package:vinayak/core/sqlite/vehicledb.dart';
 import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
 import '../../../core/response/status.dart';
+import '../../HomeScreen/controller/homeController.dart';
 import '../../searchVehicle/controller/searchController.dart';
 import '../../splashSCreen/controller/splashscreen_controller.dart';
 import 'controller/repoHomeController.dart';
@@ -28,11 +30,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   TextEditingController chasisNoCont = TextEditingController();
   SplashScreenController ssc = Get.put(SplashScreenController());
   UserController uc = Get.find<UserController>();
+  HomeController hcc = Get.put(HomeController());
 
   bool showlastdata = false;
   bool showChasisNo = false;
   bool isOnline = true;
-  String mode = "Online";
+  String mode = "Online", lastUpdateDate = "";
   @override
   void initState() {
     super.initState();
@@ -47,16 +50,20 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    hc.getAllDashboardApiData();
+    hcc.getGraphWeekApiData("search");
+    //hc.getAllDashboardApiData();
     //init();
   }
 
   Future checkMode() async {
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+    lastUpdateDate =
+        await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
     mode = isOnline ? "Online" : "Offline";
 
     final vehicleDb = VehicleDb();
     sc.offlineData.value = await vehicleDb.fetchAll();
+    sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
     print(sc.offlineData.length);
     setState(() {});
   }
@@ -161,7 +168,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             //   style: TextStyle(
             //       color: ColorConstants.aqua, fontSize: height * 0.03),
             // ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
@@ -188,7 +195,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         hintStyle: TextStyle(color: ColorConstants.aqua),
                       ),
                       onChanged: (value) {
-                        if (value.length >= 12) {
+                        if (value.length >= 7) {
                           if (isOnline) {
                             sc.getAllSearchByChasisApiData(
                                 chasisNoCont.value.text.substring(0, 6));
@@ -300,10 +307,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     if (isOnline) {
                       return Expanded(
                         child: GridView.builder(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 2,
                                   mainAxisSpacing: 16.0,
                                   crossAxisSpacing: 16.0,
                                   childAspectRatio: 5),
@@ -398,7 +405,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
+                                  crossAxisCount: 2,
                                   mainAxisSpacing: 16.0,
                                   crossAxisSpacing: 16.0,
                                   childAspectRatio: 5),
@@ -485,7 +492,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         borderRadius: BorderRadius.circular(18)),
                     child: Center(
                       child: Text(
-                        'LAST UPDATE',
+                        'LAST UPDATE $lastUpdateDate',
                         style: TextStyles.normalheadWhite20DM,
                       ),
                     ),
@@ -495,111 +502,528 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   ),
                   Obx(() {
                     switch (hc.rxRequestDashboardStatus.value) {
-                      case Status.LOADING:
-                        return const Center();
+                      case Status.COMPLETED:
+                        return const Center(child: CircularProgressIndicator());
                       case Status.ERROR:
                         return const Center(
                           child: Text('Something went wrong'),
                         );
-                      case Status.COMPLETED:
-                        return Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  // Container(
-                                  //   height: height * 0.1,
-                                  //   width: width * 0.43,
-                                  //   decoration: BoxDecoration(
-                                  //       color: ColorConstants.aqua,
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(18)),
-                                  //   child: Center(
-                                  //     child: Text(
-                                  //       'SEARCH DATA\n${hc.dashboardModel.value.searchCount}',
-                                  //       textAlign: TextAlign.center,
-                                  //       style: TextStyles.normalheadWhite20DM,
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                  Card(
-                                    elevation: 10,
-                                    child: Container(
-                                      height: 130,
-                                      width: 130,
-                                      decoration: BoxDecoration(
-                                          color: ColorConstants.aqua,
-                                          borderRadius:
-                                              BorderRadius.circular(18)),
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            DeviceInfoPlugin deviceInfo =
-                                                DeviceInfoPlugin();
-                                            AndroidDeviceInfo androidInfo =
-                                                await deviceInfo.androidInfo;
-                                            String deviceId = androidInfo.id;
+                      case Status.LOADING:
+                        return DefaultTabController(
+                          length: 3,
+                          child: Column(
+                            children: [
+                              TabBar(
+                                  onTap: (i) {
+                                    switch (i) {
+                                      // case 0:
+                                      //   hcc.getGraphWeekApiData("search");
+                                      //   break;
+                                      case 0:
+                                        hcc.getGraphWeekApiData("release");
+                                        break;
+                                      case 1:
+                                        hcc.getGraphWeekApiData("hold");
+                                        break;
+                                      case 2:
+                                        hcc.getGraphWeekApiData("repo");
+                                        break;
+                                    }
+                                  },
+                                  tabs: const [
+                                    // Tab(
+                                    //   text: 'Search',
+                                    // ),
+                                    Tab(
+                                      text: 'Release',
+                                    ),
+                                    Tab(
+                                      text: 'Hold',
+                                    ),
+                                    Tab(
+                                      text: 'Repo',
+                                    ),
+                                  ]),
+                              SizedBox(
+                                width: Get.width * 0.95,
+                                height: 250,
+                                child: TabBarView(children: [
+                                  // Column(
+                                  //   children: [
+                                  //     Container(
+                                  //       margin: const EdgeInsets.only(top: 60),
+                                  //       width: Get.width * 1,
+                                  //       height: 190,
+                                  //       child: LineChart(LineChartData(
+                                  //           maxX: 7,
+                                  //           clipData: const FlClipData.all(),
+                                  //           borderData: FlBorderData(
+                                  //               border: const Border(
+                                  //                   bottom: BorderSide(),
+                                  //                   left: BorderSide())),
+                                  //           backgroundColor:
+                                  //               ColorConstants.coalBlack,
+                                  //           titlesData: FlTitlesData(
+                                  //               bottomTitles: AxisTitles(
+                                  //                   sideTitles: SideTitles(
+                                  //                       showTitles: true,
+                                  //                       getTitlesWidget:
+                                  //                           (value, meta) {
+                                  //                         String text = '';
+                                  //                         switch (
+                                  //                             value.toInt()) {
+                                  //                           case 0:
+                                  //                             text = 'Sun';
+                                  //                             break;
+                                  //                           case 1:
+                                  //                             text = 'Mon';
+                                  //                             break;
+                                  //                           case 2:
+                                  //                             text = 'Tue';
+                                  //                             break;
+                                  //                           case 3:
+                                  //                             text = 'Wed';
+                                  //                             break;
+                                  //                           case 4:
+                                  //                             text = 'Thu';
+                                  //                             break;
+                                  //                           case 5:
+                                  //                             text = 'Fri';
+                                  //                             break;
+                                  //                           case 6:
+                                  //                             text = 'Sat';
+                                  //                             break;
+                                  //                           case 7:
+                                  //                             text = 'Sun';
+                                  //                             break;
+                                  //                         }
 
-                                            print(deviceId);
-                                          },
-                                          child: Text(
-                                            'HOLD DATA\n${hc.dashboardModel.value.holdCount}',
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                TextStyles.normalheadWhite20DM,
-                                          ),
-                                        ),
+                                  //                         return Text(text);
+                                  //                       })),
+                                  //               topTitles: AxisTitles(
+                                  //                   sideTitles: SideTitles(
+                                  //                       showTitles: false,
+                                  //                       getTitlesWidget:
+                                  //                           (value, meta) {
+                                  //                         String text = '';
+                                  //                         switch (
+                                  //                             value.toInt()) {
+                                  //                           case 0:
+                                  //                             text = 'Sun';
+                                  //                             break;
+                                  //                           case 1:
+                                  //                             text = 'Mon';
+                                  //                             break;
+                                  //                           case 2:
+                                  //                             text = 'Tue';
+                                  //                             break;
+                                  //                           case 3:
+                                  //                             text = 'Wed';
+                                  //                             break;
+                                  //                           case 4:
+                                  //                             text = 'Thu';
+                                  //                             break;
+                                  //                           case 5:
+                                  //                             text = 'Fri';
+                                  //                             break;
+                                  //                           case 6:
+                                  //                             text = 'Sat';
+                                  //                             break;
+                                  //                           case 7:
+                                  //                             text = 'Sun';
+                                  //                             break;
+                                  //                         }
+
+                                  //                         return Text(text);
+                                  //                       })),
+                                  //               rightTitles: const AxisTitles(
+                                  //                   sideTitles: SideTitles(
+                                  //                       showTitles: false))),
+                                  //           lineBarsData: [
+                                  //             LineChartBarData(
+                                  //                 belowBarData: BarAreaData(
+                                  //                     show: true,
+                                  //                     gradient: LinearGradient(
+                                  //                         transform:
+                                  //                             const GradientRotation(
+                                  //                                 90),
+                                  //                         colors: [
+                                  //                           ColorConstants.aqua,
+                                  //                           ColorConstants
+                                  //                               .coalBlack,
+                                  //                         ])),
+                                  //                 shadow: Shadow(
+                                  //                     color:
+                                  //                         ColorConstants.aqua),
+                                  //                 isCurved: true,
+                                  //                 spots: hcc.weekData
+                                  //                     .map((e) => FlSpot(
+                                  //                         e.count!.toDouble(),
+                                  //                         e.totalVehicle!
+                                  //                             .toDouble()))
+                                  //                     .toList())
+                                  //           ])),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: Get.width * 1,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            maxX: 7,
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hcc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
                                       ),
-                                    ),
-                                  )
-                                ],
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: Get.width * 1,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            maxX: 7,
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hcc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 60),
+                                        width: Get.width * 1,
+                                        height: 190,
+                                        child: LineChart(LineChartData(
+                                            maxX: 7,
+                                            clipData: const FlClipData.all(),
+                                            borderData: FlBorderData(
+                                                border: const Border(
+                                                    bottom: BorderSide(),
+                                                    left: BorderSide())),
+                                            backgroundColor:
+                                                ColorConstants.coalBlack,
+                                            titlesData: FlTitlesData(
+                                                bottomTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                topTitles: AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false,
+                                                        getTitlesWidget:
+                                                            (value, meta) {
+                                                          String text = '';
+                                                          switch (
+                                                              value.toInt()) {
+                                                            case 0:
+                                                              text = 'Sun';
+                                                              break;
+                                                            case 1:
+                                                              text = 'Mon';
+                                                              break;
+                                                            case 2:
+                                                              text = 'Tue';
+                                                              break;
+                                                            case 3:
+                                                              text = 'Wed';
+                                                              break;
+                                                            case 4:
+                                                              text = 'Thu';
+                                                              break;
+                                                            case 5:
+                                                              text = 'Fri';
+                                                              break;
+                                                            case 6:
+                                                              text = 'Sat';
+                                                              break;
+                                                            case 7:
+                                                              text = 'Sun';
+                                                              break;
+                                                          }
+
+                                                          return Text(text);
+                                                        })),
+                                                rightTitles: const AxisTitles(
+                                                    sideTitles: SideTitles(
+                                                        showTitles: false))),
+                                            lineBarsData: [
+                                              LineChartBarData(
+                                                  belowBarData: BarAreaData(
+                                                      show: true,
+                                                      gradient: LinearGradient(
+                                                          transform:
+                                                              const GradientRotation(
+                                                                  90),
+                                                          colors: [
+                                                            ColorConstants.aqua,
+                                                            ColorConstants
+                                                                .coalBlack,
+                                                          ])),
+                                                  shadow: Shadow(
+                                                      color:
+                                                          ColorConstants.aqua),
+                                                  isCurved: true,
+                                                  spots: hcc.weekData
+                                                      .map((e) => FlSpot(
+                                                          e.count!.toDouble(),
+                                                          e.totalVehicle!
+                                                              .toDouble()))
+                                                      .toList())
+                                            ])),
+                                      ),
+                                    ],
+                                  ),
+                                ]),
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Card(
-                                  elevation: 10,
-                                  child: Container(
-                                    height: 130,
-                                    width: 130,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'REPO DATA\n${hc.dashboardModel.value.repoCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Card(
-                                  elevation: 10,
-                                  child: Container(
-                                    height: 130,
-                                    width: 130,
-                                    decoration: BoxDecoration(
-                                        color: ColorConstants.aqua,
-                                        borderRadius:
-                                            BorderRadius.circular(18)),
-                                    child: Center(
-                                      child: Text(
-                                        'RELEASE DATA\n${hc.dashboardModel.value.releaseCount}',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyles.normalheadWhite20DM,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         );
                     }
                   }),

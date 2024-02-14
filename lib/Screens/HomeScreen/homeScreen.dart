@@ -514,16 +514,17 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     ),
                                   ]),
                               SizedBox(
-                                width: 350,
+                                width: Get.width * 0.95,
                                 height: 250,
                                 child: TabBarView(children: [
                                   Column(
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(top: 60),
-                                        width: 370,
+                                        width: Get.width * 1,
                                         height: 190,
                                         child: LineChart(LineChartData(
+                                            maxX: 7,
                                             clipData: const FlClipData.all(),
                                             borderData: FlBorderData(
                                                 border: const Border(
@@ -638,9 +639,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(top: 60),
-                                        width: 370,
+                                        width: Get.width * 1,
                                         height: 190,
                                         child: LineChart(LineChartData(
+                                            maxX: 7,
                                             clipData: const FlClipData.all(),
                                             borderData: FlBorderData(
                                                 border: const Border(
@@ -755,9 +757,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(top: 60),
-                                        width: 370,
+                                        width: Get.width * 1,
                                         height: 190,
                                         child: LineChart(LineChartData(
+                                            maxX: 7,
                                             clipData: const FlClipData.all(),
                                             borderData: FlBorderData(
                                                 border: const Border(
@@ -872,9 +875,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     children: [
                                       Container(
                                         margin: const EdgeInsets.only(top: 60),
-                                        width: 370,
+                                        width: Get.width * 1,
                                         height: 190,
                                         child: LineChart(LineChartData(
+                                            maxX: 7,
                                             clipData: const FlClipData.all(),
                                             borderData: FlBorderData(
                                                 border: const Border(

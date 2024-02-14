@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/network/network_api.dart';
@@ -15,8 +16,24 @@ import '../model/searchLastmodel.dart';
 class VehicleSearchController extends GetxController {
   var _api = NetworkApi();
 
+  var loadItemCont = TextEditingController().obs;
+
+  RxInt offlineDataCount = 0.obs;
+  RxInt onlineDataCount = 0.obs;
   RxList<VehicleModel> offlineData = <VehicleModel>[].obs;
   RxList<VehicleModel> offlineDataFiltered = <VehicleModel>[].obs;
+
+  RxString selectedLoadStatus = "empty".obs;
+  List<DropdownMenuItem> loadStatus = [
+    const DropdownMenuItem(
+      value: "empty",
+      child: Text('Empty'),
+    ),
+    const DropdownMenuItem(
+      value: "goods",
+      child: Text('Goods'),
+    ),
+  ];
 
   final rxRequestsearchbyLastStatus = Status.LOADING.obs;
   void setRxRequestSearchByLastStatus(Status value) =>

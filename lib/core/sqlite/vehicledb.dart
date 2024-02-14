@@ -172,11 +172,11 @@ class VehicleDb {
   //   return files.map((e) => FileModel.fromSqfliteDatabase(e)).toList();
   // }
 
-  Future<int> getCountByProjectID(String projectid) async {
+  Future<int> getOfflineCount() async {
     final db = await DatabaseHelper().database;
     final count = await db.rawQuery('''
-    select count(id) from $tableName where project_id = ?
-    ''', [projectid]);
+    select count(id) from $tableName
+    ''');
     int c = Sqflite.firstIntValue(count) ?? 0;
     return c;
   }
