@@ -40,7 +40,7 @@ class HoldRepoDetailsWidget extends StatelessWidget {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             crossAxisSpacing: 10.0,
-            mainAxisSpacing: 0.0,
+            mainAxisSpacing: 10.0,
             childAspectRatio: 2,
           ),
           itemCount: 7,
