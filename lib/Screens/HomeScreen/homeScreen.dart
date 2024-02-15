@@ -245,18 +245,18 @@ class _HomeSCreenState extends State<HomeSCreen> {
                             sc.getAllSearchByChasisApiData(
                                 chasisNoCont.value.text.substring(0, 6));
 
-                            if (sc.searchbyChasisNoModel.value.data != null &&
-                                sc.searchbyChasisNoModel.value.data!
-                                    .isNotEmpty) {
-                              setState(() {
-                                showChasisNo = true;
-                                showlastdata = false;
-                              });
-                            } else {
-                              setState(() {
-                                showlastdata = false;
-                              });
-                            }
+                            // if (sc.searchbyChasisNoModel.value.data != null &&
+                            //     sc.searchbyChasisNoModel.value.data!
+                            //         .isNotEmpty) {
+                            setState(() {
+                              showChasisNo = true;
+                              showlastdata = false;
+                            });
+                            // } else {
+                            //   setState(() {
+                            //     showlastdata = false;
+                            //   });
+                            // }
                             chasisNoCont.text = '';
                           } else {
                             sc.searchOfflineChasisData(value);
