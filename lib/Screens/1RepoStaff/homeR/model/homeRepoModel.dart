@@ -2,6 +2,7 @@ class HomeDashboardRepoModel {
   int? holdCount;
   int? repoCount;
   int? releaseCount;
+  int? totalOnlineData;
 
   HomeDashboardRepoModel({this.holdCount, this.repoCount, this.releaseCount});
 
@@ -9,6 +10,7 @@ class HomeDashboardRepoModel {
     holdCount = json["holdCount"];
     repoCount = json["repoCount"];
     releaseCount = json["releaseCount"];
+    totalOnlineData = json["totalOnlineData"];
   }
 
   Map<String, dynamic> toJson() {
@@ -16,6 +18,7 @@ class HomeDashboardRepoModel {
     _data["holdCount"] = holdCount;
     _data["repoCount"] = repoCount;
     _data["releaseCount"] = releaseCount;
+    _data["totalOnlineData"] = totalOnlineData;
     return _data;
   }
 }

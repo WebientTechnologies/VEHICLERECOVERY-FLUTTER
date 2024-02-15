@@ -38,7 +38,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     super.initState();
     checkMode();
     hc.getGraphWeekApiData("search");
-    //hc.getAllDashboardApiData();
+    hc.getAllDashboardApiData();
     DateTime today = DateTime.now();
     if (today.hour > 0 && today.hour < 12) {
       hc.selectedGreeting.value = 0;
@@ -57,6 +57,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     mode = isOnline ? "Online" : "Offline";
     final vehicleDb = VehicleDb();
     sc.offlineData.value = await vehicleDb.fetchAll();
+    sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
     print(sc.offlineData.length);
     setState(() {});
   }
@@ -86,6 +87,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: true,
       // appBar: AppBar(
       //   toolbarHeight: 40,
       //   title: const Text('Vinayak Recovery'),
@@ -220,7 +222,18 @@ class _HomeSCreenState extends State<HomeSCreen> {
                   child: Center(
                     child: TextFormField(
                       controller: chasisNoCont,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            chasisNoCont.text = '';
+                            setState(() {
+                              showChasisNo = false;
+                              showlastdata = false;
+                            });
+                          },
+                          icon: const Icon(Icons.close),
+                          color: ColorConstants.aqua,
+                        ),
                         hintText: 'Chasis No.',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 16.0),
@@ -269,7 +282,17 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       controller: last4digit,
                       maxLength: 4,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              last4digit.text = '';
+                              setState(() {
+                                showlastdata = false;
+                              });
+                            },
+                            icon: const Icon(Icons.close),
+                            color: ColorConstants.aqua,
+                          ),
                           hintText: 'Last 4 Digits',
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 12.0, horizontal: 16.0),
@@ -318,44 +341,87 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       child: Text('SOmething went wrong'),
                     );
                   case Status.COMPLETED:
-                    return Expanded(
-                      child: GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisSpacing: 16.0,
-                                crossAxisSpacing: 16.0,
-                                childAspectRatio: 5),
-                        itemCount: sc.searchbyChasisNoModel.value.data!.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                  arguments: [
-                                    sc.searchbyChasisNoModel.value.data?[index],
-                                    'officeStaff',
-                                    isOnline
-                                  ]);
-                            },
-                            child: Container(
-                                height: 40,
-                                width: width * 0,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(18),
-                                ),
-                                child: Center(
-                                    child: Text(
-                                  sc.searchbyChasisNoModel.value.data?[index]
-                                          .regNo ??
-                                      '',
-                                  style: TextStyle(color: ColorConstants.aqua),
-                                ))),
-                          );
-                        },
-                      ),
-                    );
+                    if (isOnline) {
+                      return Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 16.0,
+                                  crossAxisSpacing: 16.0,
+                                  childAspectRatio: 5),
+                          itemCount:
+                              sc.searchbyChasisNoModel.value.data!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                    arguments: [
+                                      sc.searchbyChasisNoModel.value
+                                          .data?[index],
+                                      'officeStaff',
+                                      isOnline,
+                                    ]);
+                              },
+                              child: Container(
+                                  height: 40,
+                                  width: width * 0,
+                                  decoration: BoxDecoration(
+                                    color: ColorConstants.aqua,
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    sc.searchbyChasisNoModel.value.data?[index]
+                                            .regNo ??
+                                        '',
+                                    style:
+                                        TextStyle(color: ColorConstants.white),
+                                  ))),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Expanded(
+                        child: GridView.builder(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 16.0,
+                                  crossAxisSpacing: 16.0,
+                                  childAspectRatio: 5),
+                          itemCount: sc.offlineDataFiltered.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                    arguments: [
+                                      sc.offlineDataFiltered[index],
+                                      'officeStaff',
+                                      isOnline,
+                                    ]);
+                              },
+                              child: Container(
+                                  height: 40,
+                                  width: width * 0,
+                                  decoration: BoxDecoration(
+                                    color: ColorConstants.aqua,
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    sc.offlineDataFiltered[index].regNo ?? '',
+                                    style:
+                                        TextStyle(color: ColorConstants.white),
+                                  ))),
+                            );
+                          },
+                        ),
+                      );
+                    }
                 }
               }),
             if (showlastdata == true && showChasisNo == false)
@@ -479,27 +545,33 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         );
                       case Status.COMPLETED:
                         return DefaultTabController(
-                          length: 4,
+                          length: 5,
                           child: Column(
                             children: [
                               TabBar(
                                   onTap: (i) {
                                     switch (i) {
                                       case 0:
-                                        hc.getGraphWeekApiData("search");
+                                        //hc.getGraphWeekApiData("search");
                                         break;
                                       case 1:
-                                        hc.getGraphWeekApiData("release");
+                                        hc.getGraphWeekApiData("search");
                                         break;
                                       case 2:
-                                        hc.getGraphWeekApiData("hold");
+                                        hc.getGraphWeekApiData("release");
                                         break;
                                       case 3:
+                                        hc.getGraphWeekApiData("hold");
+                                        break;
+                                      case 4:
                                         hc.getGraphWeekApiData("repo");
                                         break;
                                     }
                                   },
                                   tabs: const [
+                                    Tab(
+                                      text: 'Dashboard',
+                                    ),
                                     Tab(
                                       text: 'Search',
                                     ),
@@ -517,6 +589,46 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 width: Get.width * 0.95,
                                 height: 250,
                                 child: TabBarView(children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
+                                          child: Text(
+                                            'Offline Data \n${sc.offlineDataCount.value}',
+                                            style:
+                                                TextStyles.normalheadWhite20DM,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
+                                          child: Obx(
+                                            () => Text(
+                                              'Online Data \n${hc.onlineDataCount.value}',
+                                              style: TextStyles
+                                                  .normalheadWhite20DM,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   Column(
                                     children: [
                                       Container(

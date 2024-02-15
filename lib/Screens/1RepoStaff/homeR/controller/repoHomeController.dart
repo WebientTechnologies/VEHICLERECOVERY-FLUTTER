@@ -14,6 +14,7 @@ class HomeRepoAgentController extends GetxController {
   RxList<String> greeting =
       <String>['Good Morning', 'Good Afternoon', 'Good Evening'].obs;
   RxInt selectedGreeting = 0.obs;
+  RxInt onlineDataCount = 0.obs;
 
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
@@ -38,6 +39,8 @@ class HomeRepoAgentController extends GetxController {
     getAllDashboardApi().then((value) {
       setRxRequestDashboardStatus(Status.COMPLETED);
       setDashboardList(value);
+
+      onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
     }).onError((error, stackTrace) {
       print(stackTrace);
       print('--------------------');

@@ -67,33 +67,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ColorConstants.aqua,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 100,
-          ),
-          Image.asset(
+        backgroundColor: ColorConstants.aqua,
+        body: Center(
+          child: Image.asset(
             'assets/images/vad.png',
             width: 200,
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          Center(
-            child: Text(
-              'Best vehicle recovery that everyone trusts',
-              style: TextStyle(
-                color: ColorConstants.white,
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          )
-        ],
-      ),
-    );
+        ));
   }
 }

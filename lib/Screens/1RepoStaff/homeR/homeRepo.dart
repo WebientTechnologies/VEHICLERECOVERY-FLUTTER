@@ -51,8 +51,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
       hc.selectedGreeting.value = 2;
     }
     hcc.getGraphWeekApiData("search");
-    //hc.getAllDashboardApiData();
-    //init();
+    hc.getAllDashboardApiData();
+    init();
   }
 
   Future checkMode() async {
@@ -64,7 +64,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     final vehicleDb = VehicleDb();
     sc.offlineData.value = await vehicleDb.fetchAll();
     sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
-    print(sc.offlineData.length);
+    print('offline data count ${sc.offlineData.length}');
     setState(() {});
   }
 
@@ -184,10 +184,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     child: TextFormField(
                       controller: chasisNoCont,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: ColorConstants.aqua,
-                        ),
                         suffixIcon: IconButton(
                           onPressed: () {
                             chasisNoCont.text = '';
@@ -261,10 +257,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       maxLength: 4,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.search_rounded,
-                          color: ColorConstants.aqua,
-                        ),
                         suffixIcon: IconButton(
                           onPressed: () {
                             last4digit.text = '';
@@ -523,38 +515,38 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                   ),
                   Obx(() {
                     switch (hc.rxRequestDashboardStatus.value) {
-                      case Status.COMPLETED:
+                      case Status.LOADING:
                         return const Center(child: CircularProgressIndicator());
                       case Status.ERROR:
                         return const Center(
                           child: Text('Something went wrong'),
                         );
-                      case Status.LOADING:
+                      case Status.COMPLETED:
                         return DefaultTabController(
-                          length: 3,
+                          length: 4,
                           child: Column(
                             children: [
                               TabBar(
                                   onTap: (i) {
                                     switch (i) {
-                                      // case 0:
-                                      //   hcc.getGraphWeekApiData("search");
-                                      //   break;
                                       case 0:
-                                        hcc.getGraphWeekApiData("release");
+                                        // hcc.getGraphWeekApiData("search");
                                         break;
                                       case 1:
-                                        hcc.getGraphWeekApiData("hold");
+                                        hcc.getGraphWeekApiData("release");
                                         break;
                                       case 2:
+                                        hcc.getGraphWeekApiData("hold");
+                                        break;
+                                      case 3:
                                         hcc.getGraphWeekApiData("repo");
                                         break;
                                     }
                                   },
                                   tabs: const [
-                                    // Tab(
-                                    //   text: 'Search',
-                                    // ),
+                                    Tab(
+                                      text: 'Dashboard',
+                                    ),
                                     Tab(
                                       text: 'Release',
                                     ),
@@ -569,124 +561,46 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 width: Get.width * 0.95,
                                 height: 250,
                                 child: TabBarView(children: [
-                                  // Column(
-                                  //   children: [
-                                  //     Container(
-                                  //       margin: const EdgeInsets.only(top: 60),
-                                  //       width: Get.width * 1,
-                                  //       height: 190,
-                                  //       child: LineChart(LineChartData(
-                                  //           maxX: 7,
-                                  //           clipData: const FlClipData.all(),
-                                  //           borderData: FlBorderData(
-                                  //               border: const Border(
-                                  //                   bottom: BorderSide(),
-                                  //                   left: BorderSide())),
-                                  //           backgroundColor:
-                                  //               ColorConstants.coalBlack,
-                                  //           titlesData: FlTitlesData(
-                                  //               bottomTitles: AxisTitles(
-                                  //                   sideTitles: SideTitles(
-                                  //                       showTitles: true,
-                                  //                       getTitlesWidget:
-                                  //                           (value, meta) {
-                                  //                         String text = '';
-                                  //                         switch (
-                                  //                             value.toInt()) {
-                                  //                           case 0:
-                                  //                             text = 'Sun';
-                                  //                             break;
-                                  //                           case 1:
-                                  //                             text = 'Mon';
-                                  //                             break;
-                                  //                           case 2:
-                                  //                             text = 'Tue';
-                                  //                             break;
-                                  //                           case 3:
-                                  //                             text = 'Wed';
-                                  //                             break;
-                                  //                           case 4:
-                                  //                             text = 'Thu';
-                                  //                             break;
-                                  //                           case 5:
-                                  //                             text = 'Fri';
-                                  //                             break;
-                                  //                           case 6:
-                                  //                             text = 'Sat';
-                                  //                             break;
-                                  //                           case 7:
-                                  //                             text = 'Sun';
-                                  //                             break;
-                                  //                         }
-
-                                  //                         return Text(text);
-                                  //                       })),
-                                  //               topTitles: AxisTitles(
-                                  //                   sideTitles: SideTitles(
-                                  //                       showTitles: false,
-                                  //                       getTitlesWidget:
-                                  //                           (value, meta) {
-                                  //                         String text = '';
-                                  //                         switch (
-                                  //                             value.toInt()) {
-                                  //                           case 0:
-                                  //                             text = 'Sun';
-                                  //                             break;
-                                  //                           case 1:
-                                  //                             text = 'Mon';
-                                  //                             break;
-                                  //                           case 2:
-                                  //                             text = 'Tue';
-                                  //                             break;
-                                  //                           case 3:
-                                  //                             text = 'Wed';
-                                  //                             break;
-                                  //                           case 4:
-                                  //                             text = 'Thu';
-                                  //                             break;
-                                  //                           case 5:
-                                  //                             text = 'Fri';
-                                  //                             break;
-                                  //                           case 6:
-                                  //                             text = 'Sat';
-                                  //                             break;
-                                  //                           case 7:
-                                  //                             text = 'Sun';
-                                  //                             break;
-                                  //                         }
-
-                                  //                         return Text(text);
-                                  //                       })),
-                                  //               rightTitles: const AxisTitles(
-                                  //                   sideTitles: SideTitles(
-                                  //                       showTitles: false))),
-                                  //           lineBarsData: [
-                                  //             LineChartBarData(
-                                  //                 belowBarData: BarAreaData(
-                                  //                     show: true,
-                                  //                     gradient: LinearGradient(
-                                  //                         transform:
-                                  //                             const GradientRotation(
-                                  //                                 90),
-                                  //                         colors: [
-                                  //                           ColorConstants.aqua,
-                                  //                           ColorConstants
-                                  //                               .coalBlack,
-                                  //                         ])),
-                                  //                 shadow: Shadow(
-                                  //                     color:
-                                  //                         ColorConstants.aqua),
-                                  //                 isCurved: true,
-                                  //                 spots: hcc.weekData
-                                  //                     .map((e) => FlSpot(
-                                  //                         e.count!.toDouble(),
-                                  //                         e.totalVehicle!
-                                  //                             .toDouble()))
-                                  //                     .toList())
-                                  //           ])),
-                                  //     ),
-                                  //   ],
-                                  // ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
+                                          child: Text(
+                                            'Offline Data \n${sc.offlineDataCount.value}',
+                                            style:
+                                                TextStyles.normalheadWhite20DM,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        child: Center(
+                                          child: Obx(
+                                            () => Text(
+                                              'Online Data \n${hc.onlineDataCount.value}',
+                                              style: TextStyles
+                                                  .normalheadWhite20DM,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                   Column(
                                     children: [
                                       Container(
