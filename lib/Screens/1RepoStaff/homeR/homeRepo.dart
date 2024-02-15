@@ -252,6 +252,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
                     child: TextFormField(
+                      autofocus: true,
                       style: TextStyle(color: ColorConstants.aqua),
                       controller: last4digit,
                       maxLength: 4,

@@ -241,21 +241,37 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       ),
                       onChanged: (value) {
                         if (value.length >= 7) {
-                          sc.getAllSearchByChasisApiData(
-                              chasisNoCont.value.text.substring(0, 6));
+                          if (isOnline) {
+                            sc.getAllSearchByChasisApiData(
+                                chasisNoCont.value.text.substring(0, 6));
 
-                          if (sc.searchbyChasisNoModel.value.data != null &&
-                              sc.searchbyChasisNoModel.value.data!.isNotEmpty) {
-                            setState(() {
-                              showChasisNo = true;
-                              showlastdata = false;
-                            });
+                            if (sc.searchbyChasisNoModel.value.data != null &&
+                                sc.searchbyChasisNoModel.value.data!
+                                    .isNotEmpty) {
+                              setState(() {
+                                showChasisNo = true;
+                                showlastdata = false;
+                              });
+                            } else {
+                              setState(() {
+                                showlastdata = false;
+                              });
+                            }
+                            chasisNoCont.text = '';
                           } else {
-                            setState(() {
-                              showlastdata = false;
-                            });
+                            sc.searchOfflineChasisData(value);
+
+                            if (sc.offlineData.isNotEmpty) {
+                              setState(() {
+                                showChasisNo = true;
+                                showlastdata = false;
+                              });
+                            } else {
+                              setState(() {
+                                showlastdata = false;
+                              });
+                            }
                           }
-                          chasisNoCont.text = '';
                         } else {
                           setState(() {
                             showChasisNo = false;
@@ -279,6 +295,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                   ),
                   child: Center(
                     child: TextFormField(
+                      autofocus: true,
                       controller: last4digit,
                       maxLength: 4,
                       keyboardType: TextInputType.number,
@@ -338,7 +355,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                     );
                   case Status.ERROR:
                     return const Center(
-                      child: Text('SOmething went wrong'),
+                      child: Text('Something went wrong'),
                     );
                   case Status.COMPLETED:
                     if (isOnline) {
