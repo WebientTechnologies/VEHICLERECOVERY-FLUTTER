@@ -46,7 +46,14 @@ class _ViewRequestState extends State<ViewRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: ColorConstants.aqua),
+        title: Text(
+          'View Requests',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           // rrc.data.clear();
@@ -142,7 +149,7 @@ class _ViewRequestState extends State<ViewRequest> {
           ],
         ),
       ),
-      drawer: MyDrawer(),
+      //drawer: MyDrawer(),
     );
   }
 }

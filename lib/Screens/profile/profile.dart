@@ -9,6 +9,7 @@ import '../../core/constants/helper.dart';
 import '../../routes/app_routes.dart';
 import '../changePassword/changePassword.dart';
 import '../repoAgent/repoagent.dart';
+import '../viewRequest/viewRequest.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -153,6 +154,38 @@ class _ProfileState extends State<Profile> {
                         ),
                         const Text(
                           'Add Repo Agent',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: ColorConstants.aqua,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              if (showExtra) const Divider(),
+              if (showExtra)
+                GestureDetector(
+                  onTap: () {
+                    Get.to(ViewRequest());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person_add,
+                          color: ColorConstants.aqua,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'View Request',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 17),
                         ),
