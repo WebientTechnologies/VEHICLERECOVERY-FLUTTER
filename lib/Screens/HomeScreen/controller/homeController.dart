@@ -15,6 +15,7 @@ class HomeController extends GetxController {
       <String>['Good Morning', 'Good Afternoon', 'Good Evening'].obs;
   RxInt selectedGreeting = 0.obs;
   RxInt onlineDataCount = 0.obs;
+  RxInt searchHoldReleaseRepoTotal = 0.obs;
 
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
@@ -40,6 +41,10 @@ class HomeController extends GetxController {
       setRxRequestDashboardStatus(Status.COMPLETED);
       setDashboardList(value);
       onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
+      searchHoldReleaseRepoTotal.value = dashboardModel.value.holdCount! +
+          dashboardModel.value.searchCount! +
+          dashboardModel.value.releaseCount! +
+          dashboardModel.value.repoCount!;
     }).onError((error, stackTrace) {
       print(stackTrace);
       print('--------------------');

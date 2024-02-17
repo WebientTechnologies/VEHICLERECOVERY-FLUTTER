@@ -107,9 +107,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
                     GetX(
                       init: UserController(),
                       builder: (cc) {
@@ -155,9 +152,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         )
                       ],
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Image.asset('assets/images/logo_t.png')
                   ],
                 ),
@@ -169,7 +163,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             //       color: ColorConstants.aqua, fontSize: height * 0.03),
             // ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -304,7 +298,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
             ),
             if (showChasisNo == true && showlastdata == false)
               Obx(() {
@@ -527,437 +521,71 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                           length: 4,
                           child: Column(
                             children: [
-                              TabBar(
-                                  onTap: (i) {
-                                    switch (i) {
-                                      case 0:
-                                        // hcc.getGraphWeekApiData("search");
-                                        break;
-                                      case 1:
-                                        hcc.getGraphWeekApiData("release");
-                                        break;
-                                      case 2:
-                                        hcc.getGraphWeekApiData("hold");
-                                        break;
-                                      case 3:
-                                        hcc.getGraphWeekApiData("repo");
-                                        break;
-                                    }
-                                  },
-                                  tabs: const [
-                                    Tab(
-                                      text: 'Dashboard',
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    height: 150,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: ColorConstants.aqua,
+                                        borderRadius:
+                                            BorderRadius.circular(18)),
+                                    child: Center(
+                                      child: Text(
+                                        'Offline Data \n${sc.offlineDataCount.value}',
+                                        style: TextStyles.normalheadWhite20DM,
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    Tab(
-                                      text: 'Release',
-                                    ),
-                                    Tab(
-                                      text: 'Hold',
-                                    ),
-                                    Tab(
-                                      text: 'Repo',
-                                    ),
-                                  ]),
-                              SizedBox(
-                                width: Get.width * 0.95,
-                                height: 250,
-                                child: TabBarView(children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Container(
-                                        height: 150,
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18)),
-                                        child: Center(
-                                          child: Text(
-                                            'Offline Data \n${sc.offlineDataCount.value}',
-                                            style:
-                                                TextStyles.normalheadWhite20DM,
-                                            textAlign: TextAlign.center,
-                                          ),
+                                  ),
+                                  Container(
+                                    height: 150,
+                                    width: 150,
+                                    decoration: BoxDecoration(
+                                        color: ColorConstants.aqua,
+                                        borderRadius:
+                                            BorderRadius.circular(18)),
+                                    child: Center(
+                                      child: Obx(
+                                        () => Text(
+                                          'Online Data \n${hc.onlineDataCount.value}',
+                                          style: TextStyles.normalheadWhite20DM,
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
-                                      Container(
-                                        height: 150,
-                                        width: 150,
-                                        decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18)),
-                                        child: Center(
-                                          child: Obx(
-                                            () => Text(
-                                              'Online Data \n${hc.onlineDataCount.value}',
-                                              style: TextStyles
-                                                  .normalheadWhite20DM,
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                    ),
                                   ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 60),
-                                        width: Get.width * 1,
-                                        height: 190,
-                                        child: LineChart(LineChartData(
-                                            maxX: 7,
-                                            clipData: const FlClipData.all(),
-                                            borderData: FlBorderData(
-                                                border: const Border(
-                                                    bottom: BorderSide(),
-                                                    left: BorderSide())),
-                                            backgroundColor:
-                                                ColorConstants.coalBlack,
-                                            titlesData: FlTitlesData(
-                                                bottomTitles: AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: true,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          String text = '';
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              text = 'Sun';
-                                                              break;
-                                                            case 1:
-                                                              text = 'Mon';
-                                                              break;
-                                                            case 2:
-                                                              text = 'Tue';
-                                                              break;
-                                                            case 3:
-                                                              text = 'Wed';
-                                                              break;
-                                                            case 4:
-                                                              text = 'Thu';
-                                                              break;
-                                                            case 5:
-                                                              text = 'Fri';
-                                                              break;
-                                                            case 6:
-                                                              text = 'Sat';
-                                                              break;
-                                                            case 7:
-                                                              text = 'Sun';
-                                                              break;
-                                                          }
-
-                                                          return Text(text);
-                                                        })),
-                                                topTitles: AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: false,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          String text = '';
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              text = 'Sun';
-                                                              break;
-                                                            case 1:
-                                                              text = 'Mon';
-                                                              break;
-                                                            case 2:
-                                                              text = 'Tue';
-                                                              break;
-                                                            case 3:
-                                                              text = 'Wed';
-                                                              break;
-                                                            case 4:
-                                                              text = 'Thu';
-                                                              break;
-                                                            case 5:
-                                                              text = 'Fri';
-                                                              break;
-                                                            case 6:
-                                                              text = 'Sat';
-                                                              break;
-                                                            case 7:
-                                                              text = 'Sun';
-                                                              break;
-                                                          }
-
-                                                          return Text(text);
-                                                        })),
-                                                rightTitles: const AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: false))),
-                                            lineBarsData: [
-                                              LineChartBarData(
-                                                  belowBarData: BarAreaData(
-                                                      show: true,
-                                                      gradient: LinearGradient(
-                                                          transform:
-                                                              const GradientRotation(
-                                                                  90),
-                                                          colors: [
-                                                            ColorConstants.aqua,
-                                                            ColorConstants
-                                                                .coalBlack,
-                                                          ])),
-                                                  shadow: Shadow(
-                                                      color:
-                                                          ColorConstants.aqua),
-                                                  isCurved: true,
-                                                  spots: hcc.weekData
-                                                      .map((e) => FlSpot(
-                                                          e.count!.toDouble(),
-                                                          e.totalVehicle!
-                                                              .toDouble()))
-                                                      .toList())
-                                            ])),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 60),
-                                        width: Get.width * 1,
-                                        height: 190,
-                                        child: LineChart(LineChartData(
-                                            maxX: 7,
-                                            clipData: const FlClipData.all(),
-                                            borderData: FlBorderData(
-                                                border: const Border(
-                                                    bottom: BorderSide(),
-                                                    left: BorderSide())),
-                                            backgroundColor:
-                                                ColorConstants.coalBlack,
-                                            titlesData: FlTitlesData(
-                                                bottomTitles: AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: true,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          String text = '';
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              text = 'Sun';
-                                                              break;
-                                                            case 1:
-                                                              text = 'Mon';
-                                                              break;
-                                                            case 2:
-                                                              text = 'Tue';
-                                                              break;
-                                                            case 3:
-                                                              text = 'Wed';
-                                                              break;
-                                                            case 4:
-                                                              text = 'Thu';
-                                                              break;
-                                                            case 5:
-                                                              text = 'Fri';
-                                                              break;
-                                                            case 6:
-                                                              text = 'Sat';
-                                                              break;
-                                                            case 7:
-                                                              text = 'Sun';
-                                                              break;
-                                                          }
-
-                                                          return Text(text);
-                                                        })),
-                                                topTitles: AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: false,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          String text = '';
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              text = 'Sun';
-                                                              break;
-                                                            case 1:
-                                                              text = 'Mon';
-                                                              break;
-                                                            case 2:
-                                                              text = 'Tue';
-                                                              break;
-                                                            case 3:
-                                                              text = 'Wed';
-                                                              break;
-                                                            case 4:
-                                                              text = 'Thu';
-                                                              break;
-                                                            case 5:
-                                                              text = 'Fri';
-                                                              break;
-                                                            case 6:
-                                                              text = 'Sat';
-                                                              break;
-                                                            case 7:
-                                                              text = 'Sun';
-                                                              break;
-                                                          }
-
-                                                          return Text(text);
-                                                        })),
-                                                rightTitles: const AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: false))),
-                                            lineBarsData: [
-                                              LineChartBarData(
-                                                  belowBarData: BarAreaData(
-                                                      show: true,
-                                                      gradient: LinearGradient(
-                                                          transform:
-                                                              const GradientRotation(
-                                                                  90),
-                                                          colors: [
-                                                            ColorConstants.aqua,
-                                                            ColorConstants
-                                                                .coalBlack,
-                                                          ])),
-                                                  shadow: Shadow(
-                                                      color:
-                                                          ColorConstants.aqua),
-                                                  isCurved: true,
-                                                  spots: hcc.weekData
-                                                      .map((e) => FlSpot(
-                                                          e.count!.toDouble(),
-                                                          e.totalVehicle!
-                                                              .toDouble()))
-                                                      .toList())
-                                            ])),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 60),
-                                        width: Get.width * 1,
-                                        height: 190,
-                                        child: LineChart(LineChartData(
-                                            maxX: 7,
-                                            clipData: const FlClipData.all(),
-                                            borderData: FlBorderData(
-                                                border: const Border(
-                                                    bottom: BorderSide(),
-                                                    left: BorderSide())),
-                                            backgroundColor:
-                                                ColorConstants.coalBlack,
-                                            titlesData: FlTitlesData(
-                                                bottomTitles: AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: true,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          String text = '';
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              text = 'Sun';
-                                                              break;
-                                                            case 1:
-                                                              text = 'Mon';
-                                                              break;
-                                                            case 2:
-                                                              text = 'Tue';
-                                                              break;
-                                                            case 3:
-                                                              text = 'Wed';
-                                                              break;
-                                                            case 4:
-                                                              text = 'Thu';
-                                                              break;
-                                                            case 5:
-                                                              text = 'Fri';
-                                                              break;
-                                                            case 6:
-                                                              text = 'Sat';
-                                                              break;
-                                                            case 7:
-                                                              text = 'Sun';
-                                                              break;
-                                                          }
-
-                                                          return Text(text);
-                                                        })),
-                                                topTitles: AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: false,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          String text = '';
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              text = 'Sun';
-                                                              break;
-                                                            case 1:
-                                                              text = 'Mon';
-                                                              break;
-                                                            case 2:
-                                                              text = 'Tue';
-                                                              break;
-                                                            case 3:
-                                                              text = 'Wed';
-                                                              break;
-                                                            case 4:
-                                                              text = 'Thu';
-                                                              break;
-                                                            case 5:
-                                                              text = 'Fri';
-                                                              break;
-                                                            case 6:
-                                                              text = 'Sat';
-                                                              break;
-                                                            case 7:
-                                                              text = 'Sun';
-                                                              break;
-                                                          }
-
-                                                          return Text(text);
-                                                        })),
-                                                rightTitles: const AxisTitles(
-                                                    sideTitles: SideTitles(
-                                                        showTitles: false))),
-                                            lineBarsData: [
-                                              LineChartBarData(
-                                                  belowBarData: BarAreaData(
-                                                      show: true,
-                                                      gradient: LinearGradient(
-                                                          transform:
-                                                              const GradientRotation(
-                                                                  90),
-                                                          colors: [
-                                                            ColorConstants.aqua,
-                                                            ColorConstants
-                                                                .coalBlack,
-                                                          ])),
-                                                  shadow: Shadow(
-                                                      color:
-                                                          ColorConstants.aqua),
-                                                  isCurved: true,
-                                                  spots: hcc.weekData
-                                                      .map((e) => FlSpot(
-                                                          e.count!.toDouble(),
-                                                          e.totalVehicle!
-                                                              .toDouble()))
-                                                      .toList())
-                                            ])),
-                                      ),
-                                    ],
-                                  ),
-                                ]),
+                                ],
                               ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              SizedBox(
+                                width: Get.width * 1,
+                                height: 200,
+                                child: PieChart(PieChartData(sections: [
+                                  PieChartSectionData(
+                                      badgeWidget: Text('Release'),
+                                      badgePositionPercentageOffset: 1.5,
+                                      color: Colors.red,
+                                      value: hc
+                                          .dashboardModel.value.releaseCount!
+                                          .toDouble()),
+                                  PieChartSectionData(
+                                      badgeWidget: Text('Hold'),
+                                      badgePositionPercentageOffset: 1.5,
+                                      color: ColorConstants.orangeFC8543,
+                                      value: hc.dashboardModel.value.holdCount!
+                                          .toDouble()),
+                                  PieChartSectionData(
+                                      badgeWidget: Text('Repo'),
+                                      badgePositionPercentageOffset: 1.5,
+                                      value: hc.dashboardModel.value.repoCount!
+                                          .toDouble()),
+                                ])),
+                              )
                             ],
                           ),
                         );
