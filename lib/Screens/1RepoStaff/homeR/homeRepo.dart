@@ -568,7 +568,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 child: PieChart(PieChartData(sections: [
                                   PieChartSectionData(
                                       badgeWidget: Text('Release'),
-                                      badgePositionPercentageOffset: 1.5,
+                                      badgePositionPercentageOffset: 1.7,
                                       color: Colors.red,
                                       value: hc
                                           .dashboardModel.value.releaseCount!

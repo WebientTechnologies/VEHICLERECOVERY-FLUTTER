@@ -62,6 +62,8 @@ Future<void> initializeService() async {
           AndroidFlutterLocalNotificationsPlugin>()!
       .requestNotificationsPermission();
 
+  Helper.handleLocationPermission();
+
   final initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/ic_launcher');
   final initializationSettings = InitializationSettings(

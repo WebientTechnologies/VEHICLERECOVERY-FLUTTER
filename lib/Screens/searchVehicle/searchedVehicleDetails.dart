@@ -297,7 +297,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                   String msg =
                       '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Detail:${data.loadStatus}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 ''';
-                  final url = "https://wa.me/919075069326?text=$msg";
+                  final url = "https://wa.me?text=$msg";
 
 //do not forgot to enter your country code instead of 91 and instead of XXXXXXXXXX enter phone number.
 
