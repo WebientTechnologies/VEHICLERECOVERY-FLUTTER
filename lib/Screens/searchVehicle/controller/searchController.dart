@@ -53,8 +53,7 @@ class VehicleSearchController extends GetxController {
       searchbyChasisNoModel.value = value;
 
   final rxSeezerListStatus = Status.LOADING.obs;
-  void setRxSeezerListStatus(Status value) =>
-      rxRequestsearchbyChasisNoStatus.value = value;
+  void setRxSeezerListStatus(Status value) => rxSeezerListStatus.value = value;
   final seezerModel = SeezerModel().obs;
   void setSeezerModel(SeezerModel value) => seezerModel.value = value;
 
@@ -149,8 +148,11 @@ class VehicleSearchController extends GetxController {
     });
   }
 
-  Future<void> updateVehicleHoldRepo(BuildContext context, String id) async {
-    var url = Uri.parse('${ApiEndpoints.holdvehicleByrepoagent}');
+  Future<void> updateVehicleHoldRepo(
+      BuildContext context, String id, bool isStaff) async {
+    var url = Uri.parse(!isStaff
+        ? '${ApiEndpoints.changeVehicleStatusByStaff}$id'
+        : '${ApiEndpoints.holdvehicleByrepoagent}');
 
     print(url);
 
@@ -164,11 +166,20 @@ class VehicleSearchController extends GetxController {
           );
         });
     try {
-      var data = {
-        "id": id,
-        "loadStatus": selectedLoadStatus.value,
-        "loadItem": loadItemCont.value.text
-      };
+      var data = null;
+      if (isStaff)
+        data = {
+          "id": id,
+          "loadStatus": selectedLoadStatus.value,
+          "loadItem": loadItemCont.value.text
+        };
+      if (!isStaff)
+        data = {
+          "status": "hold",
+          "loadStatus": selectedLoadStatus.value,
+          "loadItem": loadItemCont.value.text,
+          "seezerId": selectedSeezer.value
+        };
       print(data);
       var response = await http.put(
         url,

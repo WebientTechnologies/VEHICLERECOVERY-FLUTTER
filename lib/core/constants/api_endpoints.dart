@@ -37,4 +37,6 @@ class ApiEndpoints {
   static const String releaseGraphData = '${baseurl}release-graph';
   static const String repoGraphData = '${baseurl}repo-graph';
   static const String getAllRepoAgents = '${baseurl}get-all-repo-agents';
+  static const String changeVehicleStatusByStaff =
+      '${baseurl}change-vehicle-status-by-staff/';
 }

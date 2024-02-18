@@ -410,7 +410,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
           children: [
             PCIconButton(
               onPressed: () {
-                sc.updateVehicleHoldRepo(context, data.id);
+                sc.updateVehicleHoldRepo(context, data.id, isRepoAgent);
               },
               text: 'Hold',
               width: Get.width * 0.8,
