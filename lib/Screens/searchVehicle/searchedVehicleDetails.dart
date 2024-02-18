@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
+import 'package:vinayak/core/response/status.dart';
 import 'package:vinayak/widget/containerText.dart';
 import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/pciconBtn.dart';
@@ -32,6 +33,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
     role = Get.arguments[1];
     print('lengthhhh ${Get.arguments.length}');
     isOnline = Get.arguments[2];
+    sc.getAllSeezerData();
     if (role == 'officeStaff') {
       isRepoAgent = false;
     } else {
@@ -234,7 +236,59 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                   )
                 : Column(
                     children: [
-                      buildInfoRow('Seezer Name', height, width, 'name'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Seezer Name',
+                            style: TextStyle(
+                                fontSize: height * 0.023,
+                                color: ColorConstants.aqua),
+                          ),
+                          Container(
+                            width: Get.width * 0.5,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: ColorConstants.aqua, width: 2),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Center(
+                              child: Obx(() {
+                                switch (sc.rxSeezerListStatus.value) {
+                                  case Status.LOADING:
+                                    return Center(
+                                      child: SizedBox(
+                                          width: 20,
+                                          height: 20,
+                                          child: CircularProgressIndicator()),
+                                    );
+
+                                  case Status.ERROR:
+                                    return Text('Error');
+                                  case Status.COMPLETED:
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 10.0),
+                                      child: DropdownButton(
+                                          underline: const SizedBox(),
+                                          isExpanded: true,
+                                          items: sc.seezerModel.value.agents!
+                                              .map((e) => DropdownMenuItem(
+                                                    child: Text(e.name!),
+                                                    value: e.sId,
+                                                  ))
+                                              .toList(),
+                                          value: sc.selectedSeezer.value,
+                                          onChanged: (value) {
+                                            sc.selectedSeezer.value = value!;
+                                          }),
+                                    );
+                                }
+                              }),
+                            ),
+                          )
+                        ],
+                      ),
                       buildInfoRow(
                           'Registeration No', height, width, data.regNo ?? ''),
                       buildInfoRow('Customer Name', height, width,

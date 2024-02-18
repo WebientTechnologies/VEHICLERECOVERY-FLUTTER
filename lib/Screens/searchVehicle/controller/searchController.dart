@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:vinayak/Screens/searchVehicle/model/seezer_model.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/network/network_api.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +26,7 @@ class VehicleSearchController extends GetxController {
   RxList<VehicleModel> offlineDataFiltered = <VehicleModel>[].obs;
 
   RxString selectedLoadStatus = "empty".obs;
+  RxString selectedSeezer = "".obs;
   List<DropdownMenuItem> loadStatus = [
     const DropdownMenuItem(
       value: "empty",
@@ -49,6 +51,12 @@ class VehicleSearchController extends GetxController {
   final searchbyChasisNoModel = GetVehicleByChasisNoModel().obs;
   void setsearchbyChasisNoList(GetVehicleByChasisNoModel value) =>
       searchbyChasisNoModel.value = value;
+
+  final rxSeezerListStatus = Status.LOADING.obs;
+  void setRxSeezerListStatus(Status value) =>
+      rxRequestsearchbyChasisNoStatus.value = value;
+  final seezerModel = SeezerModel().obs;
+  void setSeezerModel(SeezerModel value) => seezerModel.value = value;
 
   Future<GetSearchByLastDigitModel> getAllSearchByLastDigitApi(
       String lastDigit) async {
@@ -114,6 +122,30 @@ class VehicleSearchController extends GetxController {
       // print('--------------------');
       // print(error);
       setRxRequestSearchByChasisNoStatus(Status.ERROR);
+    });
+  }
+
+  Future<SeezerModel> _getAllSeezerApi() async {
+    setRxRequestSearchByChasisNoStatus(Status.LOADING);
+    var response = await _api.getApi(ApiEndpoints.getAllRepoAgents);
+
+    print(response);
+
+    return SeezerModel.fromJson(response);
+  }
+
+  void getAllSeezerData() {
+    _getAllSeezerApi().then((value) {
+      setSeezerModel(value);
+      if (value.agents != null) {
+        selectedSeezer.value = value.agents![0].sId!;
+      }
+      setRxSeezerListStatus(Status.COMPLETED);
+    }).onError((error, stackTrace) {
+      // print(stackTrace);
+      // print('--------------------');
+      // print(error);
+      setRxSeezerListStatus(Status.ERROR);
     });
   }
 
