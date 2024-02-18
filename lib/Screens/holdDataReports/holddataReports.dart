@@ -133,7 +133,9 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                             custName: hdc.data[index].customerName ?? '',
                             model: 'model',
                             regNo: hdc.data[index].regNo ?? '',
-                            seezerName: 'seezerName',
+                            seezerName: hdc.data[index].seezerId != null
+                                ? hdc.data[index].seezerId!.name!
+                                : '',
                             backgroundColor: bgColor,
                             uploadDate: '',
                           );

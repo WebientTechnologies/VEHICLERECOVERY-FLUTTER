@@ -47,6 +47,7 @@ class VehiclesList {
   String? createdAt;
   String? updatedAt;
   int? v;
+  SeezerId? seezerId;
 
   VehiclesList(
       {this.id,
@@ -115,6 +116,25 @@ class VehiclesList {
     _data["createdAt"] = createdAt;
     _data["updatedAt"] = updatedAt;
     _data["__v"] = v;
+    return _data;
+  }
+}
+
+class SeezerId {
+  String? id;
+  String? name;
+
+  SeezerId({this.id, this.name});
+
+  SeezerId.fromJson(Map<String, dynamic> json) {
+    id = json["_id"];
+    name = json["name"];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> _data = <String, dynamic>{};
+    _data["_id"] = id;
+    _data["name"] = name;
     return _data;
   }
 }
