@@ -34,7 +34,7 @@ class _HoldDataReportsState extends State<HoldDataReports> {
         // Load more data when user reaches the end
         currentPage++;
         hdc.getHoldRepoData(
-            hdc.searchCont.value.text, currentPage, false, true);
+            hdc.searchCont.value.text, currentPage, false, false);
       }
     });
   }

@@ -265,6 +265,78 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                       buildInfoRow(
                           'Last Digit', height, width, data.lastDigit ?? ''),
                       buildInfoRow('Status', height, width, data.status ?? ''),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Load Status',
+                            style: TextStyle(
+                                fontSize: height * 0.023,
+                                color: ColorConstants.aqua),
+                          ),
+                          Container(
+                            width: Get.width * 0.5,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: ColorConstants.aqua, width: 2),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Center(
+                              child: Obx(
+                                () => Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: DropdownButton(
+                                      underline: const SizedBox(),
+                                      isExpanded: true,
+                                      items: sc.loadStatus,
+                                      value: sc.selectedLoadStatus.value,
+                                      onChanged: (value) {
+                                        sc.selectedLoadStatus.value = value!;
+                                      }),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Obx(
+                        () => Visibility(
+                          visible: sc.selectedLoadStatus.value
+                              .toLowerCase()
+                              .contains('g'),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Load Item',
+                                style: TextStyle(
+                                    fontSize: height * 0.023,
+                                    color: ColorConstants.aqua),
+                              ),
+                              Container(
+                                  width: Get.width * 0.5,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: ColorConstants.aqua, width: 2),
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: TextFormField(
+                                      decoration: const InputDecoration(
+                                          hintText: 'Load Item',
+                                          border: InputBorder.none),
+                                      controller: sc.loadItemCont.value,
+                                    ),
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+
                       buildInfoRow('DL Code', height, width, ''),
                       buildInfoRow('TBR Flag', height, width, ''),
                       buildInfoRow('Executive Name', height, width, ''),

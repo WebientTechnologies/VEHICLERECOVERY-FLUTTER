@@ -1,6 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/constants/helper.dart';
@@ -41,7 +42,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     super.initState();
     uc.loadUserDetails();
     checkMode();
-
+    _getCurrentPosition();
     DateTime today = DateTime.now();
     if (today.hour > 0 && today.hour < 12) {
       hc.selectedGreeting.value = 0;
@@ -87,6 +88,20 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             offlinePageNumber > 0 ? offlinePageNumber : 1);
       }
     }
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await Helper.handleLocationPermission();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      await Helper.setStringPreferences(
+          SharedPreferencesVar.lat, position.latitude.toString());
+      await Helper.setStringPreferences(
+          SharedPreferencesVar.long, position.longitude.toString());
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   @override

@@ -71,7 +71,7 @@ class _ReportsState extends State<Reports> {
                     if (showExtra)
                       Container(
                         width: 120,
-                        height: 150,
+                        height: 100,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             gradient: LinearGradient(
@@ -86,8 +86,7 @@ class _ReportsState extends State<Reports> {
                                       ? ColorConstants.midGreyEAEAEA
                                       : ColorConstants.back
                                 ])),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, top: 20),
+                        child: Center(
                           child: Text(
                             'Search Data',
                             style: TextStyle(
@@ -99,7 +98,7 @@ class _ReportsState extends State<Reports> {
                       ),
                     Container(
                       width: 120,
-                      height: 150,
+                      height: 100,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
@@ -114,8 +113,7 @@ class _ReportsState extends State<Reports> {
                                     ? ColorConstants.midGreyEAEAEA
                                     : ColorConstants.back
                               ])),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 20),
+                      child: Center(
                         child: Text(
                           'Hold Data',
                           style: TextStyle(
@@ -127,7 +125,7 @@ class _ReportsState extends State<Reports> {
                     ),
                     Container(
                       width: 120,
-                      height: 150,
+                      height: 100,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
@@ -142,8 +140,7 @@ class _ReportsState extends State<Reports> {
                                     ? ColorConstants.midGreyEAEAEA
                                     : ColorConstants.back
                               ])),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 20),
+                      child: Center(
                         child: Text(
                           'Repo Data',
                           style: TextStyle(
@@ -155,7 +152,7 @@ class _ReportsState extends State<Reports> {
                     ),
                     Container(
                       width: 120,
-                      height: 150,
+                      height: 100,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
@@ -170,8 +167,7 @@ class _ReportsState extends State<Reports> {
                                     ? ColorConstants.midGreyEAEAEA
                                     : ColorConstants.back
                               ])),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 20),
+                      child: Center(
                         child: Text(
                           'Release Data',
                           style: TextStyle(

@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
@@ -37,6 +38,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
   void initState() {
     super.initState();
     checkMode();
+    _getCurrentPosition();
     hc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
     DateTime today = DateTime.now();
@@ -81,6 +83,20 @@ class _HomeSCreenState extends State<HomeSCreen> {
             offlinePageNumber > 0 ? offlinePageNumber : 1);
       }
     }
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await Helper.handleLocationPermission();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) async {
+      await Helper.setStringPreferences(
+          SharedPreferencesVar.lat, position.latitude.toString());
+      await Helper.setStringPreferences(
+          SharedPreferencesVar.long, position.longitude.toString());
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   @override

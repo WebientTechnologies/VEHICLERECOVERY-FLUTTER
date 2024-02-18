@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/network/network_api.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/constants/api_endpoints.dart';
@@ -174,13 +175,17 @@ class VehicleSearchController extends GetxController {
     var token = await Helper.getStringPreferences('token');
     print(token);
 
+    String lat = await Helper.getStringPreferences(SharedPreferencesVar.lat);
+    String longi = await Helper.getStringPreferences(SharedPreferencesVar.long);
+    var body = {"latitude": lat, "longitude": longi};
+    print(body);
     try {
       var response = await http.put(
         url,
-        // body: jsonEncode(),
+        body: jsonEncode(body),
         headers: {
           'Authorization': 'Bearer $token',
-          // 'Content-Type': 'application/json',
+          'Content-Type': 'application/json',
         },
       );
 
@@ -194,7 +199,7 @@ class VehicleSearchController extends GetxController {
         // Handle other status codes or errors
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Message sent not Updated');
+      Fluttertoast.showToast(msg: 'Message sending failed');
 
       print('Error: $error');
       // Handle error
