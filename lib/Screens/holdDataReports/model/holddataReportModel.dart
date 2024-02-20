@@ -48,6 +48,8 @@ class VehiclesList {
   String? updatedAt;
   int? v;
   SeezerId? seezerId;
+  String? loadItem;
+  String? maker;
 
   VehiclesList(
       {this.id,
@@ -69,7 +71,10 @@ class VehiclesList {
       this.fileName,
       this.createdAt,
       this.updatedAt,
-      this.v});
+      this.v,
+      this.seezerId,
+      this.loadItem,
+      this.maker});
 
   VehiclesList.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
@@ -91,7 +96,11 @@ class VehiclesList {
     fileName = json["fileName"];
     createdAt = json["createdAt"];
     updatedAt = json["updatedAt"];
+    loadItem = json["loadItem"];
+    maker = json["maker"];
     v = json["__v"];
+    seezerId =
+        json["seezerId"] == null ? null : SeezerId.fromJson(json["seezerId"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -115,7 +124,12 @@ class VehiclesList {
     _data["fileName"] = fileName;
     _data["createdAt"] = createdAt;
     _data["updatedAt"] = updatedAt;
+    _data["loadItem"] = loadItem;
+    _data["maker"] = maker;
     _data["__v"] = v;
+    if (seezerId != null) {
+      _data["seezerId"] = seezerId?.toJson();
+    }
     return _data;
   }
 }

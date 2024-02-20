@@ -552,7 +552,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 Column(
                   children: [
                     Container(
-                      height: 50,
+                      height: 40,
                       width: width * 0.9,
                       decoration: BoxDecoration(
                           color: ColorConstants.aqua,
@@ -560,7 +560,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       child: Center(
                         child: Text(
                           'LAST UPDATE $lastUpdateDate',
-                          style: TextStyles.normalheadWhite20DM,
+                          style: TextStyle(
+                              fontSize: 17, color: ColorConstants.white),
                         ),
                       ),
                     ),
@@ -583,8 +584,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Container(
-                                    height: 150,
-                                    width: 150,
+                                    height: 120,
+                                    width: 120,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:
@@ -592,14 +593,16 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     child: Center(
                                       child: Text(
                                         'Offline Data \n${sc.offlineDataCount.value}',
-                                        style: TextStyles.normalheadWhite20DM,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            color: ColorConstants.white),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    height: 150,
-                                    width: 150,
+                                    height: 120,
+                                    width: 120,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:
@@ -608,7 +611,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       child: Obx(
                                         () => Text(
                                           'Online Data \n${hc.onlineDataCount.value}',
-                                          style: TextStyles.normalheadWhite20DM,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              color: ColorConstants.white),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -621,7 +626,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               ),
                               SizedBox(
                                 width: Get.width * 1,
-                                height: 200,
+                                height: 170,
                                 child: PieChart(PieChartData(sections: [
                                   PieChartSectionData(
                                       badgeWidget: Text('Search'),

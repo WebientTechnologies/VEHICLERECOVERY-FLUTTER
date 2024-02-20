@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/widget/myappbar.dart';
+import 'package:vinayak/widget/repoContAgent.dart';
 
 import '../../core/response/status.dart';
 import '../../widget/repoCont.dart';
@@ -21,12 +22,13 @@ class _HoldDataReportsState extends State<HoldDataReports> {
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
   int currentPage = 1;
   ScrollController _scrollController = ScrollController();
+  bool showExtra = false;
 
   @override
   void initState() {
     super.initState();
+    load();
     hdc.getHoldRepoData('', 1, false, true);
-
     // Add a listener to detect when user scrolls to the end of the list
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -37,6 +39,12 @@ class _HoldDataReportsState extends State<HoldDataReports> {
             hdc.searchCont.value.text, currentPage, false, false);
       }
     });
+  }
+
+  Future load() async {
+    showExtra = uc.userDetails['role'] == 'office-staff' ? true : false;
+
+    setState(() {});
   }
 
   @override
@@ -126,19 +134,29 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                           Color bgColor = index % 2 == 0
                               ? ColorConstants.back
                               : ColorConstants.aqua;
-                          return HoldRepoDetailsWidget(
-                            bankName: hdc.data[index].bankName ?? '',
-                            chasisNo: hdc.data[index].chasisNo ?? '',
-                            id: hdc.data[index].id ?? '',
-                            custName: hdc.data[index].customerName ?? '',
-                            model: 'model',
-                            regNo: hdc.data[index].regNo ?? '',
-                            seezerName: hdc.data[index].seezerId != null
-                                ? hdc.data[index].seezerId!.name!
-                                : '',
-                            backgroundColor: bgColor,
-                            uploadDate: '',
-                          );
+                          return showExtra
+                              ? HoldRepoDetailsWidget(
+                                  bankName: hdc.data[index].bankName ?? '',
+                                  chasisNo: hdc.data[index].chasisNo ?? '',
+                                  id: hdc.data[index].id ?? '',
+                                  custName: hdc.data[index].customerName ?? '',
+                                  model: 'model',
+                                  regNo: hdc.data[index].regNo ?? '',
+                                  seezerName: hdc.data[index].seezerId != null
+                                      ? hdc.data[index].seezerId!.name!
+                                      : '',
+                                  backgroundColor: bgColor,
+                                  uploadDate: '',
+                                )
+                              : HoldRepoDetailsWidgetAgent(
+                                  bankName: hdc.data[index].bankName ?? '',
+                                  maker: hdc.data[index].maker ?? '',
+                                  loadStatus: hdc.data[index].loadStatus ?? '',
+                                  custName: hdc.data[index].customerName ?? '',
+                                  loadItem: hdc.data[index].loadItem ?? '',
+                                  regNo: hdc.data[index].regNo ?? '',
+                                  backgroundColor: bgColor,
+                                );
                         },
                       ),
                     );

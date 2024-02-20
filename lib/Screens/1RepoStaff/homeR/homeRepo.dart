@@ -508,7 +508,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
               Column(
                 children: [
                   Container(
-                    height: 50,
+                    height: 40,
                     width: width * 0.95,
                     decoration: BoxDecoration(
                         color: ColorConstants.aqua,
@@ -516,12 +516,13 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     child: Center(
                       child: Text(
                         'LAST UPDATE $lastUpdateDate',
-                        style: TextStyles.normalheadWhite20DM,
+                        style: TextStyle(
+                            fontSize: 17, color: ColorConstants.white),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.02,
+                    height: 10,
                   ),
                   Obx(() {
                     switch (hc.rxRequestDashboardStatus.value) {
@@ -541,8 +542,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Container(
-                                    height: 150,
-                                    width: 150,
+                                    height: 120,
+                                    width: 120,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:
@@ -550,14 +551,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     child: Center(
                                       child: Text(
                                         'Offline Data \n${sc.offlineDataCount.value}',
-                                        style: TextStyles.normalheadWhite20DM,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            color: ColorConstants.white),
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    height: 150,
-                                    width: 150,
+                                    height: 120,
+                                    width: 120,
                                     decoration: BoxDecoration(
                                         color: ColorConstants.aqua,
                                         borderRadius:
@@ -566,7 +569,9 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                       child: Obx(
                                         () => Text(
                                           'Online Data \n${hc.onlineDataCount.value}',
-                                          style: TextStyles.normalheadWhite20DM,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              color: ColorConstants.white),
                                           textAlign: TextAlign.center,
                                         ),
                                       ),
@@ -579,7 +584,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               ),
                               SizedBox(
                                 width: Get.width * 1,
-                                height: 200,
+                                height: 170,
                                 child: PieChart(PieChartData(sections: [
                                   PieChartSectionData(
                                       badgeWidget: Text('Release'),

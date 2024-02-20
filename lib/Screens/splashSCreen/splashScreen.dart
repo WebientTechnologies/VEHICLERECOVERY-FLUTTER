@@ -69,9 +69,25 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
         backgroundColor: ColorConstants.aqua,
         body: Center(
-          child: Image.asset(
-            'assets/images/vad.png',
-            width: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/vad.png',
+                width: 200,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Vinayak Recovery',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: ColorConstants.white,
+                    fontSize: 22),
+                textAlign: TextAlign.center,
+              )
+            ],
           ),
         ));
   }
