@@ -15,10 +15,10 @@ class HomeDashboardRepoModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> _data = <String, dynamic>{};
-    _data["holdCount"] = holdCount;
-    _data["repoCount"] = repoCount;
-    _data["releaseCount"] = releaseCount;
-    _data["totalOnlineData"] = totalOnlineData;
+    _data["holdCount"] = holdCount ?? 0.0;
+    _data["repoCount"] = repoCount ?? 0.0;
+    _data["releaseCount"] = releaseCount ?? 0.0;
+    _data["totalOnlineData"] = totalOnlineData ?? 0.0;
     return _data;
   }
 }

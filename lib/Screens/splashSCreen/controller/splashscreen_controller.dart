@@ -116,11 +116,15 @@ class SplashScreenController extends GetxController {
         var now = DateTime.now();
         var formatter = DateFormat('yyyy-MM-dd');
         String formattedDate = formatter.format(now);
+        dynamic currentTime = DateFormat.jm().format(DateTime.now());
 
         print(formattedDate);
 
-        Helper.setStringPreferences(
+        await Helper.setStringPreferences(
             SharedPreferencesVar.lastUpdateDate, formattedDate);
+        await Helper.setStringPreferences(
+            SharedPreferencesVar.lastUpdateTime, currentTime);
+
         if (uc.userDetails['role'] == 'repo-agent') {
           Get.offAll(HomeScreenRepoStaff());
         } else {

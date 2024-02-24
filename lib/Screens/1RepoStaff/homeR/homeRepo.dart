@@ -36,7 +36,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   bool showlastdata = false;
   bool showChasisNo = false;
   bool isOnline = true;
-  String mode = "Online", lastUpdateDate = "";
+  String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
   @override
   void initState() {
     super.initState();
@@ -60,6 +60,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
+    lastUpdateTime =
+        await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateTime);
     mode = isOnline ? "Online" : "Offline";
 
     final vehicleDb = VehicleDb();
@@ -362,8 +364,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     sc.searchbyChasisNoModel.value.data?[index]
                                             .regNo ??
                                         '',
-                                    style:
-                                        TextStyle(color: ColorConstants.white),
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
                                   ))),
                             );
                           },
@@ -400,8 +404,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   child: Center(
                                       child: Text(
                                     sc.offlineDataFiltered[index].regNo ?? '',
-                                    style:
-                                        TextStyle(color: ColorConstants.white),
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
                                   ))),
                             );
                           },
@@ -457,7 +463,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                         '',
                                     style: TextStyle(
                                         color: ColorConstants.white,
-                                        fontWeight: FontWeight.w500),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
                                   ))),
                             );
                           },
@@ -494,8 +501,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   child: Center(
                                       child: Text(
                                     sc.offlineDataFiltered[index].regNo ?? '',
-                                    style:
-                                        TextStyle(color: ColorConstants.white),
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
                                   ))),
                             );
                           },
@@ -515,7 +524,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         borderRadius: BorderRadius.circular(18)),
                     child: Center(
                       child: Text(
-                        'LAST UPDATE $lastUpdateDate',
+                        'LAST UPDATE $lastUpdateDate  $lastUpdateTime',
                         style: TextStyle(
                             fontSize: 17, color: ColorConstants.white),
                       ),

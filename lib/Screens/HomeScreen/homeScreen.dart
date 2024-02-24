@@ -32,7 +32,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
   TextEditingController chasisNoCont = TextEditingController();
   bool showChasisNo = false;
   bool isOnline = true;
-  String mode = "Online", lastUpdateDate = "";
+  String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
   bool showlastdata = false;
   @override
   void initState() {
@@ -56,6 +56,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
+    lastUpdateTime =
+        await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateTime);
     mode = isOnline ? "Online" : "Offline";
     final vehicleDb = VehicleDb();
     sc.offlineData.value = await vehicleDb.fetchAll();
@@ -406,7 +408,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                               .data?[index].regNo ??
                                           '',
                                       style: TextStyle(
-                                          color: ColorConstants.white),
+                                          color: ColorConstants.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ))),
                               );
                             },
@@ -444,7 +448,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                         child: Text(
                                       sc.offlineDataFiltered[index].regNo ?? '',
                                       style: TextStyle(
-                                          color: ColorConstants.white),
+                                          color: ColorConstants.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ))),
                               );
                             },
@@ -500,7 +506,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                           '',
                                       style: TextStyle(
                                           color: ColorConstants.white,
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ))),
                               );
                             },
@@ -539,7 +546,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       sc.offlineDataFiltered[index].regNo ?? '',
                                       style: TextStyle(
                                           color: ColorConstants.white,
-                                          fontWeight: FontWeight.bold),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18),
                                     ))),
                               );
                             },
@@ -559,7 +567,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           borderRadius: BorderRadius.circular(18)),
                       child: Center(
                         child: Text(
-                          'LAST UPDATE $lastUpdateDate',
+                          'LAST UPDATE $lastUpdateDate $lastUpdateTime',
                           style: TextStyle(
                               fontSize: 17, color: ColorConstants.white),
                         ),
