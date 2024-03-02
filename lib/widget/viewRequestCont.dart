@@ -148,7 +148,7 @@ class ViewRequestContainer extends StatelessWidget {
         ),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(),
-          primary: ColorConstants.green,
+          backgroundColor: ColorConstants.green,
         ),
       ),
     );

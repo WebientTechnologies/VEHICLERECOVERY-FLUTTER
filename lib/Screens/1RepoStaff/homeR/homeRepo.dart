@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -51,12 +53,14 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    hcc.getGraphWeekApiData("search");
+    //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
     init();
   }
 
   Future checkMode() async {
+    ssc.currentPage.value =
+        await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
@@ -82,6 +86,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
       if (lastUpdateDate.length > 4) {
         ssc.loadPartialData.value = true;
+        Timer.periodic(Duration(seconds: 5), (timer) async {
+          int currentPage =
+              await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
+          //print('ccccc - $currentPage');
+          ssc.getAllDashboardApiDataPeriodically(currentPage);
+        });
       } else {
         ssc.loadAllData.value = true;
         int offlinePageNumber = await Helper.getIntPreferences(

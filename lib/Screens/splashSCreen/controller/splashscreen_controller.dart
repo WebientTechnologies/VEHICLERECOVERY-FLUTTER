@@ -112,6 +112,8 @@ class SplashScreenController extends GetxController {
         }
       }
 
+      await Helper.setIntPreferences(
+          SharedPreferencesVar.currentPage, currentPage.value);
       if (totalPages == currentPage) {
         var now = DateTime.now();
         var formatter = DateFormat('yyyy-MM-dd');
@@ -120,6 +122,8 @@ class SplashScreenController extends GetxController {
 
         print(formattedDate);
 
+        await Helper.setIntPreferences(
+            SharedPreferencesVar.totalData, totalData.value);
         await Helper.setStringPreferences(
             SharedPreferencesVar.lastUpdateDate, formattedDate);
         await Helper.setStringPreferences(
@@ -137,6 +141,115 @@ class SplashScreenController extends GetxController {
           getAllDashboardApiData(currentPage.value);
         }
       }
+
+      // await flutterLocalNotificationsPlugin.show(
+      //   0,
+      //   'Data downloaded',
+      //   "Data downloaded successfully",
+      //   const NotificationDetails(
+      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
+      //         channelDescription: 'channel_description',
+      //         importance: Importance.min,
+      //         priority: Priority.min,
+      //         ongoing: true,
+      //         playSound: false,
+      //         enableVibration: false),
+      //   ),
+      // );
+    }).onError((error, stackTrace) async {
+      print(stackTrace);
+      print('--------------------');
+      print(error);
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Error while downloading data',
+        "Data downloaded failed",
+        const NotificationDetails(
+          android: AndroidNotificationDetails('channel_id', 'channel_name',
+              channelDescription: 'channel_description',
+              importance: Importance.min,
+              priority: Priority.min,
+              ongoing: true,
+              playSound: false,
+              enableVibration: false),
+        ),
+      );
+    });
+  }
+
+  void getAllDashboardApiDataPeriodically(int pageNo) {
+    getAllDashboardApi(pageNo).then((value) async {
+      setDashboardList(value);
+      downloadedData.value =
+          await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
+      await Helper.setIntPreferences(
+          SharedPreferencesVar.offlinePageNumber, currentPage.value);
+
+      final vehicleDb = VehicleDb();
+      totalData.value = getSearchByLastDigitModel.value.totalRecords!;
+      totalPages.value = getSearchByLastDigitModel.value.totalPages!;
+
+      if (getSearchByLastDigitModel.value.data != null) {
+        for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
+          downloadedData.value++;
+          await Helper.setIntPreferences(
+              SharedPreferencesVar.offlineCount, downloadedData.value);
+          await vehicleDb.insertVehicle(
+              getSearchByLastDigitModel.value.data![i].sId!,
+              getSearchByLastDigitModel.value.data![i].loadStatus,
+              getSearchByLastDigitModel.value.data![i].bankName,
+              getSearchByLastDigitModel.value.data![i].branch,
+              getSearchByLastDigitModel.value.data![i].agreementNo,
+              getSearchByLastDigitModel.value.data![i].customerName,
+              getSearchByLastDigitModel.value.data![i].regNo,
+              getSearchByLastDigitModel.value.data![i].chasisNo,
+              getSearchByLastDigitModel.value.data![i].engineNo,
+              getSearchByLastDigitModel.value.data![i].callCenterNo1,
+              getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+              getSearchByLastDigitModel.value.data![i].callCenterNo2,
+              getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+              getSearchByLastDigitModel.value.data![i].lastDigit,
+              getSearchByLastDigitModel.value.data![i].month,
+              getSearchByLastDigitModel.value.data![i].status,
+              getSearchByLastDigitModel.value.data![i].fileName,
+              getSearchByLastDigitModel.value.data![i].createdAt,
+              getSearchByLastDigitModel.value.data![i].updatedAt);
+          // _updateNotification(totalData.value, downloadedData.value);
+        }
+      }
+
+      //if (totalPages == currentPage) {
+      var now = DateTime.now();
+      var formatter = DateFormat('yyyy-MM-dd');
+      String formattedDate = formatter.format(now);
+      dynamic currentTime = DateFormat.jm().format(DateTime.now());
+
+      //print(formattedDate);
+
+      int currPage = currentPage.value++;
+      //print('ddddd - $currPage');
+
+      await Helper.setIntPreferences(
+          SharedPreferencesVar.currentPage, currPage);
+      await Helper.setIntPreferences(
+          SharedPreferencesVar.totalData, totalData.value);
+      await Helper.setStringPreferences(
+          SharedPreferencesVar.lastUpdateDate, formattedDate);
+      await Helper.setStringPreferences(
+          SharedPreferencesVar.lastUpdateTime, currentTime);
+
+      // if (uc.userDetails['role'] == 'repo-agent') {
+      //   Get.offAll(HomeScreenRepoStaff());
+      // } else {
+      //   Get.toNamed(AppRoutes.home);
+      // }
+      // setRxRequestStatus(Status.COMPLETED);
+      // } else {
+      //   currentPage.value++;
+      //   if (getSearchByLastDigitModel.value.data != null) {
+      //     getAllDashboardApiData(currentPage.value);
+      //   }
+      // }
 
       // await flutterLocalNotificationsPlugin.show(
       //   0,

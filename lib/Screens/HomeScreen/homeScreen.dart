@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
+import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
@@ -37,10 +40,11 @@ class _HomeSCreenState extends State<HomeSCreen> {
   @override
   void initState() {
     super.initState();
+
     checkMode();
-    _getCurrentPosition();
-    hc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
+    _getCurrentPosition();
+    //hc.getGraphWeekApiData("search");
     DateTime today = DateTime.now();
     if (today.hour > 0 && today.hour < 12) {
       hc.selectedGreeting.value = 0;
@@ -53,6 +57,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
   }
 
   Future checkMode() async {
+    ssc.currentPage.value =
+        await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
+
     isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
@@ -73,11 +80,18 @@ class _HomeSCreenState extends State<HomeSCreen> {
       String lastUpdateDate = await Helper.getStringPreferences(
           SharedPreferencesVar.lastUpdateDate);
 
-      print(lastUpdateDate);
-
       if (lastUpdateDate.length > 4) {
+        print("in new data");
+
         ssc.loadPartialData.value = true;
+        Timer.periodic(Duration(seconds: 5), (timer) async {
+          int currentPage =
+              await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
+          print('ccccc - $currentPage');
+          ssc.getAllDashboardApiDataPeriodically(currentPage);
+        });
       } else {
+        print("old data");
         ssc.loadAllData.value = true;
         int offlinePageNumber = await Helper.getIntPreferences(
             SharedPreferencesVar.offlinePageNumber);
@@ -576,7 +590,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                     Obx(() {
                       switch (hc.rxRequestDashboardStatus.value) {
                         case Status.LOADING:
-                          return const Center();
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         case Status.ERROR:
                           return const Center(
                             child: Text('Something went wrong'),

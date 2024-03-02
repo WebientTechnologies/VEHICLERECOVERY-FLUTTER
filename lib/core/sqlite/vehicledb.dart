@@ -81,7 +81,7 @@ class VehicleDb {
       createdAt,
       updatedAt,
     ]);
-    print('vehicle created');
+    //print('vehicle created');
     return id;
   }
 
