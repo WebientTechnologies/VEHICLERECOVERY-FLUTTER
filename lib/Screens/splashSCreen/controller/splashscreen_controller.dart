@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
 import 'package:vinayak/core/constants/helper.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
@@ -10,6 +11,7 @@ import 'package:vinayak/core/sqlite/vehicledb.dart';
 
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/response/status.dart';
+import '../../../core/sqlite/database_helper.dart';
 import '../../../routes/app_routes.dart';
 import '../../1RepoStaff/homeR/homeRepo.dart';
 import '../../searchVehicle/model/searchLastmodel.dart';
@@ -35,7 +37,7 @@ class SplashScreenController extends GetxController {
   Future<VehicleDataModel> getAllDashboardApi(int pageNo) async {
     // setRxRequestZoneStatus(Status.LOADING);
     var response = await _api
-        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=100');
+        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=2000');
 
     print(response);
 
@@ -84,32 +86,62 @@ class SplashScreenController extends GetxController {
       totalPages.value = getSearchByLastDigitModel.value.totalPages!;
 
       if (getSearchByLastDigitModel.value.data != null) {
+        final db = await DatabaseHelper().database;
+        var batch = db.batch();
         for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
           downloadedData.value++;
           await Helper.setIntPreferences(
               SharedPreferencesVar.offlineCount, downloadedData.value);
-          await vehicleDb.insertVehicle(
-              getSearchByLastDigitModel.value.data![i].sId!,
-              getSearchByLastDigitModel.value.data![i].loadStatus,
-              getSearchByLastDigitModel.value.data![i].bankName,
-              getSearchByLastDigitModel.value.data![i].branch,
-              getSearchByLastDigitModel.value.data![i].agreementNo,
-              getSearchByLastDigitModel.value.data![i].customerName,
-              getSearchByLastDigitModel.value.data![i].regNo,
-              getSearchByLastDigitModel.value.data![i].chasisNo,
-              getSearchByLastDigitModel.value.data![i].engineNo,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
-              getSearchByLastDigitModel.value.data![i].lastDigit,
-              getSearchByLastDigitModel.value.data![i].month,
-              getSearchByLastDigitModel.value.data![i].status,
-              getSearchByLastDigitModel.value.data![i].fileName,
-              getSearchByLastDigitModel.value.data![i].createdAt,
-              getSearchByLastDigitModel.value.data![i].updatedAt);
+
+          batch.rawInsert('''
+      INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      ''', [
+            getSearchByLastDigitModel.value.data![i].sId!,
+            getSearchByLastDigitModel.value.data![i].loadStatus,
+            getSearchByLastDigitModel.value.data![i].bankName,
+            getSearchByLastDigitModel.value.data![i].branch,
+            getSearchByLastDigitModel.value.data![i].agreementNo,
+            getSearchByLastDigitModel.value.data![i].customerName,
+            getSearchByLastDigitModel.value.data![i].regNo,
+            getSearchByLastDigitModel.value.data![i].chasisNo,
+            getSearchByLastDigitModel.value.data![i].engineNo,
+            getSearchByLastDigitModel.value.data![i].callCenterNo1,
+            getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+            getSearchByLastDigitModel.value.data![i].callCenterNo2,
+            getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+            getSearchByLastDigitModel.value.data![i].lastDigit,
+            getSearchByLastDigitModel.value.data![i].month,
+            getSearchByLastDigitModel.value.data![i].status,
+            getSearchByLastDigitModel.value.data![i].fileName,
+            getSearchByLastDigitModel.value.data![i].createdAt,
+            getSearchByLastDigitModel.value.data![i].updatedAt
+          ]);
+
+          // batch.rawInsert('');
+
+          // await vehicleDb.insertVehicle(
+          //     getSearchByLastDigitModel.value.data![i].sId!,
+          //     getSearchByLastDigitModel.value.data![i].loadStatus,
+          //     getSearchByLastDigitModel.value.data![i].bankName,
+          //     getSearchByLastDigitModel.value.data![i].branch,
+          //     getSearchByLastDigitModel.value.data![i].agreementNo,
+          //     getSearchByLastDigitModel.value.data![i].customerName,
+          //     getSearchByLastDigitModel.value.data![i].regNo,
+          //     getSearchByLastDigitModel.value.data![i].chasisNo,
+          //     getSearchByLastDigitModel.value.data![i].engineNo,
+          //     getSearchByLastDigitModel.value.data![i].callCenterNo1,
+          //     getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+          //     getSearchByLastDigitModel.value.data![i].callCenterNo2,
+          //     getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+          //     getSearchByLastDigitModel.value.data![i].lastDigit,
+          //     getSearchByLastDigitModel.value.data![i].month,
+          //     getSearchByLastDigitModel.value.data![i].status,
+          //     getSearchByLastDigitModel.value.data![i].fileName,
+          //     getSearchByLastDigitModel.value.data![i].createdAt,
+          //     getSearchByLastDigitModel.value.data![i].updatedAt);
           _updateNotification(totalData.value, downloadedData.value);
         }
+        await batch.commit();
       }
 
       await Helper.setIntPreferences(
