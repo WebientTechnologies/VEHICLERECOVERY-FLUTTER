@@ -277,7 +277,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                             border: InputBorder.none,
                           ),
                           onChanged: (value) {
-                            if (value.length >= 7) {
+                            if (value.length == 6) {
                               if (isOnline) {
                                 sc.getAllSearchByChasisApiData(
                                     chasisNoCont.value.text.substring(0, 6));
