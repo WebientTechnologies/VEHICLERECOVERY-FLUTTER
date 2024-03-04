@@ -39,6 +39,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   bool showChasisNo = false;
   bool isOnline = true;
   String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
+  bool last4digitHaveFocus = false, chasisNoHaveFocus = false;
   @override
   void initState() {
     super.initState();
@@ -55,7 +56,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     }
     //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
-    init();
+    //init();
   }
 
   Future checkMode() async {
@@ -202,66 +203,75 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
-                    child: TextFormField(
-                      controller: chasisNoCont,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            chasisNoCont.text = '';
-                            setState(() {
-                              showChasisNo = false;
-                              showlastdata = false;
-                            });
-                          },
-                          icon: const Icon(Icons.close),
-                          color: ColorConstants.aqua,
+                    child: Focus(
+                      onFocusChange: (value) {
+                        if (value) {
+                          chasisNoHaveFocus = true;
+                        } else {
+                          chasisNoHaveFocus = false;
+                        }
+                      },
+                      child: TextFormField(
+                        controller: chasisNoCont,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              chasisNoCont.text = '';
+                              setState(() {
+                                showChasisNo = false;
+                                showlastdata = false;
+                              });
+                            },
+                            icon: const Icon(Icons.close),
+                            color: ColorConstants.aqua,
+                          ),
+                          hintText: 'Chasis No.',
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 16.0),
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(color: ColorConstants.aqua),
                         ),
-                        hintText: 'Chasis No.',
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 16.0),
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(color: ColorConstants.aqua),
-                      ),
-                      onChanged: (value) {
-                        if (value.length >= 7) {
-                          if (isOnline) {
-                            sc.getAllSearchByChasisApiData(
-                                chasisNoCont.value.text.substring(0, 6));
+                        onChanged: (value) {
+                          if (value.length >= 7) {
+                            if (isOnline) {
+                              sc.getAllSearchByChasisApiData(
+                                  chasisNoCont.value.text.substring(0, 6));
 
-                            // if (sc.searchbyChasisNoModel.value.data != null &&
-                            //     sc.searchbyChasisNoModel.value.data!
-                            //         .isNotEmpty) {
-                            setState(() {
-                              showChasisNo = true;
-                              showlastdata = false;
-                            });
-                            // } else {
-                            //   setState(() {
-                            //     showlastdata = false;
-                            //   });
-                            // }
-                            chasisNoCont.text = '';
-                          } else {
-                            sc.searchOfflineChasisData(value);
-
-                            if (sc.offlineData.isNotEmpty) {
+                              // if (sc.searchbyChasisNoModel.value.data != null &&
+                              //     sc.searchbyChasisNoModel.value.data!
+                              //         .isNotEmpty) {
                               setState(() {
                                 showChasisNo = true;
                                 showlastdata = false;
                               });
+                              // } else {
+                              //   setState(() {
+                              //     showlastdata = false;
+                              //   });
+                              // }
+                              chasisNoCont.text = '';
                             } else {
-                              setState(() {
-                                showlastdata = false;
-                              });
+                              sc.searchOfflineChasisData(value);
+
+                              if (sc.offlineData.isNotEmpty) {
+                                setState(() {
+                                  showChasisNo = true;
+                                  showlastdata = false;
+                                });
+                              } else {
+                                setState(() {
+                                  showlastdata = false;
+                                });
+                              }
                             }
+                          } else {
+                            setState(() {
+                              showChasisNo = false;
+                              showlastdata = false;
+                            });
                           }
-                        } else {
-                          setState(() {
-                            showChasisNo = false;
-                            showlastdata = false;
-                          });
-                        }
-                      },
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -272,53 +282,62 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
-                    child: TextFormField(
-                      autofocus: true,
-                      style: TextStyle(color: ColorConstants.aqua),
-                      controller: last4digit,
-                      maxLength: 4,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            last4digit.text = '';
-                            setState(() {
-                              showlastdata = false;
-                            });
-                          },
-                          icon: const Icon(Icons.close),
-                          color: ColorConstants.aqua,
-                        ),
-                        hintText: 'Last 4 Digits',
-                        contentPadding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 16.0),
-                        border: InputBorder.none,
-                        counterText: '',
-                        hintStyle: TextStyle(color: ColorConstants.aqua),
-                      ),
-                      onChanged: (value) async {
-                        if (value.length == 4) {
-                          bool isOnline = await Helper.getBoolPreferences(
-                              SharedPreferencesVar.isOnline);
-                          if (isOnline) {
-                            sc.getAllSearchByLastDigitData(
-                                last4digit.value.text);
-                            setState(() {
-                              showlastdata = true;
-                            });
-                          } else {
-                            sc.searchOfflineLastDigitData(value);
-                            setState(() {
-                              showlastdata = true;
-                            });
-                          }
-                          last4digit.text = '';
+                    child: Focus(
+                      onFocusChange: (value) {
+                        if (value) {
+                          last4digitHaveFocus = true;
                         } else {
-                          setState(() {
-                            showlastdata = false;
-                          });
+                          last4digitHaveFocus = false;
                         }
                       },
+                      child: TextFormField(
+                        autofocus: true,
+                        style: TextStyle(color: ColorConstants.aqua),
+                        controller: last4digit,
+                        maxLength: 4,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              last4digit.text = '';
+                              setState(() {
+                                showlastdata = false;
+                              });
+                            },
+                            icon: const Icon(Icons.close),
+                            color: ColorConstants.aqua,
+                          ),
+                          hintText: 'Last 4 Digits',
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 16.0),
+                          border: InputBorder.none,
+                          counterText: '',
+                          hintStyle: TextStyle(color: ColorConstants.aqua),
+                        ),
+                        onChanged: (value) async {
+                          if (value.length == 4) {
+                            bool isOnline = await Helper.getBoolPreferences(
+                                SharedPreferencesVar.isOnline);
+                            if (isOnline) {
+                              sc.getAllSearchByLastDigitData(
+                                  last4digit.value.text);
+                              setState(() {
+                                showlastdata = true;
+                              });
+                            } else {
+                              sc.searchOfflineLastDigitData(value);
+                              setState(() {
+                                showlastdata = true;
+                              });
+                            }
+                            last4digit.text = '';
+                          } else {
+                            setState(() {
+                              // showlastdata = false;
+                            });
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -327,7 +346,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             const SizedBox(
               height: 10,
             ),
-            if (showChasisNo == true && showlastdata == false)
+            if ((showChasisNo == true || chasisNoHaveFocus) &&
+                showlastdata == false)
               Obx(() {
                 switch (sc.rxRequestsearchbyChasisNoStatus.value) {
                   case Status.LOADING:
@@ -426,7 +446,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     }
                 }
               }),
-            if (showlastdata == true && showChasisNo == false)
+            if ((showlastdata == true || last4digitHaveFocus) &&
+                showChasisNo == false)
               Obx(() {
                 switch (sc.rxRequestsearchbyLastStatus.value) {
                   case Status.LOADING:

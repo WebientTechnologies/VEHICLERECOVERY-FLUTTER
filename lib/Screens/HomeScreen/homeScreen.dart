@@ -380,7 +380,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               last4digit.text = '';
                             } else {
                               setState(() {
-                                //4showlastdata = false;
+                                //showlastdata = false;
                               });
                             }
                           },

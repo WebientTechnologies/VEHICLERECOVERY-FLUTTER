@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:share/share.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/core/response/status.dart';
@@ -102,6 +103,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'Vehicle Data',
@@ -423,17 +425,16 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                   String msg =
                       '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Detail:${data.loadStatus}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 ''';
-                  final url = "https://wa.me?text=$msg";
+                  Share.share(msg);
+//                   final url = "https://wa.me?text=$msg";
 
-//do not forgot to enter your country code instead of 91 and instead of XXXXXXXXXX enter phone number.
-
-                  if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(Uri.parse(url));
-                  } else {
-                    Fluttertoast.showToast(msg: 'Something went wrong');
-                  }
-                  if (!await launchUrl(Uri.parse(url)))
-                    throw 'Could not launch $url';
+//                   if (await canLaunchUrl(Uri.parse(url))) {
+//                     await launchUrl(Uri.parse(url));
+//                   } else {
+//                     Fluttertoast.showToast(msg: 'Something went wrong');
+//                   }
+//                   if (!await launchUrl(Uri.parse(url)))
+//                     throw 'Could not launch $url';
                 },
                 icon: Icon(
                   Icons.message,
