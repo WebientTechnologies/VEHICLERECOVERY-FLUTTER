@@ -20,7 +20,7 @@ class ReleaseRepoReportController extends GetxController {
 
   Future<ReleaseReportModel> getAllReleaseRepoApi(
       String search, int pageNo, bool isRefresh, bool onChange) async {
-    if (isRefresh) {
+    if (isRefresh || onChange) {
       setRxRequestReleaseRepoStatus(Status.LOADING);
     }
     var url = ApiEndpoints.releaseDataReport + '?search=$search&page=$pageNo';

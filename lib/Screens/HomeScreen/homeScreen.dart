@@ -38,10 +38,12 @@ class _HomeSCreenState extends State<HomeSCreen> {
   String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
   bool showlastdata = false;
   bool last4digitHaveFocus = false, chasisNoHaveFocus = false;
+  late FocusNode _focusNode;
+
   @override
   void initState() {
     super.initState();
-
+    _focusNode = FocusNode();
     checkMode();
     hc.getAllDashboardApiData();
     _getCurrentPosition();
@@ -341,6 +343,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           }
                         },
                         child: TextFormField(
+                          focusNode: _focusNode,
                           autofocus: true,
                           controller: last4digit,
                           maxLength: 4,
@@ -498,9 +501,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 Obx(() {
                   switch (sc.rxRequestsearchbyLastStatus.value) {
                     case Status.LOADING:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      if (showlastdata) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
                     case Status.ERROR:
                       return const Center(
                         child: Text('Something went wrong'),

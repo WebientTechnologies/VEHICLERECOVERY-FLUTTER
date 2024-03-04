@@ -19,6 +19,9 @@ class SearchDataReportController extends GetxController {
 
   Future<SearchDataReport> getAllSearchDataRepoApi(
       String search, int pageNo, bool isRefresh, bool onChange) async {
+    if (isRefresh || onChange) {
+      setRxSearchRepoStatus(Status.LOADING);
+    }
     var url = ApiEndpoints.searchDataReport + '?search=$search&page=$pageNo';
     var response = await _api.getApi(url);
     print(response);

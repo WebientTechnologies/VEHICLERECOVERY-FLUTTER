@@ -51,23 +51,23 @@ class _ChangePasswordState extends State<ChangePassword> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Old Password',
-                  style: TextStyle(fontSize: 17),
-                ),
-                SizedBox(
-                  height: widget.height * 0.01,
-                ),
-                TextFieldWidget(
-                  controller: oldPasswordController,
-                  hintText: 'Old Password',
-                  borderColor: ColorConstants.aqua,
-                  borderRadius: 18,
-                  // obscureText: true, // For password fields
-                ),
-                SizedBox(
-                  height: widget.height * 0.02,
-                ),
+                // const Text(
+                //   'Old Password',
+                //   style: TextStyle(fontSize: 17),
+                // ),
+                // SizedBox(
+                //   height: widget.height * 0.01,
+                // ),
+                // TextFieldWidget(
+                //   controller: oldPasswordController,
+                //   hintText: 'Old Password',
+                //   borderColor: ColorConstants.aqua,
+                //   borderRadius: 18,
+                //   // obscureText: true, // For password fields
+                // ),
+                // SizedBox(
+                //   height: widget.height * 0.02,
+                // ),
                 const Text(
                   'New Password',
                   style: TextStyle(fontSize: 17),

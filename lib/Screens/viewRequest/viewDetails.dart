@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:vinayak/Screens/viewRequest/model/viewRequestModel.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/widget/containerText.dart';
 import 'package:vinayak/widget/myappbar.dart';
@@ -13,14 +15,14 @@ class ViewRequestDetails extends StatefulWidget {
 }
 
 class _ViewRequestDetailsState extends State<ViewRequestDetails> {
-  dynamic data;
+  Requests? data;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     data = Get.arguments[0];
-    print(data.chasisNo);
+    //print(data?.chasisNo);
   }
 
   Widget buildInfoRow(String label, double height, double width, String value) {
@@ -50,7 +52,14 @@ class _ViewRequestDetailsState extends State<ViewRequestDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: ColorConstants.aqua),
+        title: Text(
+          'View Details',
+          style: TextStyle(
+              fontWeight: FontWeight.w500, color: ColorConstants.aqua),
+        ),
+      ),
       body: LayoutBuilder(builder: (ctx, constraints) {
         var height = constraints.maxHeight;
         var width = constraints.maxWidth;
@@ -61,31 +70,31 @@ class _ViewRequestDetailsState extends State<ViewRequestDetails> {
               children: [
                 buildInfoRow('Seezer Name', height, width, 'name'),
                 buildInfoRow(
-                    'Registeration No', height, width, data.regNo ?? ''),
+                    'Registeration No', height, width, data?.regNo ?? ''),
                 buildInfoRow(
-                    'Customer Name', height, width, data.customerName ?? ''),
-                buildInfoRow('Bank Name', height, width, data.bankName ?? ''),
-                buildInfoRow('Branch', height, width, data.branch ?? ''),
+                    'Customer Name', height, width, data?.customerName ?? ''),
+                buildInfoRow('Bank Name', height, width, data?.bankName ?? ''),
+                buildInfoRow('Branch', height, width, data?.branch ?? ''),
                 buildInfoRow('EMI', height, width, ''),
                 buildInfoRow('Vehicle Maker', height, width, ''),
                 buildInfoRow(
-                    'Agreement No', height, width, data.agreementNo ?? ''),
-                buildInfoRow('Chasis No', height, width, data.chasisNo ?? ''),
-                // buildInfoRow('Engine No', height, width, data.engineNo ?? ''),
+                    'Agreement No', height, width, data?.agreementNo ?? ''),
+                buildInfoRow('Chasis No', height, width, data?.chasisNo ?? ''),
+                // buildInfoRow('Engine No', height, width, data?.engineNo ?? ''),
                 buildInfoRow('Model', height, width, ''),
-                buildInfoRow(
-                    'Call Center 1', height, width, data.callCenterNo1 ?? ''),
-                buildInfoRow('Call Center No 1', height, width,
-                    data.callCenterNo1Name ?? ''),
-                buildInfoRow(
-                    'Call Center 2', height, width, data.callCenterNo2 ?? ''),
-                buildInfoRow('Call Center No 2', height, width,
-                    data.callCenterNo2Name ?? ''),
+                // buildInfoRow(
+                //     'Call Center 1', height, width, data?.callCenterNo1 ?? ''),
+                // buildInfoRow('Call Center No 1', height, width,
+                //     data?.callCenterNo1Name ?? ''),
+                // buildInfoRow(
+                //     'Call Center 2', height, width, data?.callCenterNo2 ?? ''),
+                // buildInfoRow('Call Center No 2', height, width,
+                //     data?.callCenterNo2Name ?? ''),
                 // buildInfoRow('Call Center 2', height, width),
                 // buildInfoRow('Call Center No 3', height, width),
-                buildInfoRow('Month', height, width, data.month ?? ''),
-                buildInfoRow('Last Digit', height, width, data.lastDigit ?? ''),
-                buildInfoRow('Status', height, width, data.status ?? ''),
+                // buildInfoRow('Month', height, width, data?.month ?? ''),
+                // buildInfoRow('Last Digit', height, width, data?.lastDigit ?? ''),
+                // buildInfoRow('Status', height, width, data?.status ?? ''),
                 buildInfoRow('DL Code', height, width, ''),
                 buildInfoRow('TBR Flag', height, width, ''),
                 buildInfoRow('Executive Name', height, width, ''),
@@ -98,7 +107,7 @@ class _ViewRequestDetailsState extends State<ViewRequestDetails> {
           ),
         );
       }),
-      drawer: MyDrawer(),
+      //drawer: MyDrawer(),
     );
   }
 }

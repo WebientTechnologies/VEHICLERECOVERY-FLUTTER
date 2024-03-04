@@ -78,9 +78,12 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                     ),
                   ),
                   style: TextStyle(height: 1),
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (value) {
+                    src.getAllSearchDataRepoData(value, 1, false, true);
+                  },
                   onChanged: (value) {
                     // currentPage = 1;
-                    src.getAllSearchDataRepoData(value, 1, false, true);
                   },
                 ),
               ),

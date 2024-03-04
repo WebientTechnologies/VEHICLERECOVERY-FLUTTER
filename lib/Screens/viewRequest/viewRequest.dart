@@ -130,7 +130,7 @@ class _ViewRequestState extends State<ViewRequest> {
                           backgroundColor: bgColor,
                           onViewDetailsPressed: () {
                             Get.toNamed(AppRoutes.viewRequestDetails,
-                                arguments: [vrc.data[index].recordId]);
+                                arguments: [vrc.data[index]]);
                           },
                           onRepoPressed: () {
                             vrc.updateStatus(

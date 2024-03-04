@@ -19,7 +19,7 @@ class RepoDataReportController extends GetxController {
 
   Future<RepoReportModel> getRepoReportApi(
       String search, int pageNo, bool isRefresh, bool onChange) async {
-    if (isRefresh) {
+    if (isRefresh || onChange) {
       setRxRequestRepoStatus(Status.LOADING);
     }
 

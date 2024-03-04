@@ -89,9 +89,11 @@ class _ReleaseDataReportsState extends State<ReleaseDataReports> {
                     ),
                   ),
                   style: const TextStyle(height: 1),
-                  onChanged: (value) {
-                    rrc.getAllReleaseReportData(value, 1, true, true);
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (value) {
+                    rrc.getAllReleaseReportData(value, 1, false, true);
                   },
+                  onChanged: (value) {},
                 ),
               ),
             ),

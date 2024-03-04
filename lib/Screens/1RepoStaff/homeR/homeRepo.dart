@@ -40,9 +40,11 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   bool isOnline = true;
   String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
   bool last4digitHaveFocus = false, chasisNoHaveFocus = false;
+  late FocusNode _focusNode;
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     uc.loadUserDetails();
     checkMode();
     _getCurrentPosition();
@@ -57,6 +59,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
     //init();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   Future checkMode() async {
@@ -121,7 +129,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: LayoutBuilder(builder: (ctx, constraints) {
         var height = constraints.maxHeight;
         var width = constraints.maxWidth;
@@ -292,6 +300,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       },
                       child: TextFormField(
                         autofocus: true,
+                        focusNode: _focusNode,
                         style: TextStyle(color: ColorConstants.aqua),
                         controller: last4digit,
                         maxLength: 4,
@@ -451,9 +460,13 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
               Obx(() {
                 switch (sc.rxRequestsearchbyLastStatus.value) {
                   case Status.LOADING:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    if (showlastdata) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   case Status.ERROR:
                     return const Center(
                       child: Text('SOmething went wrong'),

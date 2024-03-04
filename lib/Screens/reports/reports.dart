@@ -71,7 +71,7 @@ class _ReportsState extends State<Reports> {
                     if (showExtra)
                       Container(
                         width: 120,
-                        height: 100,
+                        height: 60,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             gradient: LinearGradient(
@@ -98,7 +98,7 @@ class _ReportsState extends State<Reports> {
                       ),
                     Container(
                       width: 120,
-                      height: 100,
+                      height: 60,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
@@ -125,7 +125,7 @@ class _ReportsState extends State<Reports> {
                     ),
                     Container(
                       width: 120,
-                      height: 100,
+                      height: 60,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(
@@ -152,7 +152,7 @@ class _ReportsState extends State<Reports> {
                     ),
                     Container(
                       width: 120,
-                      height: 100,
+                      height: 60,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: LinearGradient(

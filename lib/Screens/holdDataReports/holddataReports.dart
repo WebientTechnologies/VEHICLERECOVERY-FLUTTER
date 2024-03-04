@@ -103,9 +103,11 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                       ),
                     ),
                     style: TextStyle(height: 1),
-                    onChanged: (value) {
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (value) {
                       hdc.getHoldRepoData(value, currentPage, false, true);
                     },
+                    onChanged: (value) {},
                   ),
                 ),
               ),

@@ -21,7 +21,7 @@ class PasswordController extends GetxController {
     print(url);
 
     var data = {
-      'oldPassword': oldPass,
+      //'oldPassword': oldPass,
       'newPassword': newPass,
       'confirmPassword': confirmPass
     };

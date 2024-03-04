@@ -91,9 +91,11 @@ class _RepoDataReportsState extends State<RepoDataReports> {
                     ),
                   ),
                   style: TextStyle(height: 1),
-                  onChanged: (value) {
+                  textInputAction: TextInputAction.search,
+                  onSubmitted: (value) {
                     rrc.getRepoReportData(value, currentPage, false, true);
                   },
+                  onChanged: (value) {},
                 ),
               ),
             ),

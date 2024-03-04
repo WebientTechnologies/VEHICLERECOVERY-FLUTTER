@@ -18,7 +18,7 @@ class HoldDataController extends GetxController {
 
   Future<HoldReportModel> getAllHoldReports(
       String search, int pageNo, bool isRefresh, bool onChange) async {
-    if (isRefresh) {
+    if (isRefresh || onChange) {
       setRxRequestAllRepoStatus(Status.LOADING);
     }
     var url = '${ApiEndpoints.holdreport}?search=$search&page=$pageNo';
