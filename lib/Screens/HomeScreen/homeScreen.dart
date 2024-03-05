@@ -261,6 +261,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         },
                         child: TextFormField(
                           controller: chasisNoCont,
+                          maxLength: 6,
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -273,6 +274,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               icon: const Icon(Icons.close),
                               color: ColorConstants.aqua,
                             ),
+                            counterText: '',
                             hintText: 'Chasis No.',
                             contentPadding: EdgeInsets.symmetric(
                                 vertical: 12.0, horizontal: 16.0),
@@ -401,9 +403,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 Obx(() {
                   switch (sc.rxRequestsearchbyChasisNoStatus.value) {
                     case Status.LOADING:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      if (showChasisNo) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
                     case Status.ERROR:
                       return const Center(
                         child: Text('Something went wrong'),

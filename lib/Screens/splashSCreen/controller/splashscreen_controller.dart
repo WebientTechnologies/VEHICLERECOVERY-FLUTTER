@@ -37,7 +37,7 @@ class SplashScreenController extends GetxController {
   Future<VehicleDataModel> getAllDashboardApi(int pageNo) async {
     // setRxRequestZoneStatus(Status.LOADING);
     var response = await _api
-        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=2000');
+        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=5000');
 
     print(response);
 
@@ -47,7 +47,7 @@ class SplashScreenController extends GetxController {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  void _updateNotification(int totalData, int uploadedData) async {
+  Future _updateNotification(int totalData, int uploadedData) async {
     // int offlineCount =
     //     await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
     String title = 'Downloading data (' +
@@ -94,8 +94,8 @@ class SplashScreenController extends GetxController {
               SharedPreferencesVar.offlineCount, downloadedData.value);
 
           batch.rawInsert('''
-      INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-      ''', [
+          INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+         ''', [
             getSearchByLastDigitModel.value.data![i].sId!,
             getSearchByLastDigitModel.value.data![i].loadStatus,
             getSearchByLastDigitModel.value.data![i].bankName,
@@ -139,8 +139,8 @@ class SplashScreenController extends GetxController {
           //     getSearchByLastDigitModel.value.data![i].fileName,
           //     getSearchByLastDigitModel.value.data![i].createdAt,
           //     getSearchByLastDigitModel.value.data![i].updatedAt);
-          _updateNotification(totalData.value, downloadedData.value);
         }
+        await _updateNotification(totalData.value, downloadedData.value);
         await batch.commit();
       }
 

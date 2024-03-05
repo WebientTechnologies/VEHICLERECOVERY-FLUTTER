@@ -360,9 +360,13 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
               Obx(() {
                 switch (sc.rxRequestsearchbyChasisNoStatus.value) {
                   case Status.LOADING:
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    if (showChasisNo) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return const SizedBox();
+                    }
                   case Status.ERROR:
                     return const Center(
                       child: Text('Something went wrong'),
