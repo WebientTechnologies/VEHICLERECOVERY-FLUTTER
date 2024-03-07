@@ -68,10 +68,27 @@ class VehicleSearchController extends GetxController {
     return GetSearchByLastDigitModel.fromJson(response);
   }
 
+  var firstHalf = [];
+  var secondHalf = [];
+
   void getAllSearchByLastDigitData(String lastDigit) {
     getAllSearchByLastDigitApi(lastDigit).then((value) {
       setRxRequestSearchByLastStatus(Status.COMPLETED);
       setsearchbylastList(value);
+
+      firstHalf.clear();
+      secondHalf.clear();
+
+      int length = searchbylastModel.value.data!.length;
+      int halfLength = (searchbylastModel.value.data!.length / 2).round();
+
+      for (int i = 0; i < halfLength; i++) {
+        firstHalf.add(searchbylastModel.value.data![i]);
+      }
+
+      for (int i = halfLength + 1; i < length; i++) {
+        secondHalf.add(searchbylastModel.value.data![i]);
+      }
     }).onError((error, stackTrace) {
       // print(stackTrace);
       // print('--------------------');
@@ -116,6 +133,20 @@ class VehicleSearchController extends GetxController {
     getAllSearchByChasisApi(lastDigit).then((value) {
       setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
       setsearchbyChasisNoList(value);
+
+      firstHalf.clear();
+      secondHalf.clear();
+
+      int length = searchbyChasisNoModel.value.data!.length;
+      int halfLength = (searchbyChasisNoModel.value.data!.length / 2).round();
+
+      for (int i = 0; i < halfLength; i++) {
+        firstHalf.add(searchbyChasisNoModel.value.data![i]);
+      }
+
+      for (int i = halfLength + 1; i < length; i++) {
+        secondHalf.add(searchbyChasisNoModel.value.data![i]);
+      }
     }).onError((error, stackTrace) {
       // print(stackTrace);
       // print('--------------------');
