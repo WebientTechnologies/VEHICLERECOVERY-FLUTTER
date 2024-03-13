@@ -58,7 +58,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     }
     //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
-    //init();
+    init();
   }
 
   @override

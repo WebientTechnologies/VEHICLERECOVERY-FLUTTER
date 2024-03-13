@@ -59,7 +59,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    //init();
+    init();
   }
 
   Future checkMode() async {
@@ -73,9 +73,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateTime);
     mode = isOnline ? "Online" : "Offline";
     final vehicleDb = VehicleDb();
-    sc.offlineData.value = await vehicleDb.fetchAll();
+    //sc.offlineData.value = await vehicleDb.fetchAll();
     sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
-    print(sc.offlineData.length);
+    //print(sc.offlineData.length);
     setState(() {});
   }
 

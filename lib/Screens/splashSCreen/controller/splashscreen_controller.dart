@@ -1,3 +1,4 @@
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -37,7 +38,7 @@ class SplashScreenController extends GetxController {
   Future<VehicleDataModel> getAllDashboardApi(int pageNo) async {
     // setRxRequestZoneStatus(Status.LOADING);
     var response = await _api
-        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=5000');
+        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=100000');
 
     print(response);
 
@@ -86,62 +87,69 @@ class SplashScreenController extends GetxController {
       totalPages.value = getSearchByLastDigitModel.value.totalPages!;
 
       if (getSearchByLastDigitModel.value.data != null) {
+        downloadedData.value += getSearchByLastDigitModel.value.data!.length;
+        await Helper.setIntPreferences(
+            SharedPreferencesVar.offlineCount, downloadedData.value);
         final db = await DatabaseHelper().database;
         var batch = db.batch();
-        for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
-          downloadedData.value++;
-          await Helper.setIntPreferences(
-              SharedPreferencesVar.offlineCount, downloadedData.value);
-
-          batch.rawInsert('''
+        await db.transaction((txn) async {
+          for (int i = 0;
+              i < getSearchByLastDigitModel.value.data!.length;
+              i++) {
+            txn.rawInsert('''
           INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
          ''', [
-            getSearchByLastDigitModel.value.data![i].sId!,
-            getSearchByLastDigitModel.value.data![i].loadStatus,
-            getSearchByLastDigitModel.value.data![i].bankName,
-            getSearchByLastDigitModel.value.data![i].branch,
-            getSearchByLastDigitModel.value.data![i].agreementNo,
-            getSearchByLastDigitModel.value.data![i].customerName,
-            getSearchByLastDigitModel.value.data![i].regNo,
-            getSearchByLastDigitModel.value.data![i].chasisNo,
-            getSearchByLastDigitModel.value.data![i].engineNo,
-            getSearchByLastDigitModel.value.data![i].callCenterNo1,
-            getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
-            getSearchByLastDigitModel.value.data![i].callCenterNo2,
-            getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
-            getSearchByLastDigitModel.value.data![i].lastDigit,
-            getSearchByLastDigitModel.value.data![i].month,
-            getSearchByLastDigitModel.value.data![i].status,
-            getSearchByLastDigitModel.value.data![i].fileName,
-            getSearchByLastDigitModel.value.data![i].createdAt,
-            getSearchByLastDigitModel.value.data![i].updatedAt
-          ]);
+              getSearchByLastDigitModel.value.data![i].sId!,
+              getSearchByLastDigitModel.value.data![i].loadStatus,
+              getSearchByLastDigitModel.value.data![i].bankName,
+              getSearchByLastDigitModel.value.data![i].branch,
+              getSearchByLastDigitModel.value.data![i].agreementNo,
+              getSearchByLastDigitModel.value.data![i].customerName,
+              getSearchByLastDigitModel.value.data![i].regNo,
+              getSearchByLastDigitModel.value.data![i].chasisNo,
+              getSearchByLastDigitModel.value.data![i].engineNo,
+              getSearchByLastDigitModel.value.data![i].callCenterNo1,
+              getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+              getSearchByLastDigitModel.value.data![i].callCenterNo2,
+              getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+              getSearchByLastDigitModel.value.data![i].lastDigit,
+              getSearchByLastDigitModel.value.data![i].month,
+              getSearchByLastDigitModel.value.data![i].status,
+              getSearchByLastDigitModel.value.data![i].fileName,
+              getSearchByLastDigitModel.value.data![i].createdAt,
+              getSearchByLastDigitModel.value.data![i].updatedAt
+            ]);
 
-          // batch.rawInsert('');
+            // batch.rawInsert('');
 
-          // await vehicleDb.insertVehicle(
-          //     getSearchByLastDigitModel.value.data![i].sId!,
-          //     getSearchByLastDigitModel.value.data![i].loadStatus,
-          //     getSearchByLastDigitModel.value.data![i].bankName,
-          //     getSearchByLastDigitModel.value.data![i].branch,
-          //     getSearchByLastDigitModel.value.data![i].agreementNo,
-          //     getSearchByLastDigitModel.value.data![i].customerName,
-          //     getSearchByLastDigitModel.value.data![i].regNo,
-          //     getSearchByLastDigitModel.value.data![i].chasisNo,
-          //     getSearchByLastDigitModel.value.data![i].engineNo,
-          //     getSearchByLastDigitModel.value.data![i].callCenterNo1,
-          //     getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
-          //     getSearchByLastDigitModel.value.data![i].callCenterNo2,
-          //     getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
-          //     getSearchByLastDigitModel.value.data![i].lastDigit,
-          //     getSearchByLastDigitModel.value.data![i].month,
-          //     getSearchByLastDigitModel.value.data![i].status,
-          //     getSearchByLastDigitModel.value.data![i].fileName,
-          //     getSearchByLastDigitModel.value.data![i].createdAt,
-          //     getSearchByLastDigitModel.value.data![i].updatedAt);
-        }
+            // await vehicleDb.insertVehicle(
+            //     getSearchByLastDigitModel.value.data![i].sId!,
+            //     getSearchByLastDigitModel.value.data![i].loadStatus,
+            //     getSearchByLastDigitModel.value.data![i].bankName,
+            //     getSearchByLastDigitModel.value.data![i].branch,
+            //     getSearchByLastDigitModel.value.data![i].agreementNo,
+            //     getSearchByLastDigitModel.value.data![i].customerName,
+            //     getSearchByLastDigitModel.value.data![i].regNo,
+            //     getSearchByLastDigitModel.value.data![i].chasisNo,
+            //     getSearchByLastDigitModel.value.data![i].engineNo,
+            //     getSearchByLastDigitModel.value.data![i].callCenterNo1,
+            //     getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+            //     getSearchByLastDigitModel.value.data![i].callCenterNo2,
+            //     getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+            //     getSearchByLastDigitModel.value.data![i].lastDigit,
+            //     getSearchByLastDigitModel.value.data![i].month,
+            //     getSearchByLastDigitModel.value.data![i].status,
+            //     getSearchByLastDigitModel.value.data![i].fileName,
+            //     getSearchByLastDigitModel.value.data![i].createdAt,
+            //     getSearchByLastDigitModel.value.data![i].updatedAt);
+          }
+        });
         await _updateNotification(totalData.value, downloadedData.value);
-        await batch.commit();
+        if (currentPage.value % 10 == 0 && currentPage.value != 0) {
+          await DefaultCacheManager().emptyCache();
+        }
+
+        //await batch.commit();
       }
 
       await Helper.setIntPreferences(
