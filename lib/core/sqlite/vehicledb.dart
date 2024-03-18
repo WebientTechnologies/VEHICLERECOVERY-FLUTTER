@@ -164,6 +164,15 @@ class VehicleDb {
     return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
   }
 
+  Future<List<VehicleModel>> fetchByChasis(String chasis) async {
+    final db = await DatabaseHelper().database;
+    final files = await db.rawQuery('''
+    select * from $tableName where chasisNo LIKE ?
+    ''', ['%$chasis%']);
+    print(files);
+    return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
+  }
+
   // Future<List<FileModel>> fetchByFileId(int fileid) async {
   //   final db = await DatabaseHelper().database;
   //   final files = await db.rawQuery('''

@@ -30,15 +30,16 @@ class DatabaseHelper {
       singleInstance: true,
       onConfigure: (Database db) async {
         await db.execute('PRAGMA foreign_keys = ON');
-        await db
-            .execute('PRAGMA main.cache_size = 20000'); // Increase cache size
+        // await db
+        //     .execute('PRAGMA main.cache_size = 20000'); // Increase cache size
+        await db.execute('PRAGMA page_size = 32768');
       },
     );
     return database;
   }
 
   Future<void> create(Database database, int version) async {
-    print('db created');
+    //print('db created');
     await VehicleDb.createTable(database);
   }
 }

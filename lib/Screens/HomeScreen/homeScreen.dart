@@ -34,6 +34,11 @@ class _HomeSCreenState extends State<HomeSCreen> {
   SplashScreenController ssc = Get.put(SplashScreenController());
   ScrollController _scrollController = ScrollController();
 
+  ScrollController _controller1 = ScrollController();
+  ScrollController _controller2 = ScrollController();
+  ScrollController _chasisController1 = ScrollController();
+  ScrollController _chasisController2 = ScrollController();
+
   TextEditingController last4digit = TextEditingController();
   TextEditingController chasisNoCont = TextEditingController();
   bool showChasisNo = false;
@@ -47,6 +52,11 @@ class _HomeSCreenState extends State<HomeSCreen> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    _controller1.addListener(_scrollListener);
+    _controller2.addListener(_scrollListener);
+
+    _chasisController1.addListener(_chasisScrollListener);
+    _chasisController2.addListener(_chasisScrollListener);
     checkMode();
     hc.getAllDashboardApiData();
     _getCurrentPosition();
@@ -60,6 +70,39 @@ class _HomeSCreenState extends State<HomeSCreen> {
       hc.selectedGreeting.value = 2;
     }
     init();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _controller1.removeListener(_scrollListener);
+    _controller2.removeListener(_scrollListener);
+    _controller1.dispose();
+    _controller2.dispose();
+
+    _chasisController1.removeListener(_chasisScrollListener);
+    _chasisController2.removeListener(_chasisScrollListener);
+    _chasisController1.dispose();
+    _chasisController2.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_controller1.offset != _controller2.offset) {
+      _controller1.jumpTo(_controller2.offset);
+    }
+    if (_controller2.offset != _controller1.offset) {
+      _controller2.jumpTo(_controller1.offset);
+    }
+  }
+
+  void _chasisScrollListener() {
+    if (_chasisController1.offset != _chasisController2.offset) {
+      _chasisController1.jumpTo(_chasisController2.offset);
+    }
+    // if (_controller2.offset != _controller1.offset) {
+    //   _controller2.jumpTo(_controller1.offset);
+    // }
   }
 
   Future checkMode() async {
@@ -90,7 +133,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
         print("in new data");
 
         ssc.loadPartialData.value = true;
-        Timer.periodic(Duration(seconds: 5), (timer) async {
+        Timer.periodic(Duration(seconds: 10), (timer) async {
           int currentPage =
               await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
           print('ccccc - $currentPage');
@@ -283,8 +326,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 vertical: 12.0, horizontal: 16.0),
                             border: InputBorder.none,
                           ),
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             if (value.length == 6) {
+                              bool isOnline = await Helper.getBoolPreferences(
+                                  SharedPreferencesVar.isOnline);
                               if (isOnline) {
                                 sc.getAllSearchByChasisApiData(
                                     chasisNoCont.value.text.substring(0, 6));
@@ -301,8 +346,11 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 //     showlastdata = false;
                                 //   });
                                 // }
-                                chasisNoCont.text = '';
+                                //chasisNoCont.text = '';
                               } else {
+                                final vehicleDb = VehicleDb();
+                                sc.offlineData.value =
+                                    await vehicleDb.fetchByChasis(value);
                                 sc.searchOfflineChasisData(value);
 
                                 if (sc.offlineData.isNotEmpty) {
@@ -316,6 +364,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   });
                                 }
                               }
+                              chasisNoCont.text = '';
                             } else {
                               setState(() {
                                 //showChasisNo = false;
@@ -380,6 +429,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   showlastdata = true;
                                 });
                               } else {
+                                final vehicleDb = VehicleDb();
+                                sc.offlineData.value =
+                                    await vehicleDb.fetchByReg(value);
                                 sc.searchOfflineLastDigitData(value);
                                 setState(() {
                                   showlastdata = true;

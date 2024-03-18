@@ -35,10 +35,10 @@ class SplashScreenController extends GetxController {
   void setDashboardList(VehicleDataModel value) =>
       getSearchByLastDigitModel.value = value;
 
-  Future<VehicleDataModel> getAllDashboardApi(int pageNo) async {
+  Future<VehicleDataModel> getAllDashboardApi(int pageNo, int limit) async {
     // setRxRequestZoneStatus(Status.LOADING);
     var response = await _api
-        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=100000');
+        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=$limit');
 
     print(response);
 
@@ -75,7 +75,7 @@ class SplashScreenController extends GetxController {
   }
 
   void getAllDashboardApiData(int pageNo) {
-    getAllDashboardApi(pageNo).then((value) async {
+    getAllDashboardApi(pageNo, 35000).then((value) async {
       setDashboardList(value);
       downloadedData.value =
           await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
@@ -147,6 +147,7 @@ class SplashScreenController extends GetxController {
         await _updateNotification(totalData.value, downloadedData.value);
         if (currentPage.value % 10 == 0 && currentPage.value != 0) {
           await DefaultCacheManager().emptyCache();
+          await db.execute('VACUUM');
         }
 
         //await batch.commit();
@@ -154,7 +155,9 @@ class SplashScreenController extends GetxController {
 
       await Helper.setIntPreferences(
           SharedPreferencesVar.currentPage, currentPage.value);
-      if (totalPages == currentPage) {
+
+      if (currentPage.value >= totalPages.value ||
+          downloadedData.value >= totalData.value) {
         var now = DateTime.now();
         var formatter = DateFormat('yyyy-MM-dd');
         String formattedDate = formatter.format(now);
@@ -169,11 +172,11 @@ class SplashScreenController extends GetxController {
         await Helper.setStringPreferences(
             SharedPreferencesVar.lastUpdateTime, currentTime);
 
-        if (uc.userDetails['role'] == 'repo-agent') {
-          Get.offAll(HomeScreenRepoStaff());
-        } else {
-          Get.toNamed(AppRoutes.home);
-        }
+        // if (uc.userDetails['role'] == 'repo-agent') {
+        //   Get.offAll(HomeScreenRepoStaff());
+        // } else {
+        //   Get.toNamed(AppRoutes.home);
+        // }
         setRxRequestStatus(Status.COMPLETED);
       } else {
         currentPage.value++;
@@ -218,7 +221,7 @@ class SplashScreenController extends GetxController {
   }
 
   void getAllDashboardApiDataPeriodically(int pageNo) {
-    getAllDashboardApi(pageNo).then((value) async {
+    getAllDashboardApi(pageNo, 1000).then((value) async {
       setDashboardList(value);
       downloadedData.value =
           await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);

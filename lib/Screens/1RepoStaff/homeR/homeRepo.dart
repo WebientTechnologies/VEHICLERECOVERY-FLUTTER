@@ -35,6 +35,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   UserController uc = Get.find<UserController>();
   HomeController hcc = Get.put(HomeController());
 
+  ScrollController _controller1 = ScrollController();
+  ScrollController _controller2 = ScrollController();
+
+  ScrollController _chasisController1 = ScrollController();
+  ScrollController _chasisController2 = ScrollController();
+
   bool showlastdata = false;
   bool showChasisNo = false;
   bool isOnline = true;
@@ -45,6 +51,11 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
+    _controller1.addListener(_scrollListener);
+    _controller2.addListener(_scrollListener);
+
+    _chasisController1.addListener(_chasisScrollListener);
+    _chasisController2.addListener(_chasisScrollListener);
     uc.loadUserDetails();
     checkMode();
     _getCurrentPosition();
@@ -64,7 +75,34 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   @override
   void dispose() {
     _focusNode.dispose();
+    _controller1.removeListener(_scrollListener);
+    _controller2.removeListener(_scrollListener);
+    _controller1.dispose();
+    _controller2.dispose();
+
+    _chasisController1.removeListener(_chasisScrollListener);
+    _chasisController2.removeListener(_chasisScrollListener);
+    _chasisController1.dispose();
+    _chasisController2.dispose();
     super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_controller1.offset != _controller2.offset) {
+      _controller1.jumpTo(_controller2.offset);
+    }
+    if (_controller2.offset != _controller1.offset) {
+      _controller2.jumpTo(_controller1.offset);
+    }
+  }
+
+  void _chasisScrollListener() {
+    if (_chasisController1.offset != _chasisController2.offset) {
+      _chasisController1.jumpTo(_chasisController2.offset);
+    }
+    // if (_controller2.offset != _controller1.offset) {
+    //   _controller2.jumpTo(_controller1.offset);
+    // }
   }
 
   Future checkMode() async {
@@ -78,7 +116,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     mode = isOnline ? "Online" : "Offline";
 
     final vehicleDb = VehicleDb();
-    sc.offlineData.value = await vehicleDb.fetchAll();
+    //sc.offlineData.value = await vehicleDb.fetchAll();
     sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
     print('offline data count ${sc.offlineData.length}');
     setState(() {});
@@ -95,7 +133,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
       if (lastUpdateDate.length > 4) {
         ssc.loadPartialData.value = true;
-        Timer.periodic(Duration(seconds: 5), (timer) async {
+        Timer.periodic(Duration(seconds: 10), (timer) async {
           int currentPage =
               await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
           //print('ccccc - $currentPage');
@@ -239,8 +277,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                           border: InputBorder.none,
                           hintStyle: TextStyle(color: ColorConstants.aqua),
                         ),
-                        onChanged: (value) {
-                          if (value.length >= 7) {
+                        onChanged: (value) async {
+                          if (value.length == 6) {
+                            bool isOnline = await Helper.getBoolPreferences(
+                                SharedPreferencesVar.isOnline);
                             if (isOnline) {
                               sc.getAllSearchByChasisApiData(
                                   chasisNoCont.value.text.substring(0, 6));
@@ -257,8 +297,11 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               //     showlastdata = false;
                               //   });
                               // }
-                              chasisNoCont.text = '';
+                              //chasisNoCont.text = '';
                             } else {
+                              final vehicleDb = VehicleDb();
+                              sc.offlineData.value =
+                                  await vehicleDb.fetchByChasis(value);
                               sc.searchOfflineChasisData(value);
 
                               if (sc.offlineData.isNotEmpty) {
@@ -272,6 +315,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 });
                               }
                             }
+                            chasisNoCont.text = '';
                           } else {
                             setState(() {
                               //showChasisNo = false;
@@ -334,6 +378,9 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 showlastdata = true;
                               });
                             } else {
+                              final vehicleDb = VehicleDb();
+                              sc.offlineData.value =
+                                  await vehicleDb.fetchByReg(value);
                               sc.searchOfflineLastDigitData(value);
                               setState(() {
                                 showlastdata = true;
@@ -379,6 +426,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                           SizedBox(
                             width: Get.width * 0.5,
                             child: ListView.builder(
+                              controller: _chasisController1,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 12),
                               itemCount: sc.firstHalf.length,
@@ -416,6 +464,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                           SizedBox(
                             width: Get.width * 0.5,
                             child: ListView.builder(
+                              controller: _chasisController2,
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 12),
                               itemCount: sc.secondHalf.length,
@@ -509,7 +558,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     }
                   case Status.ERROR:
                     return const Center(
-                      child: Text('SOmething went wrong'),
+                      child: Text('Something went wrong'),
                     );
                   case Status.COMPLETED:
                     if (isOnline) {
@@ -519,6 +568,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                             SizedBox(
                               width: Get.width * 0.5,
                               child: ListView.builder(
+                                controller: _controller1,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 itemCount: sc.firstHalf.length,
@@ -557,6 +607,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                             SizedBox(
                               width: Get.width * 0.5,
                               child: ListView.builder(
+                                controller: _controller2,
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 itemCount: sc.secondHalf.length,

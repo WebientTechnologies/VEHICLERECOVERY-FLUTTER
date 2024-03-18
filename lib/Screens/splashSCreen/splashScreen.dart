@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
 import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
@@ -27,6 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     loadUserDetail();
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
 
     Timer(const Duration(milliseconds: 1500), () {
       checkSignin();
