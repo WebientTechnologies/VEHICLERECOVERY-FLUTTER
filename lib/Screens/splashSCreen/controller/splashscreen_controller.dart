@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
 import 'package:vinayak/core/constants/helper.dart';
@@ -9,7 +14,7 @@ import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/core/network/network_api.dart';
 import 'package:vinayak/core/sqlite/vehicledb.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/response/status.dart';
 import '../../../core/sqlite/database_helper.dart';
@@ -327,5 +332,89 @@ class SplashScreenController extends GetxController {
         ),
       );
     });
+  }
+
+  Future<void> downloadData() async {
+    final response =
+        await http.get(Uri.parse('http://93.127.195.102/downloads/export.zip'));
+    print('downloading');
+
+    if (response.statusCode == 200) {
+      Directory appDocumentsDirectory =
+          await getApplicationDocumentsDirectory();
+      print(appDocumentsDirectory.path);
+      final file = File('${appDocumentsDirectory.path}/export.zip');
+      await file.writeAsBytes(response.bodyBytes);
+      print('File downloaded to: ${appDocumentsDirectory.path}');
+      final directory = Directory(appDocumentsDirectory.path);
+      List<FileSystemEntity> files = await directory.list().toList();
+      for (var file in files) {
+        print(file.path);
+      }
+      try {
+        await ZipFile.extractToDirectory(
+          zipFile: file,
+          destinationDir: appDocumentsDirectory,
+        );
+        print('File extracted successfully.');
+      } catch (e) {
+        print('Error extracting file: $e');
+      }
+      // String jsonContent =
+      //     await File('${appDocumentsDirectory.path}/export.json')
+      //         .readAsString(encoding: utf8);
+
+      // // Parse the JSON data into a Map
+      // Map<String, dynamic> jsonData = jsonDecode(jsonContent);
+      // VehicleDataModel vdc = VehicleDataModel.fromJson(jsonData);
+      // setDashboardList(vdc);
+
+      // for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
+      //   print(getSearchByLastDigitModel.value.data![i].engineNo);
+      // }
+
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Download Complete',
+        '',
+        NotificationDetails(
+          android: AndroidNotificationDetails('channel_id', 'channel_name',
+              channelDescription: 'channel_description',
+              importance: Importance.min,
+              priority: Priority.min,
+              ongoing: true,
+              showProgress: true,
+              playSound: false,
+              enableVibration: false),
+        ),
+      );
+      // List<Map<String, dynamic>> jsonDataList =
+      //     await parseJsonLinesFile('${appDocumentsDirectory.path}/export.json');
+      // for (var jsonData in jsonDataList) {
+      //   print(jsonData);
+      // }
+    } else {
+      throw Exception('Failed to download file');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> parseJsonLinesFile(String filePath) async {
+    try {
+      final file = File(filePath);
+      List<Map<String, dynamic>> jsonDataList = [];
+
+      await for (String line in file
+          .openRead()
+          .transform(utf8.decoder)
+          .transform(LineSplitter())) {
+        final jsonData = jsonDecode(line);
+        jsonDataList.add(jsonData);
+      }
+
+      return jsonDataList;
+    } catch (e) {
+      print('Error parsing JSON lines file: $e');
+      return [];
+    }
   }
 }

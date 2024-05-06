@@ -137,14 +137,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
           int currentPage =
               await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
           //print('ccccc - $currentPage');
-          ssc.getAllDashboardApiDataPeriodically(currentPage);
+          //ssc.getAllDashboardApiDataPeriodically(currentPage);
+          ssc.downloadData();
         });
       } else {
         ssc.loadAllData.value = true;
         int offlinePageNumber = await Helper.getIntPreferences(
             SharedPreferencesVar.offlinePageNumber);
-        ssc.getAllDashboardApiData(
-            offlinePageNumber > 0 ? offlinePageNumber : 1);
+        // ssc.getAllDashboardApiData(
+        //     offlinePageNumber > 0 ? offlinePageNumber : 1);
+        ssc.downloadData();
       }
     }
   }

@@ -1,17 +1,17 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
-import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
+import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_model.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
-import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/routes/app_routes.dart';
-import 'package:vinayak/widget/myappbar.dart';
+
 import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
 import '../../core/global_controller/user_controller.dart';
@@ -69,7 +69,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    init();
+    //init();
   }
 
   @override
@@ -137,16 +137,48 @@ class _HomeSCreenState extends State<HomeSCreen> {
           int currentPage =
               await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
           print('ccccc - $currentPage');
-          ssc.getAllDashboardApiDataPeriodically(currentPage);
+          //ssc.getAllDashboardApiDataPeriodically(currentPage);
+          await ssc.downloadData();
         });
       } else {
         print("old data");
         ssc.loadAllData.value = true;
         int offlinePageNumber = await Helper.getIntPreferences(
             SharedPreferencesVar.offlinePageNumber);
-        ssc.getAllDashboardApiData(
-            offlinePageNumber > 0 ? offlinePageNumber : 1);
+        // ssc.getAllDashboardApiData(
+        //     offlinePageNumber > 0 ? offlinePageNumber : 1);
+        await ssc.downloadData();
       }
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> parseJsonLinesFile(String filePath) async {
+    try {
+      final file = File(filePath);
+      List<Map<String, dynamic>> jsonDataList = [];
+      Stream<String> f =
+          file.openRead().transform(utf8.decoder).transform(LineSplitter());
+
+      //for (int i = 0; i < 2; i++) {
+      f.listen((String line) {
+        VehicleSingleModel vsm = VehicleSingleModel.fromJson(jsonDecode(line));
+        sc.singleOfflineData.add(vsm);
+      }, onError: (dynamic error) {
+        print('Stream error: $error');
+      }, onDone: () {
+        print('Stream closed');
+      });
+      // }
+
+      // await for (String line in f) {
+      //   final jsonData = jsonDecode(line);
+      //   jsonDataList.add(jsonData);
+      // }
+
+      return jsonDataList;
+    } catch (e) {
+      print('Error parsing JSON lines file: $e');
+      return [];
     }
   }
 
@@ -232,7 +264,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         init: UserController(),
                         builder: (cc) {
                           return Text(
-                            'Hey ${cc.userDetails['role'] == 'office-staff' ? cc.userDetails['staf']['name'] ?? '' : cc.userDetails['agent']['name'] ?? ''}',
+                            'Heyy ${cc.userDetails['role'] == 'office-staff' ? cc.userDetails['staf']['name'] ?? '' : cc.userDetails['agent']['name'] ?? ''}',
                             style:
                                 TextStyle(color: ColorConstants.midGreyEAEAEA),
                           );
@@ -744,17 +776,32 @@ class _HomeSCreenState extends State<HomeSCreen> {
               if (showlastdata == false && showChasisNo == false)
                 Column(
                   children: [
-                    Container(
-                      height: 40,
-                      width: width * 0.9,
-                      decoration: BoxDecoration(
-                          color: ColorConstants.aqua,
-                          borderRadius: BorderRadius.circular(18)),
-                      child: Center(
-                        child: Text(
-                          'LAST UPDATE $lastUpdateDate $lastUpdateTime',
-                          style: TextStyle(
-                              fontSize: 17, color: ColorConstants.white),
+                    GestureDetector(
+                      onTap: () async {
+                        Directory appDocumentsDirectory =
+                            await getApplicationDocumentsDirectory();
+                        print(appDocumentsDirectory.path);
+                        parseJsonLinesFile(
+                            '${appDocumentsDirectory.path}/export.json');
+                        // List<Map<String, dynamic>> jsonDataList =
+                        //     await parseJsonLinesFile(
+                        //         '${appDocumentsDirectory.path}/export.json');
+                        // for (var jsonData in jsonDataList) {
+                        //   print(jsonData);
+                        // }
+                      },
+                      child: Container(
+                        height: 40,
+                        width: width * 0.9,
+                        decoration: BoxDecoration(
+                            color: ColorConstants.aqua,
+                            borderRadius: BorderRadius.circular(18)),
+                        child: Center(
+                          child: Text(
+                            'LAST UPDATE $lastUpdateDate $lastUpdateTime',
+                            style: TextStyle(
+                                fontSize: 17, color: ColorConstants.white),
+                          ),
                         ),
                       ),
                     ),
