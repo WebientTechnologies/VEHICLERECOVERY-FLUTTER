@@ -335,9 +335,10 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> downloadData() async {
+    print('downloading');
+    print(DateTime.now());
     final response =
         await http.get(Uri.parse('http://93.127.195.102/downloads/export.zip'));
-    print('downloading');
 
     if (response.statusCode == 200) {
       Directory appDocumentsDirectory =
@@ -360,6 +361,11 @@ class SplashScreenController extends GetxController {
       } catch (e) {
         print('Error extracting file: $e');
       }
+      await file.delete();
+      List<FileSystemEntity> filess = await directory.list().toList();
+      for (var file in filess) {
+        print(file.path);
+      }
       // String jsonContent =
       //     await File('${appDocumentsDirectory.path}/export.json')
       //         .readAsString(encoding: utf8);
@@ -373,21 +379,21 @@ class SplashScreenController extends GetxController {
       //   print(getSearchByLastDigitModel.value.data![i].engineNo);
       // }
 
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Download Complete',
-        '',
-        NotificationDetails(
-          android: AndroidNotificationDetails('channel_id', 'channel_name',
-              channelDescription: 'channel_description',
-              importance: Importance.min,
-              priority: Priority.min,
-              ongoing: true,
-              showProgress: true,
-              playSound: false,
-              enableVibration: false),
-        ),
-      );
+      // await flutterLocalNotificationsPlugin.show(
+      //   0,
+      //   'Download Complete',
+      //   '',
+      //   NotificationDetails(
+      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
+      //         channelDescription: 'channel_description',
+      //         importance: Importance.min,
+      //         priority: Priority.min,
+      //         ongoing: true,
+      //         showProgress: true,
+      //         playSound: false,
+      //         enableVibration: false),
+      //   ),
+      // );
       // List<Map<String, dynamic>> jsonDataList =
       //     await parseJsonLinesFile('${appDocumentsDirectory.path}/export.json');
       // for (var jsonData in jsonDataList) {
@@ -396,6 +402,8 @@ class SplashScreenController extends GetxController {
     } else {
       throw Exception('Failed to download file');
     }
+
+    print(DateTime.now());
   }
 
   Future<List<Map<String, dynamic>>> parseJsonLinesFile(String filePath) async {

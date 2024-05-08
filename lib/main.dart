@@ -4,6 +4,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
 import 'package:vinayak/routes/app_routes.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -138,6 +141,8 @@ const notificationId = 888;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(VehicleSingleModelAdapter());
   // Workmanager().initialize(
   //     callbackDispatcher, // The top level function, aka callbackDispatcher
   //     isInDebugMode:

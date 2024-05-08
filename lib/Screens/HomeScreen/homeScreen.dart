@@ -6,9 +6,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
-import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_model.dart';
+import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_modelss.dart';
+import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/routes/app_routes.dart';
 
@@ -16,6 +19,7 @@ import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
 import '../../core/global_controller/user_controller.dart';
 import '../../core/response/status.dart';
+import '../../core/sqlite/database_helper.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
 import '../splashSCreen/controller/splashscreen_controller.dart';
@@ -69,7 +73,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    //init();
+    // init();
   }
 
   @override
@@ -158,22 +162,202 @@ class _HomeSCreenState extends State<HomeSCreen> {
       List<Map<String, dynamic>> jsonDataList = [];
       Stream<String> f =
           file.openRead().transform(utf8.decoder).transform(LineSplitter());
-
+      print('stream started');
+      print(DateTime.now());
+      final db = await DatabaseHelper().database;
+      var bach = db.batch();
       //for (int i = 0; i < 2; i++) {
-      f.listen((String line) {
-        VehicleSingleModel vsm = VehicleSingleModel.fromJson(jsonDecode(line));
-        sc.singleOfflineData.add(vsm);
-      }, onError: (dynamic error) {
-        print('Stream error: $error');
-      }, onDone: () {
-        print('Stream closed');
-      });
+      // f.listen((String line) async {
+      //   VehicleSingleModel vsm = VehicleSingleModel.fromJson(jsonDecode(line));
+      //   //sc.singleOfflineData.add(vsm);
+
+      //   //var batch = db.batch();
+      //   db.insertVehicle(
+      //       vsm.iId!.oid ?? '',
+      //       vsm.loadStatus ?? '',
+      //       vsm.bankName ?? '',
+      //       vsm.branch ?? '',
+      //       vsm.agreementNo ?? '',
+      //       vsm.customerName ?? '',
+      //       vsm.regNo ?? '',
+      //       vsm.chasisNo ?? '',
+      //       vsm.engineNo ?? '',
+      //       vsm.callCenterNo1 ?? '',
+      //       vsm.callCenterNo1Name ?? '',
+      //       vsm.callCenterNo2 ?? '',
+      //       vsm.callCenterNo2Name ?? '',
+      //       vsm.lastDigit ?? '',
+      //       vsm.month ?? '',
+      //       vsm.status ?? '',
+      //       vsm.fileName ?? '',
+      //       vsm.createdAt!.date ?? '',
+      //       vsm.updatedAt!.date ?? '');
+      // }, onError: (dynamic error) {
+      //   print('Stream error: $error');
+      // }, onDone: () {
+      //   print('Stream closed');
+      //   print(DateTime.now());
+      // });
       // }
 
-      // await for (String line in f) {
-      //   final jsonData = jsonDecode(line);
-      //   jsonDataList.add(jsonData);
+      int batchSize = 1000;
+      List<VehicleSingleModel> batch = [];
+      final box = await Hive.openBox<VehicleSingleModel>('vehicle');
+      //Listen to the stream
+      // await f.forEach((String line) async {
+      //   VehicleSingleModelss vsm =
+      //       VehicleSingleModelss.fromJson(jsonDecode(line));
+      //   // Process each line
+      //   // Assuming each line is a JSON string to be inserted into the database
+      //   //var data = jsonDecode(line);
+      //   // batch.add(VehicleSingleModel(
+      //   //     vsm.iId!.oid ?? '',
+      //   //     vsm.bankName ?? '',
+      //   //     vsm.branch ?? '',
+      //   //     vsm.agreementNo ?? '',
+      //   //     vsm.customerName ?? '',
+      //   //     vsm.regNo ?? '',
+      //   //     vsm.chasisNo ?? '',
+      //   //     vsm.engineNo ?? '',
+      //   //     vsm.maker ?? '',
+      //   //     vsm.dlCode ?? '',
+      //   //     vsm.bucket ?? '',
+      //   //     vsm.emi ?? '',
+      //   //     vsm.color ?? '',
+      //   //     vsm.callCenterNo1 ?? '',
+      //   //     vsm.callCenterNo1Name ?? '',
+      //   //     vsm.callCenterNo2 ?? '',
+      //   //     vsm.callCenterNo2Name ?? '',
+      //   //     vsm.lastDigit ?? '',
+      //   //     vsm.month ?? '',
+      //   //     vsm.status ?? '',
+      //   //     vsm.loadStatus ?? '',
+      //   //     vsm.fileName ?? '',
+      //   //     vsm.iV ?? 0,
+      //   //     vsm.createdAt!.date ?? '',
+      //   //     vsm.updatedAt!.date ?? ''));
+
+      //   box.add(VehicleSingleModel(
+      //       vsm.iId!.oid ?? '',
+      //       vsm.bankName ?? '',
+      //       vsm.branch ?? '',
+      //       vsm.agreementNo ?? '',
+      //       vsm.customerName ?? '',
+      //       vsm.regNo ?? '',
+      //       vsm.chasisNo ?? '',
+      //       vsm.engineNo ?? '',
+      //       vsm.maker ?? '',
+      //       vsm.dlCode ?? '',
+      //       vsm.bucket ?? '',
+      //       vsm.emi ?? '',
+      //       vsm.color ?? '',
+      //       vsm.callCenterNo1 ?? '',
+      //       vsm.callCenterNo1Name ?? '',
+      //       vsm.callCenterNo2 ?? '',
+      //       vsm.callCenterNo2Name ?? '',
+      //       vsm.lastDigit ?? '',
+      //       vsm.month ?? '',
+      //       vsm.status ?? '',
+      //       vsm.loadStatus ?? '',
+      //       vsm.fileName ?? '',
+      //       vsm.iV ?? 0,
+      //       vsm.createdAt!.date ?? '',
+      //       vsm.updatedAt!.date ?? ''));
+
+      //   // Insert batch into the database when it reaches the batch size
+      // });
+      // print(DateTime.now());
+      // print('adding in array completed');
+      // print('length - ${batch.length}');
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // List<String> encodedArray =
+      //     batch.map((item) => jsonEncode(item.toJson())).toList();
+      // await prefs.setStringList('vehicleData', encodedArray).then((value) {
+      //   print('inserted');
+      // }).onError((error, stackTrace) {
+      //   print(error);
+      //   print(stackTrace);
+      // });
+
+      //box.addAll(batch);
+      print('added all in box');
+      print('boxx length ${box.getAt(20)!.engineNo}');
+      box.close();
+      // print(DateTime.now());
+
+      // //final boxx = await Hive.openBox<VehicleSingl eModel>('vehicle');
+
+      // print(DateTime.now());
+      //print(box.getAt(20)!.engineNo);
+
+      // for (int i = 0; i < batch.length; i++) {
+      //   print('batching');
+      //   //if (batch.length >= batchSize) {
+      //   // batch.forEach((entry) async {
+      //   bach.rawInsert('''
+      //     INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      //    ''', [
+      //     batch[i].iId!.oid,
+      //     batch[i].loadStatus,
+      //     batch[i].bankName,
+      //     batch[i].branch,
+      //     batch[i].agreementNo,
+      //     batch[i].customerName,
+      //     batch[i].regNo,
+      //     batch[i].chasisNo,
+      //     batch[i].engineNo,
+      //     batch[i].callCenterNo1,
+      //     batch[i].callCenterNo1Name,
+      //     batch[i].callCenterNo2,
+      //     batch[i].callCenterNo2Name,
+      //     batch[i].lastDigit,
+      //     batch[i].month,
+      //     batch[i].status,
+      //     batch[i].fileName,
+      //     batch[i].createdAt!.date,
+      //     batch[i].updatedAt!.date
+      //   ]);
+      //   //  });
+
+      //   //batch.clear();
+      //   //}
       // }
+      // await bach.commit();
+
+      // // Insert any remaining entries in the last batch
+      // if (batch.isNotEmpty) {
+      //   await db.transaction((txn) async {
+      //     batch.forEach((entry) async {
+      //       print('inserting');
+      //       await txn.rawInsert('''
+      //     INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      //    ''', [
+      //         entry.iId!.oid,
+      //         entry.loadStatus,
+      //         entry.bankName,
+      //         entry.branch,
+      //         entry.agreementNo,
+      //         entry.customerName,
+      //         entry.regNo,
+      //         entry.chasisNo,
+      //         entry.engineNo,
+      //         entry.callCenterNo1,
+      //         entry.callCenterNo1Name,
+      //         entry.callCenterNo2,
+      //         entry.callCenterNo2Name,
+      //         entry.lastDigit,
+      //         entry.month,
+      //         entry.status,
+      //         entry.fileName,
+      //         entry.createdAt!.date,
+      //         entry.updatedAt!.date
+      //       ]);
+      //     });
+      //   });
+      // }
+
+      // // Close the database
+      // await db.close();
 
       return jsonDataList;
     } catch (e) {

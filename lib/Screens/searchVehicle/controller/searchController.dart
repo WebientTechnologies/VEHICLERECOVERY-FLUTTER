@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_model.dart';
+import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_modelss.dart';
 import 'package:vinayak/Screens/searchVehicle/model/seezer_model.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/network/network_api.dart';
@@ -25,7 +25,7 @@ class VehicleSearchController extends GetxController {
   RxInt onlineDataCount = 0.obs;
   RxList<VehicleModel> offlineData = <VehicleModel>[].obs;
   RxList<VehicleModel> offlineDataFiltered = <VehicleModel>[].obs;
-  RxList<VehicleSingleModel> singleOfflineData = <VehicleSingleModel>[].obs;
+  RxList<VehicleSingleModelss> singleOfflineData = <VehicleSingleModelss>[].obs;
 
   RxString selectedLoadStatus = "empty".obs;
   RxString selectedSeezer = "".obs;
