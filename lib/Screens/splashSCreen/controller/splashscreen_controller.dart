@@ -16,10 +16,13 @@ import 'package:vinayak/core/network/network_api.dart';
 import 'package:vinayak/core/sqlite/vehicledb.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/constants/api_endpoints.dart';
+import '../../../core/global_controller/hive_service.dart';
 import '../../../core/response/status.dart';
 import '../../../core/sqlite/database_helper.dart';
 import '../../../routes/app_routes.dart';
 import '../../1RepoStaff/homeR/homeRepo.dart';
+import '../../HomeScreen/model/vehicle_single_modelss.dart';
+import '../../HomeScreen/model/vehicle_sm_hive.dart';
 import '../../searchVehicle/model/searchLastmodel.dart';
 
 class SplashScreenController extends GetxController {
@@ -336,6 +339,20 @@ class SplashScreenController extends GetxController {
 
   Future<void> downloadData() async {
     print('downloading');
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Downloading',
+      'Downloading Data',
+      NotificationDetails(
+        android: AndroidNotificationDetails('channel_id', 'channel_name',
+            channelDescription: 'channel_description',
+            importance: Importance.min,
+            priority: Priority.min,
+            ongoing: true,
+            playSound: false,
+            enableVibration: false),
+      ),
+    );
     print(DateTime.now());
     final response =
         await http.get(Uri.parse('http://93.127.195.102/downloads/export.zip'));
@@ -362,44 +379,75 @@ class SplashScreenController extends GetxController {
         print('Error extracting file: $e');
       }
       await file.delete();
-      List<FileSystemEntity> filess = await directory.list().toList();
-      for (var file in filess) {
-        print(file.path);
-      }
-      // String jsonContent =
-      //     await File('${appDocumentsDirectory.path}/export.json')
-      //         .readAsString(encoding: utf8);
 
-      // // Parse the JSON data into a Map
-      // Map<String, dynamic> jsonData = jsonDecode(jsonContent);
-      // VehicleDataModel vdc = VehicleDataModel.fromJson(jsonData);
-      // setDashboardList(vdc);
+      final jsonFile = File('${appDocumentsDirectory.path}/export.json');
 
-      // for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
-      //   print(getSearchByLastDigitModel.value.data![i].engineNo);
-      // }
+      Stream<String> f =
+          jsonFile.openRead().transform(utf8.decoder).transform(LineSplitter());
 
-      // await flutterLocalNotificationsPlugin.show(
-      //   0,
-      //   'Download Complete',
-      //   '',
-      //   NotificationDetails(
-      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
-      //         channelDescription: 'channel_description',
-      //         importance: Importance.min,
-      //         priority: Priority.min,
-      //         ongoing: true,
-      //         showProgress: true,
-      //         playSound: false,
-      //         enableVibration: false),
-      //   ),
-      // );
-      // List<Map<String, dynamic>> jsonDataList =
-      //     await parseJsonLinesFile('${appDocumentsDirectory.path}/export.json');
-      // for (var jsonData in jsonDataList) {
-      //   print(jsonData);
-      // }
+      await f.forEach((String line) async {
+        VehicleSingleModelss vsm =
+            VehicleSingleModelss.fromJson(jsonDecode(line));
+
+        HiveService().myBox!.add(VehicleSingleModel(
+            vsm.iId!.oid ?? '',
+            vsm.bankName ?? '',
+            vsm.branch ?? '',
+            vsm.agreementNo ?? '',
+            vsm.customerName ?? '',
+            vsm.regNo ?? '',
+            vsm.chasisNo ?? '',
+            vsm.engineNo ?? '',
+            vsm.maker ?? '',
+            vsm.dlCode ?? '',
+            vsm.bucket ?? '',
+            vsm.emi ?? '',
+            vsm.color ?? '',
+            vsm.callCenterNo1 ?? '',
+            vsm.callCenterNo1Name ?? '',
+            vsm.callCenterNo2 ?? '',
+            vsm.callCenterNo2Name ?? '',
+            vsm.lastDigit ?? '',
+            vsm.month ?? '',
+            vsm.status ?? '',
+            vsm.loadStatus ?? '',
+            vsm.fileName ?? '',
+            vsm.iV ?? 0,
+            vsm.createdAt!.date ?? '',
+            vsm.updatedAt!.date ?? ''));
+
+        // Insert batch into the database when it reaches the batch size
+      });
+
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Downloading',
+        'Downloading Complete',
+        NotificationDetails(
+          android: AndroidNotificationDetails('channel_id', 'channel_name',
+              channelDescription: 'channel_description',
+              importance: Importance.min,
+              priority: Priority.min,
+              ongoing: true,
+              playSound: false,
+              enableVibration: false),
+        ),
+      );
     } else {
+      await flutterLocalNotificationsPlugin.show(
+        0,
+        'Error',
+        'Error Downloading Data',
+        NotificationDetails(
+          android: AndroidNotificationDetails('channel_id', 'channel_name',
+              channelDescription: 'channel_description',
+              importance: Importance.min,
+              priority: Priority.min,
+              ongoing: true,
+              playSound: false,
+              enableVibration: false),
+        ),
+      );
       throw Exception('Failed to download file');
     }
 

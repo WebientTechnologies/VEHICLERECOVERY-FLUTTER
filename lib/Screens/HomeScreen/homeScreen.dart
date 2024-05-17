@@ -8,11 +8,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
-import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_modelss.dart';
 import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
+import 'package:vinayak/core/global_controller/hive_service.dart';
 import 'package:vinayak/routes/app_routes.dart';
 
 import '../../core/constants/helper.dart';
@@ -23,6 +22,7 @@ import '../../core/sqlite/database_helper.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
 import '../splashSCreen/controller/splashscreen_controller.dart';
+import 'model/vehicle_single_modelss.dart';
 
 class HomeSCreen extends StatefulWidget {
   const HomeSCreen({super.key});
@@ -51,6 +51,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
   bool showlastdata = false;
   bool last4digitHaveFocus = false, chasisNoHaveFocus = false;
   late FocusNode _focusNode;
+  //late final box;
 
   @override
   void initState() {
@@ -73,7 +74,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    // init();
+    //init();
   }
 
   @override
@@ -110,6 +111,11 @@ class _HomeSCreenState extends State<HomeSCreen> {
   }
 
   Future checkMode() async {
+    print(DateTime.now());
+    //box = await Hive.openBox<VehicleSingleModel>('vehicle');
+    print(DateTime.now());
+
+    print('box opened');
     ssc.currentPage.value =
         await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
 
@@ -202,7 +208,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
 
       int batchSize = 1000;
       List<VehicleSingleModel> batch = [];
-      final box = await Hive.openBox<VehicleSingleModel>('vehicle');
+      //final box = Hive.box('vehicle');
       //Listen to the stream
       // await f.forEach((String line) async {
       //   VehicleSingleModelss vsm =
@@ -237,7 +243,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
       //   //     vsm.createdAt!.date ?? '',
       //   //     vsm.updatedAt!.date ?? ''));
 
-      //   box.add(VehicleSingleModel(
+      //   HiveService().myBox!.add(VehicleSingleModel(
       //       vsm.iId!.oid ?? '',
       //       vsm.bankName ?? '',
       //       vsm.branch ?? '',
@@ -280,9 +286,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
       // });
 
       //box.addAll(batch);
+      final box = HiveService().myBox;
       print('added all in box');
-      print('boxx length ${box.getAt(20)!.engineNo}');
-      box.close();
+      print('boxx length ${box!.length}');
+      for (int i = 0; i < 20; i++) {
+        print(box.getAt(i).chasisNo);
+      }
+      //box.close();
       // print(DateTime.now());
 
       // //final boxx = await Hive.openBox<VehicleSingl eModel>('vehicle');
@@ -965,7 +975,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         Directory appDocumentsDirectory =
                             await getApplicationDocumentsDirectory();
                         print(appDocumentsDirectory.path);
-                        parseJsonLinesFile(
+                        await parseJsonLinesFile(
                             '${appDocumentsDirectory.path}/export.json');
                         // List<Map<String, dynamic>> jsonDataList =
                         //     await parseJsonLinesFile(

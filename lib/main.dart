@@ -13,6 +13,7 @@ import 'package:workmanager/workmanager.dart';
 import 'Screens/splashSCreen/controller/splashscreen_controller.dart';
 import 'core/constants/helper.dart';
 import 'core/constants/shared_preferences_var.dart';
+import 'core/global_controller/hive_service.dart';
 import 'core/global_controller/network_controller.dart';
 
 // @pragma(
@@ -141,8 +142,9 @@ const notificationId = 888;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Hive.initFlutter();
-  Hive.registerAdapter(VehicleSingleModelAdapter());
+  //await Hive.initFlutter();
+  // Hive.registerAdapter(VehicleSingleModelAdapter());
+  await HiveService().initialize();
   // Workmanager().initialize(
   //     callbackDispatcher, // The top level function, aka callbackDispatcher
   //     isInDebugMode:
