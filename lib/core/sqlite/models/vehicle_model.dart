@@ -1,5 +1,5 @@
 class VehicleModel {
-  int? id;
+  String? id;
   String? dataId;
   String? loadStatus;
   String? bankName;

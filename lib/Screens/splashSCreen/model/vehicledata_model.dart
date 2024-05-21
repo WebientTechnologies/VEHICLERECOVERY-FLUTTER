@@ -21,8 +21,8 @@ class VehicleDataModel {
     }
     totalRecords = json['totalRecords'];
     totalPages = json['totalPages'];
-    currentPage = int.parse(json['currentPage']);
-    nextPage = int.parse(json['nextPage']);
+    currentPage = json['currentPage'];
+    nextPage = json['nextPage'];
   }
 
   Map<String, dynamic> toJson() {

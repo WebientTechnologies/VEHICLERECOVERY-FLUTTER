@@ -30,8 +30,12 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     loadUserDetail();
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    // FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    //     FlutterLocalNotificationsPlugin();
+    // flutterLocalNotificationsPlugin
+    //     .resolvePlatformSpecificImplementation<
+    //         AndroidFlutterLocalNotificationsPlugin>()
+    //     ?.requestNotificationsPermission();
 
     Timer(const Duration(milliseconds: 1500), () {
       checkSignin();

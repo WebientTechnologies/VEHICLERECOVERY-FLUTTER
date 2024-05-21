@@ -4,9 +4,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_modelss.dart';
+import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
 import 'package:vinayak/Screens/searchVehicle/model/seezer_model.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
+import 'package:vinayak/core/global_controller/hive_service.dart';
 import 'package:vinayak/core/network/network_api.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/constants/api_endpoints.dart';
@@ -23,8 +26,10 @@ class VehicleSearchController extends GetxController {
 
   RxInt offlineDataCount = 0.obs;
   RxInt onlineDataCount = 0.obs;
+  //final offlineDataHive = HiveService().myBox.obs;
+  //final offlineDataFilteredHive = <Box>[].obs;
   RxList<VehicleModel> offlineData = <VehicleModel>[].obs;
-  RxList<VehicleModel> offlineDataFiltered = <VehicleModel>[].obs;
+  RxList<dynamic> offlineDataFiltered = <VehicleModel>[].obs;
   RxList<VehicleSingleModelss> singleOfflineData = <VehicleSingleModelss>[].obs;
 
   RxString selectedLoadStatus = "empty".obs;
@@ -108,6 +113,51 @@ class VehicleSearchController extends GetxController {
     setRxRequestSearchByLastStatus(Status.COMPLETED);
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     print('offline data ${offlineDataFiltered.length}');
+  }
+
+  void searchOfflineLastDigitDataHive(String lastDigit) {
+    setRxRequestSearchByChasisNoStatus(Status.LOADING);
+    setRxRequestSearchByLastStatus(Status.LOADING);
+    // final hive = HiveService().myBox!;
+    // print(hive.length);
+    // print('searching');
+    offlineDataFiltered.clear();
+    // for (int i = 0; i < hive.length; i++) {
+    //   if (hive.getAt(i).lastDigit!.toLowerCase().contains(lastDigit)) {
+    //     setRxRequestSearchByLastStatus(Status.COMPLETED);
+    //     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
+    //     print('offline data ${offlineDataFiltered.length}');
+    //     offlineDataFiltered.add(VehicleModel(
+    //       hive.getAt(i).iId ?? '',
+    //       agreementNo: hive.getAt(i).agreementNo ?? '',
+    //       bankName: hive.getAt(i).bankName ?? '',
+    //       branch: hive.getAt(i).branch ?? '',
+    //       callCenterNo1: hive.getAt(i).callCenterNo1 ?? '',
+    //       callCenterNo1Name: hive.getAt(i).callCenterNo1Name ?? '',
+    //       callCenterNo2: hive.getAt(i).callCenterNo2 ?? '',
+    //       callCenterNo2Name: hive.getAt(i).callCenterNo2Name ?? '',
+    //       chasisNo: hive.getAt(i).chasisNo ?? '',
+    //       createdAt: hive.getAt(i).createdAt ?? '',
+    //       customerName: hive.getAt(i).customerName ?? '',
+    //       dataId: '',
+    //       engineNo: hive.getAt(i).engineNo ?? '',
+    //       fileName: hive.getAt(i).fileName ?? '',
+    //       lastDigit: hive.getAt(i).lastDigit ?? '',
+    //       loadStatus: hive.getAt(i).loadStatus ?? '',
+    //       month: hive.getAt(i).month ?? '',
+    //       regNo: hive.getAt(i).regNo ?? '',
+    //       status: hive.getAt(i).status ?? '',
+    //       updatedAt: hive.getAt(i).updatedAt ?? '',
+    //     ));
+    //   }
+    // }
+
+    // print('search complete');
+    offlineDataFiltered.value = HiveService()
+        .myBox!
+        .values
+        .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
+        .toList();
   }
 
   void searchOfflineChasisData(String chasisNo) {

@@ -145,6 +145,22 @@ Future<void> main() async {
   //await Hive.initFlutter();
   // Hive.registerAdapter(VehicleSingleModelAdapter());
   await HiveService().initialize();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings("@mipmap/launcher_icon");
+
+  final InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
   // Workmanager().initialize(
   //     callbackDispatcher, // The top level function, aka callbackDispatcher
   //     isInDebugMode:

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -19,6 +20,7 @@ import '../../core/constants/shared_preferences_var.dart';
 import '../../core/global_controller/user_controller.dart';
 import '../../core/response/status.dart';
 import '../../core/sqlite/database_helper.dart';
+import '../../core/sqlite/models/vehicle_model.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
 import '../splashSCreen/controller/splashscreen_controller.dart';
@@ -74,7 +76,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
     } else {
       hc.selectedGreeting.value = 2;
     }
-    //init();
+
+    init();
   }
 
   @override
@@ -111,11 +114,27 @@ class _HomeSCreenState extends State<HomeSCreen> {
   }
 
   Future checkMode() async {
-    print(DateTime.now());
-    //box = await Hive.openBox<VehicleSingleModel>('vehicle');
-    print(DateTime.now());
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      'Welcome to Vinayak Recovery',
+      '',
+      NotificationDetails(
+        android: AndroidNotificationDetails('channel_id', 'channel_name',
+            channelDescription: 'channel_description',
+            importance: Importance.max,
+            priority: Priority.high,
+            ongoing: true,
+            playSound: false,
+            enableVibration: false),
+      ),
+    );
+    // print(DateTime.now());
+    // //box = await Hive.openBox<VehicleSingleModel>('vehicle');
+    // print(DateTime.now());
 
-    print('box opened');
+    // print('box opened');
     ssc.currentPage.value =
         await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
 
@@ -127,7 +146,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     mode = isOnline ? "Online" : "Offline";
     final vehicleDb = VehicleDb();
     //sc.offlineData.value = await vehicleDb.fetchAll();
-    sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
+    sc.offlineDataCount.value = HiveService().myBox!.length;
     //print(sc.offlineData.length);
     setState(() {});
   }
@@ -143,13 +162,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
         print("in new data");
 
         ssc.loadPartialData.value = true;
-        Timer.periodic(Duration(seconds: 10), (timer) async {
-          int currentPage =
-              await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
-          print('ccccc - $currentPage');
-          //ssc.getAllDashboardApiDataPeriodically(currentPage);
-          await ssc.downloadData();
-        });
+        // Timer.periodic(Duration(seconds: 10), (timer) async {
+        //   int currentPage =
+        //       await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
+        //   print('ccccc - $currentPage');
+        //   //ssc.getAllDashboardApiDataPeriodically(currentPage);
+        //   //await ssc.downloadData();
+        // });
       } else {
         print("old data");
         ssc.loadAllData.value = true;
@@ -655,10 +674,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   showlastdata = true;
                                 });
                               } else {
-                                final vehicleDb = VehicleDb();
-                                sc.offlineData.value =
-                                    await vehicleDb.fetchByReg(value);
-                                sc.searchOfflineLastDigitData(value);
+                                // final vehicleDb = VehicleDb();
+                                // sc.offlineDataHive.value =
+                                //     HiveService().myBox;
+                                sc.searchOfflineLastDigitDataHive(value);
                                 setState(() {
                                   showlastdata = true;
                                 });
