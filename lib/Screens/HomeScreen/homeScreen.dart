@@ -187,10 +187,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
       List<Map<String, dynamic>> jsonDataList = [];
       Stream<String> f =
           file.openRead().transform(utf8.decoder).transform(LineSplitter());
-      print('stream started');
-      print(DateTime.now());
-      final db = await DatabaseHelper().database;
-      var bach = db.batch();
+
+      final vv = f.where((event) => event.contains('2504'));
+      //8print('f length = ${await f.length}');
+      print('vv length = ${await vv.length}');
+      // vv.forEach((line) {
+      //   VehicleSingleModelss vsm =
+      //       VehicleSingleModelss.fromJson(jsonDecode(line));
+      //   print(vsm.lastDigit);
+      // });
       //for (int i = 0; i < 2; i++) {
       // f.listen((String line) async {
       //   VehicleSingleModel vsm = VehicleSingleModel.fromJson(jsonDecode(line));
@@ -225,8 +230,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
       // });
       // }
 
-      int batchSize = 1000;
-      List<VehicleSingleModel> batch = [];
+      // int batchSize = 1000;
+      // List<VehicleSingleModel> batch = [];
       //final box = Hive.box('vehicle');
       //Listen to the stream
       // await f.forEach((String line) async {
@@ -305,12 +310,12 @@ class _HomeSCreenState extends State<HomeSCreen> {
       // });
 
       //box.addAll(batch);
-      final box = HiveService().myBox;
-      print('added all in box');
-      print('boxx length ${box!.length}');
-      for (int i = 0; i < 20; i++) {
-        print(box.getAt(i).chasisNo);
-      }
+      // final box = HiveService().myBox;
+      // print('added all in box');
+      // print('boxx length ${box!.length}');
+      // for (int i = 0; i < 20; i++) {
+      //   print(box.getAt(i).chasisNo);
+      // }
       //box.close();
       // print(DateTime.now());
 

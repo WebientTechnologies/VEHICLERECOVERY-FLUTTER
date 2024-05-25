@@ -20,7 +20,7 @@ class HiveService {
     Hive.registerAdapter(VehicleSingleModelAdapter());
 
     // Open your Hive box here
-    _myBox = await Hive.openBox<VehicleSingleModel>('vehicle');
+    _myBox = await Hive.openBox<dynamic>('vehicle');
   }
 
   Box? get myBox => _myBox;

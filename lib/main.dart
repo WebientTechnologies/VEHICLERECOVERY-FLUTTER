@@ -148,11 +148,6 @@ Future<void> main() async {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.requestNotificationsPermission();
-
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings("@mipmap/launcher_icon");
 
@@ -160,6 +155,10 @@ Future<void> main() async {
       InitializationSettings(android: initializationSettingsAndroid);
 
   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.requestNotificationsPermission();
 
   // Workmanager().initialize(
   //     callbackDispatcher, // The top level function, aka callbackDispatcher

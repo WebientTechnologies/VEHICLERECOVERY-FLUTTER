@@ -29,7 +29,7 @@ class VehicleSearchController extends GetxController {
   //final offlineDataHive = HiveService().myBox.obs;
   //final offlineDataFilteredHive = <Box>[].obs;
   RxList<VehicleModel> offlineData = <VehicleModel>[].obs;
-  RxList<dynamic> offlineDataFiltered = <VehicleModel>[].obs;
+  RxList<dynamic> offlineDataFiltered = <dynamic>[].obs;
   RxList<VehicleSingleModelss> singleOfflineData = <VehicleSingleModelss>[].obs;
 
   RxString selectedLoadStatus = "empty".obs;
@@ -153,18 +153,24 @@ class VehicleSearchController extends GetxController {
     // }
 
     // print('search complete');
+    print('hive length - ${HiveService().myBox!.length}');
+
     offlineDataFiltered.value = HiveService()
         .myBox!
         .values
         .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
         .toList();
+    print(offlineDataFiltered.length);
+
+    setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
+    setRxRequestSearchByLastStatus(Status.COMPLETED);
   }
 
   void searchOfflineChasisData(String chasisNo) {
     setRxRequestSearchByChasisNoStatus(Status.LOADING);
-    offlineDataFiltered.value = offlineData
-        .where((p0) => p0.chasisNo!.toLowerCase().contains(chasisNo))
-        .toList();
+    // offlineDataFiltered.value = offlineData
+    //     .where((p0) => p0.chasisNo!.toLowerCase().contains(chasisNo))
+    //     .toList();
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     print('offline data ${offlineDataFiltered.length}');
   }
