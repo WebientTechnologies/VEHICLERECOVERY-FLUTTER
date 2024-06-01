@@ -45,7 +45,7 @@ class VehicleModel {
 
   factory VehicleModel.fromSqfliteDatabase(Map<String, dynamic> json) =>
       VehicleModel(
-        json["id"],
+        json["id"].toString(),
         dataId: json["dataId"],
         loadStatus: json["loadStatus"],
         bankName: json["bankName"],

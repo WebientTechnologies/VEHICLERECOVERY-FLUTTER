@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -378,22 +379,9 @@ class SplashScreenController extends GetxController {
       //   print(file.path);
       // }
       await DefaultCacheManager().emptyCache();
-
-      try {
-        await ZipFile.extractToDirectory(
-          zipFile: file,
-          destinationDir: appDocumentsDirectory,
-        );
-        print('File extracted successfully.');
-      } catch (e) {
-        print('Error extracting file: $e');
-      }
-      await file.delete();
-      await DefaultCacheManager().emptyCache();
-
       await flutterLocalNotificationsPlugin.show(
         0,
-        'Compiling resources',
+        'Extracting Data',
         '',
         NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
@@ -406,10 +394,37 @@ class SplashScreenController extends GetxController {
         ),
       );
 
-      final jsonFile = File('${appDocumentsDirectory.path}/export.json');
+      try {
+        await ZipFile.extractToDirectory(
+          zipFile: file,
+          destinationDir: appDocumentsDirectory,
+        );
+        print('File extracted successfully.');
+      } catch (e) {
+        print('Error extracting file: $e');
+      }
+      // await file.delete();
+      // await DefaultCacheManager().emptyCache();
 
-      Stream<String> f =
-          jsonFile.openRead().transform(utf8.decoder).transform(LineSplitter());
+      // await flutterLocalNotificationsPlugin.show(
+      //   0,
+      //   'Compiling resources',
+      //   '',
+      //   NotificationDetails(
+      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
+      //         channelDescription: 'channel_description',
+      //         importance: Importance.min,
+      //         priority: Priority.min,
+      //         ongoing: true,
+      //         playSound: false,
+      //         enableVibration: false),
+      //   ),
+      // );
+
+      // final jsonFile = File('${appDocumentsDirectory.path}/export1.json');
+
+      // Stream<String> f =
+      //     jsonFile.openRead().transform(utf8.decoder).transform(LineSplitter());
 
       // int i = 0;
       // int length = await f.length;
@@ -417,38 +432,46 @@ class SplashScreenController extends GetxController {
       //     jsonFile.openRead().transform(utf8.decoder).transform(LineSplitter());
       // print('f length $length');
       //f.where((event) => event.contains('other'));
-      List<Map<String, dynamic>> batch = [];
-      int batchSize = 1000;
-      // try {
-      await f.forEach((String line) async {
-        //i++;
-        if (line.trim().isNotEmpty) {
-          Map<String, dynamic> jsonObject = jsonDecode(line);
-          batch.add(jsonObject);
-        }
+      // List<VehicleSingleModelss> batch = [];
+      // int batchSize = 1000;
+      // final db = await DatabaseHelper().database;
+      // var batchs = db.batch();
+      // // try {
+      // await f.forEach((String line) async {
+      //   //i++;
+      //   VehicleSingleModelss vsm =
+      //       VehicleSingleModelss.fromJson(jsonDecode(line));
 
-        if (batch.length >= batchSize) {
-          await HiveService().myBox!.putAll(
-              Map.fromEntries(batch.map((e) => MapEntry(e['lastDigit'], e))));
-          batch.clear();
-          // Yield control to the UI and hint garbage collection
-          await Future.delayed(Duration(milliseconds: 1));
-        }
-        // VehicleSingleModelss vsm =
-        //     VehicleSingleModelss.fromJson(jsonDecode(line));
+      //   await HiveService().myBox!.add(VehicleSingleModel(
+      //       vsm.iId!.oid ?? '',
+      //       vsm.bankName ?? '',
+      //       vsm.branch ?? '',
+      //       vsm.agreementNo ?? '',
+      //       vsm.customerName ?? '',
+      //       vsm.regNo ?? '',
+      //       vsm.chasisNo ?? '',
+      //       vsm.engineNo ?? '',
+      //       vsm.maker ?? '',
+      //       vsm.dlCode ?? '',
+      //       vsm.bucket ?? '',
+      //       vsm.emi ?? '',
+      //       vsm.color ?? '',
+      //       vsm.callCenterNo1 ?? '',
+      //       vsm.callCenterNo1Name ?? '',
+      //       vsm.callCenterNo2 ?? '',
+      //       vsm.callCenterNo2Name ?? '',
+      //       vsm.lastDigit ?? '',
+      //       vsm.month ?? '',
+      //       vsm.status ?? '',
+      //       vsm.loadStatus ?? '',
+      //       vsm.fileName ?? '',
+      //       vsm.iV ?? 0,
+      //       vsm.createdAt!.date ?? '',
+      //       vsm.updatedAt!.date ?? ''));
 
-        // HiveService().myBox!.putAll(
-        //     Map.fromEntries(batch.map((e) => MapEntry(e['lastDigit'], e))));
-        // batch.clear();
-        // // Yield control to the UI and hint garbage collection
-        // await Future.delayed(Duration(milliseconds: 1));
+      //   await Timer(Duration(milliseconds: 2), () {});
+      // });
 
-        // Insert batch into the database when it reaches the batch size
-      });
-      if (batch.isNotEmpty) {
-        await HiveService().myBox!.putAll(
-            Map.fromEntries(batch.map((e) => MapEntry(e['lastDigit'], e))));
-      }
       // } catch (e) {
       //   print(e.toString());
       //   await flutterLocalNotificationsPlugin.show(
@@ -467,6 +490,9 @@ class SplashScreenController extends GetxController {
       //   );
       // }
 
+      VehicleSearchController sc = Get.put(VehicleSearchController());
+      sc.offlineDataCount.value = await VehicleDb().getOfflineCount();
+
       var now = DateTime.now();
       var formatter = DateFormat('yyyy-MM-dd');
       String formattedDate = formatter.format(now);
@@ -479,8 +505,8 @@ class SplashScreenController extends GetxController {
 
       await flutterLocalNotificationsPlugin.show(
         0,
-        'Downloading',
         'Downloading Complete',
+        '',
         NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
               channelDescription: 'channel_description',

@@ -7,10 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
-import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/hive_service.dart';
 import 'package:vinayak/routes/app_routes.dart';
@@ -19,12 +17,9 @@ import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
 import '../../core/global_controller/user_controller.dart';
 import '../../core/response/status.dart';
-import '../../core/sqlite/database_helper.dart';
-import '../../core/sqlite/models/vehicle_model.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
 import '../splashSCreen/controller/splashscreen_controller.dart';
-import 'model/vehicle_single_modelss.dart';
 
 class HomeSCreen extends StatefulWidget {
   const HomeSCreen({super.key});
@@ -82,6 +77,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
 
   @override
   void dispose() {
+    HiveService().myBox!.close();
+
     _focusNode.dispose();
     _controller1.removeListener(_scrollListener);
     _controller2.removeListener(_scrollListener);
@@ -146,7 +143,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
     mode = isOnline ? "Online" : "Offline";
     final vehicleDb = VehicleDb();
     //sc.offlineData.value = await vehicleDb.fetchAll();
-    sc.offlineDataCount.value = HiveService().myBox!.length;
+    sc.offlineDataCount.value = await vehicleDb.getOfflineCount();
+
+    // if (lastUpdateDate.length > 4) {
+    //   sc.offlineDataCount.value = 990463;
+    // } else {
+    //   sc.offlineDataCount.value = 0;
+    // }
     //print(sc.offlineData.length);
     setState(() {});
   }
@@ -598,12 +601,12 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 // }
                                 //chasisNoCont.text = '';
                               } else {
-                                final vehicleDb = VehicleDb();
-                                sc.offlineData.value =
-                                    await vehicleDb.fetchByChasis(value);
-                                sc.searchOfflineChasisData(value);
+                                //final vehicleDb = VehicleDb();
+                                // sc.offlineData.value =
+                                //     await vehicleDb.fetchByChasis(value);
+                                await sc.searchOfflineChasisData(value);
 
-                                if (sc.offlineData.isNotEmpty) {
+                                if (sc.offlineDataFiltered.isNotEmpty) {
                                   setState(() {
                                     showChasisNo = true;
                                     showlastdata = false;
@@ -682,7 +685,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                 // final vehicleDb = VehicleDb();
                                 // sc.offlineDataHive.value =
                                 //     HiveService().myBox;
-                                sc.searchOfflineLastDigitDataHive(value);
+                                sc.searchOfflineLastDigitData(value);
                                 setState(() {
                                   showlastdata = true;
                                 });

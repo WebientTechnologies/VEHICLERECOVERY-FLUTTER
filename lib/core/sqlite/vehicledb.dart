@@ -160,8 +160,12 @@ class VehicleDb {
     final files = await db.rawQuery('''
     select * from $tableName where lastDigit LIKE ?
     ''', ['%$lastDigit%']);
-    print(files);
-    return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
+    //print(files);
+    final List<VehicleModel> vehicles = files.map((Map<String, dynamic> row) {
+      return VehicleModel.fromSqfliteDatabase(row);
+    }).toList();
+
+    return vehicles;
   }
 
   Future<List<VehicleModel>> fetchByChasis(String chasis) async {
@@ -169,7 +173,7 @@ class VehicleDb {
     final files = await db.rawQuery('''
     select * from $tableName where chasisNo LIKE ?
     ''', ['%$chasis%']);
-    print(files);
+    //print(files);
     return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
   }
 

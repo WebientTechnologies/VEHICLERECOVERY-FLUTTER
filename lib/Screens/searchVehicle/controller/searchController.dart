@@ -12,6 +12,7 @@ import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/global_controller/hive_service.dart';
 import 'package:vinayak/core/network/network_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:vinayak/core/sqlite/vehicledb.dart';
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/constants/helper.dart';
 import '../../../core/response/status.dart';
@@ -21,6 +22,7 @@ import '../model/searchLastmodel.dart';
 
 class VehicleSearchController extends GetxController {
   var _api = NetworkApi();
+  VehicleDb vdb = VehicleDb();
 
   var loadItemCont = TextEditingController().obs;
 
@@ -104,15 +106,19 @@ class VehicleSearchController extends GetxController {
     });
   }
 
-  void searchOfflineLastDigitData(String lastDigit) {
+  void searchOfflineLastDigitData(String lastDigit) async {
     setRxRequestSearchByChasisNoStatus(Status.LOADING);
     setRxRequestSearchByLastStatus(Status.LOADING);
-    offlineDataFiltered.value = offlineData
-        .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
-        .toList();
+    //print(DateTime.now());
+
+    offlineDataFiltered.value = await vdb.fetchByReg(lastDigit);
     setRxRequestSearchByLastStatus(Status.COMPLETED);
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
-    print('offline data ${offlineDataFiltered.length}');
+    //print(DateTime.now());
+    if (offlineDataFiltered.length == 0) {
+      Fluttertoast.showToast(msg: 'No data found');
+    }
+    // print('offline data ${offlineDataFiltered.length}');
   }
 
   void searchOfflineLastDigitDataHive(String lastDigit) {
@@ -121,7 +127,7 @@ class VehicleSearchController extends GetxController {
     // final hive = HiveService().myBox!;
     // print(hive.length);
     // print('searching');
-    offlineDataFiltered.clear();
+    //offlineDataFiltered.clear();
     // for (int i = 0; i < hive.length; i++) {
     //   if (hive.getAt(i).lastDigit!.toLowerCase().contains(lastDigit)) {
     //     setRxRequestSearchByLastStatus(Status.COMPLETED);
@@ -166,13 +172,18 @@ class VehicleSearchController extends GetxController {
     setRxRequestSearchByLastStatus(Status.COMPLETED);
   }
 
-  void searchOfflineChasisData(String chasisNo) {
+  Future searchOfflineChasisData(String chasisNo) async {
     setRxRequestSearchByChasisNoStatus(Status.LOADING);
+    offlineDataFiltered.value = await vdb.fetchByChasis(chasisNo);
+
     // offlineDataFiltered.value = offlineData
     //     .where((p0) => p0.chasisNo!.toLowerCase().contains(chasisNo))
     //     .toList();
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     print('offline data ${offlineDataFiltered.length}');
+    if (offlineDataFiltered.length == 0) {
+      Fluttertoast.showToast(msg: 'No data found');
+    }
   }
 
 //chasis no

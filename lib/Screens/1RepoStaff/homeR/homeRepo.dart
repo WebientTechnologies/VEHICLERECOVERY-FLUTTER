@@ -129,24 +129,25 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
       String lastUpdateDate = await Helper.getStringPreferences(
           SharedPreferencesVar.lastUpdateDate);
 
-      print(lastUpdateDate);
-
       if (lastUpdateDate.length > 4) {
+        print("in new data");
+
         ssc.loadPartialData.value = true;
-        Timer.periodic(Duration(seconds: 10), (timer) async {
-          int currentPage =
-              await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
-          //print('ccccc - $currentPage');
-          //ssc.getAllDashboardApiDataPeriodically(currentPage);
-          ssc.downloadData();
-        });
+        // Timer.periodic(Duration(seconds: 10), (timer) async {
+        //   int currentPage =
+        //       await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
+        //   print('ccccc - $currentPage');
+        //   //ssc.getAllDashboardApiDataPeriodically(currentPage);
+        //   //await ssc.downloadData();
+        // });
       } else {
+        print("old data");
         ssc.loadAllData.value = true;
         int offlinePageNumber = await Helper.getIntPreferences(
             SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
         //     offlinePageNumber > 0 ? offlinePageNumber : 1);
-        ssc.downloadData();
+        await ssc.downloadData();
       }
     }
   }
@@ -301,12 +302,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               // }
                               //chasisNoCont.text = '';
                             } else {
-                              final vehicleDb = VehicleDb();
-                              sc.offlineData.value =
-                                  await vehicleDb.fetchByChasis(value);
-                              sc.searchOfflineChasisData(value);
+                              // final vehicleDb = VehicleDb();
+                              // sc.offlineData.value =
+                              //     await vehicleDb.fetchByChasis(value);
+                              await sc.searchOfflineChasisData(value);
 
-                              if (sc.offlineData.isNotEmpty) {
+                              if (sc.offlineDataFiltered.isNotEmpty) {
                                 setState(() {
                                   showChasisNo = true;
                                   showlastdata = false;
