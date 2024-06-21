@@ -1,1 +1,19 @@
 UE1A.230829.019 -- emulator
+
+Points on Work in App:
+1. Create Admin panel same as Office Staff Panel.
+2. On login screen logo issue
+3. On Agent Registration page Please add more zones
+4. State & city should be dropdown in address section
+5. After entered mail when click on submit message show "Please enter Pan" but email id is clear.
+6. In pancard alphanumeric keyboard will shown and max length is 10 characters.
+7. In aadhar card max length should be 12 characters if length is less show message
+8. Error while submiting data in agent form
+9. In password we show characters instead of "*"
+
+	================ Agent Panel =================
+✅10. Remove 1 text above good afternoon/morning
+✅11. In report section searching not work
+✅12. When we enter last 4 digit after sometime it search the data
+13. When we click on hold button status of vehicle change from Pending->Search->Hold in online database and offline database and notification and message sent to admin
+✅14. After searching data via last digit or chasis no only those number will show whose status is "Search"

@@ -13,7 +13,7 @@ import 'package:vinayak/core/constants/color_constants.dart';
 import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
 import '../../core/global_controller/user_controller.dart';
-import '../../routes/app_routes.dart';
+import '../../core/utils/routes/app_routes.dart';
 import '../HomeScreen/model/vehicle_sm_hive.dart';
 
 class SplashScreen extends StatefulWidget {

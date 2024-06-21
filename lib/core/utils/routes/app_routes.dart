@@ -3,9 +3,9 @@ import 'package:vinayak/Screens/HomeScreen/homeScreen.dart';
 import 'package:vinayak/Screens/LoginScreen/loginScreen.dart';
 import 'package:vinayak/Screens/agentRegisteration/agentRegestration.dart';
 
-import '../Screens/searchVehicle/searchedVehicleDetails.dart';
-import '../Screens/splashSCreen/splashScreen.dart';
-import '../Screens/viewRequest/viewDetails.dart';
+import '../../../Screens/searchVehicle/searchedVehicleDetails.dart';
+import '../../../Screens/splashSCreen/splashScreen.dart';
+import '../../../Screens/viewRequest/viewDetails.dart';
 
 class AppRoutes {
   static const String splash = '/splash';

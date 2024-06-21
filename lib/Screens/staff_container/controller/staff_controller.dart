@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vinayak/Screens/profile/profile.dart';
+import 'package:vinayak/Screens/loginDeviceChange/profile/profile.dart';
 import 'package:vinayak/Screens/reports/reports.dart';
 
 import '../../HomeScreen/homeScreen.dart';

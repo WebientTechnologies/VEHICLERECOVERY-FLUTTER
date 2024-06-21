@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
-import 'package:vinayak/routes/app_routes.dart';
+import 'package:vinayak/core/utils/routes/app_routes.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'Screens/splashSCreen/controller/splashscreen_controller.dart';

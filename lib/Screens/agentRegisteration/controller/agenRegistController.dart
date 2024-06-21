@@ -26,6 +26,7 @@ class AgentRegistrationController extends GetxController {
   var aadharCardController = TextEditingController().obs;
   var addressLine1Controller = TextEditingController().obs;
   var addressLine2Controller = TextEditingController().obs;
+  var countryController = TextEditingController().obs;
   var stateController = TextEditingController().obs;
   var cityController = TextEditingController().obs;
   var pincodeController = TextEditingController().obs;

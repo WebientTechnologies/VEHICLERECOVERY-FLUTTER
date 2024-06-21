@@ -24,7 +24,7 @@ import '../../../core/constants/api_endpoints.dart';
 import '../../../core/global_controller/hive_service.dart';
 import '../../../core/response/status.dart';
 import '../../../core/sqlite/database_helper.dart';
-import '../../../routes/app_routes.dart';
+import '../../../core/utils/routes/app_routes.dart';
 import '../../1RepoStaff/homeR/homeRepo.dart';
 import '../../HomeScreen/model/vehicle_single_modelss.dart';
 import '../../HomeScreen/model/vehicle_sm_hive.dart';

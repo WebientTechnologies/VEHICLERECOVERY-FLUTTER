@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import 'package:vinayak/Screens/LoginScreen/controller/loginController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/constants/helper.dart';
-import 'package:vinayak/routes/app_routes.dart';
+import 'package:vinayak/core/utils/routes/app_routes.dart';
 import 'package:vinayak/widget/pciconBtn.dart';
 import 'package:vinayak/widget/textfield.dart';
 import 'package:fluttertoast/fluttertoast.dart'; // Import the Fluttertoast package

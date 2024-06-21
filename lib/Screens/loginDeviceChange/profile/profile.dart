@@ -5,11 +5,11 @@ import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/widget/myappbar.dart';
 
-import '../../core/constants/helper.dart';
-import '../../routes/app_routes.dart';
-import '../changePassword/changePassword.dart';
-import '../repoAgent/repoagent.dart';
-import '../viewRequest/viewRequest.dart';
+import '../../../core/constants/helper.dart';
+import '../../../core/utils/routes/app_routes.dart';
+import '../../changePassword/changePassword.dart';
+import '../../repoAgent/repoagent.dart';
+import '../../viewRequest/viewRequest.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);

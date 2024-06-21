@@ -1,3 +1,5 @@
+import 'package:country_state_city_pro/country_state_city_pro.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:vinayak/Screens/agentRegisteration/controller/agenRegistController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/response/status.dart';
-import 'package:vinayak/routes/app_routes.dart';
+import 'package:vinayak/core/utils/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/pciconBtn.dart';
 import 'package:vinayak/widget/textfield.dart';
@@ -25,6 +27,9 @@ class _AgentReisterationState extends State<AgentReisteration> {
   String zoneId = '';
   String cityid = '';
   String stateid = '';
+  String country = "";
+  String state = "";
+  String city = "";
   String page = '';
   bool isLogin = true;
   AgentRegistrationController arc = Get.put(AgentRegistrationController());
@@ -466,25 +471,24 @@ class _AgentReisterationState extends State<AgentReisteration> {
                     textColor: ColorConstants.aqua,
                   ),
                   SizedBox(height: 10), // Add padding here
-                  TextFieldWidget(
-                    controller: arc.stateController.value,
-                    hintText: 'State',
-                    width: width * 0.95,
-                    borderRadius: 18,
-                    height: 40,
-                    borderColor: ColorConstants.aqua,
-                    textColor: ColorConstants.aqua,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                    child: Obx(
+                      () => CountryStateCityPicker(
+                          country: arc.countryController.value,
+                          state: arc.stateController.value,
+                          city: arc.cityController.value,
+                          dialogColor: Colors.grey.shade200,
+                          textFieldDecoration: InputDecoration(
+                              suffixIcon:
+                                  const Icon(Icons.arrow_drop_down_rounded),
+                              border: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ColorConstants.aqua),
+                                  borderRadius: BorderRadius.circular(50)))),
+                    ),
                   ),
-                  SizedBox(height: 10), // Add padding here
-                  TextFieldWidget(
-                    controller: arc.cityController.value,
-                    hintText: 'City',
-                    width: width * 0.95,
-                    height: 40,
-                    borderRadius: 18,
-                    borderColor: ColorConstants.aqua,
-                    textColor: ColorConstants.aqua,
-                  ),
+
                   SizedBox(height: 10), // Add padding here
                   TextFieldWidget(
                     keyboardType: TextInputType.number,

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,8 +9,8 @@ import 'package:vinayak/core/constants/helper.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/core/sqlite/vehicledb.dart';
-import 'package:vinayak/core/styles/text_styles.dart';
-import 'package:vinayak/routes/app_routes.dart';
+import 'package:vinayak/core/utils/routes/app_routes.dart';
+
 import '../../../core/response/status.dart';
 import '../../HomeScreen/controller/homeController.dart';
 import '../../searchVehicle/controller/searchController.dart';
@@ -146,7 +145,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
         int offlinePageNumber = await Helper.getIntPreferences(
             SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
-        //     offlinePageNumber > 0 ? offlinePageNumber : 1);
+        //     offlinePageNumber > 0 ? offlinePageN umber : 1);
         await ssc.downloadData();
       }
     }
@@ -194,39 +193,28 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       },
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Obx(() => Text(
-                              hc.greeting[hc.selectedGreeting.value],
-                              style: TextStyle(
-                                  color: ColorConstants.lightGreyF5F5F5,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                        Row(
-                          children: [
-                            Text(
-                              mode,
-                              style: TextStyle(
-                                  color: ColorConstants.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Switch(
-                                value: isOnline,
-                                onChanged: (value) async {
-                                  await Helper.setBoolPreferences(
-                                      SharedPreferencesVar.isOnline, value);
-                                  setState(() {
-                                    isOnline = value;
-                                    mode = value ? "Online" : "Offline";
-                                  });
-                                }),
-                          ],
-                        )
+                        Text(
+                          mode,
+                          style: TextStyle(
+                              color: ColorConstants.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Switch(
+                            value: isOnline,
+                            onChanged: (value) async {
+                              await Helper.setBoolPreferences(
+                                  SharedPreferencesVar.isOnline, value);
+                              setState(() {
+                                isOnline = value;
+                                mode = value ? "Online" : "Offline";
+                              });
+                            }),
                       ],
                     ),
                     Image.asset('assets/images/logo_t.png')
@@ -381,9 +369,9 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 showlastdata = true;
                               });
                             } else {
-                              final vehicleDb = VehicleDb();
-                              sc.offlineData.value =
-                                  await vehicleDb.fetchByReg(value);
+                              // final vehicleDb = VehicleDb();
+                              // sc.offlineData.value =
+                              //     await vehicleDb.fetchByReg(value);
                               sc.searchOfflineLastDigitData(value);
                               setState(() {
                                 showlastdata = true;

@@ -73,6 +73,8 @@ dependencies:
   flutter_archive: ^6.0.3
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  csc_picker: ^0.2.7
+  country_state_city_pro: ^0.0.6
 dev_dependencies:
   hive_generator: ^2.0.1
   build_runner: ^2.4.9

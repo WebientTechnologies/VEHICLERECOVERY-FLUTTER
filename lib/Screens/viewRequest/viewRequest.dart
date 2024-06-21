@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/response/status.dart';
-import 'package:vinayak/routes/app_routes.dart';
+import 'package:vinayak/core/utils/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
 
 import '../../widget/viewRequestCont.dart';

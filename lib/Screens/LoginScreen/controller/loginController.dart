@@ -13,7 +13,7 @@ import '../../../core/constants/api_endpoints.dart';
 import '../../../core/constants/helper.dart';
 import '../../../core/constants/shared_preferences_var.dart';
 import '../../../core/global_controller/user_controller.dart';
-import '../../../routes/app_routes.dart';
+import '../../../core/utils/routes/app_routes.dart';
 
 class LoginController extends GetxController {
   final _api = NetworkApi();
