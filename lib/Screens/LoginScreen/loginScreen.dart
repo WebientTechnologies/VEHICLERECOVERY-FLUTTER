@@ -94,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Container(
                           width: width * 0.33,
                           height: height * 0.15,
+                          margin: const EdgeInsets.only(top: 40),
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage('assets/images/logo.jpg'),
@@ -134,12 +135,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             SizedBox(height: 20),
                             TextFieldWidget(
-                              controller: lc.passcont.value,
-                              borderColor: ColorConstants.aqua,
-                              borderWidth: 2,
-                              hintText: 'Password',
-                              borderRadius: 18,
-                            ),
+                                controller: lc.passcont.value,
+                                borderColor: ColorConstants.aqua,
+                                borderWidth: 2,
+                                hintText: 'Password',
+                                borderRadius: 18,
+                                obscureText: true),
                             SizedBox(height: height * 0.04),
                             PCIconButton(
                               onPressed: handleButtonClick,

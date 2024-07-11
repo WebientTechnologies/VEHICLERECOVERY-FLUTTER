@@ -58,14 +58,14 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     uc.loadUserDetails();
     checkMode();
     _getCurrentPosition();
-    DateTime today = DateTime.now();
-    if (today.hour > 0 && today.hour < 12) {
-      hc.selectedGreeting.value = 0;
-    } else if (today.hour >= 12 && today.hour < 16) {
-      hc.selectedGreeting.value = 1;
-    } else {
-      hc.selectedGreeting.value = 2;
-    }
+    // DateTime today = DateTime.now();
+    // if (today.hour > 0 && today.hour < 12) {
+    //   hc.selectedGreeting.value = 0;
+    // } else if (today.hour >= 12 && today.hour < 16) {
+    //   hc.selectedGreeting.value = 1;
+    // } else {
+    //   hc.selectedGreeting.value = 2;
+    // }
     //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
     init();
@@ -107,12 +107,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   Future checkMode() async {
     ssc.currentPage.value =
         await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
-    isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+    await Helper.setBoolPreferences(SharedPreferencesVar.isOnline, false);
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
     lastUpdateTime =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateTime);
-    mode = isOnline ? "Online" : "Offline";
+    //mode = isOnline ? "Online" : "Offline";
 
     final vehicleDb = VehicleDb();
     //sc.offlineData.value = await vehicleDb.fetchAll();
@@ -146,7 +146,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
         //     offlinePageNumber > 0 ? offlinePageN umber : 1);
-        await ssc.downloadData();
+        // await ssc.downloadData();
       }
     }
   }
@@ -192,31 +192,31 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         );
                       },
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          mode,
-                          style: TextStyle(
-                              color: ColorConstants.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Switch(
-                            value: isOnline,
-                            onChanged: (value) async {
-                              await Helper.setBoolPreferences(
-                                  SharedPreferencesVar.isOnline, value);
-                              setState(() {
-                                isOnline = value;
-                                mode = value ? "Online" : "Offline";
-                              });
-                            }),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     Text(
+                    //       mode,
+                    //       style: TextStyle(
+                    //           color: ColorConstants.white,
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.bold),
+                    //     ),
+                    //     const SizedBox(
+                    //       width: 10,
+                    //     ),
+                    //     Switch(
+                    //         value: isOnline,
+                    //         onChanged: (value) async {
+                    //           await Helper.setBoolPreferences(
+                    //               SharedPreferencesVar.isOnline, value);
+                    //           setState(() {
+                    //             isOnline = value;
+                    //             mode = value ? "Online" : "Offline";
+                    //           });
+                    //         }),
+                    //   ],
+                    // ),
                     Image.asset('assets/images/logo_t.png')
                   ],
                 ),

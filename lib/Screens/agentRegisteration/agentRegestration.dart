@@ -430,7 +430,6 @@ class _AgentReisterationState extends State<AgentReisteration> {
                   ),
                   SizedBox(height: 10), // Add padding here
                   TextFieldWidget(
-                    keyboardType: TextInputType.number,
                     controller: arc.panCardController.value,
                     hintText: 'Pan Card',
                     width: width * 0.95,
@@ -438,6 +437,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                     height: 40,
                     borderColor: ColorConstants.aqua,
                     textColor: ColorConstants.aqua,
+                    maxLength: 10,
                   ),
                   SizedBox(height: 10), // Add padding here
                   TextFieldWidget(
@@ -449,6 +449,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                     height: 40,
                     borderColor: ColorConstants.aqua,
                     textColor: ColorConstants.aqua,
+                    maxLength: 12,
                   ),
                   SizedBox(height: 10), // Add padding here
                   TextFieldWidget(
@@ -623,7 +624,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
       return 'Please enter a valid email address';
     }
 
-    arc.emailController.value.text = '';
+    //arc.emailController.value.text = '';
     return null;
   }
 }

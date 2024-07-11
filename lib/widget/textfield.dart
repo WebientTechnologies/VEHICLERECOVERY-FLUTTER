@@ -14,24 +14,25 @@ class TextFieldWidget extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
-  final int? maxLength; // New parameter for maximum character length
+  final int? maxLength;
+  final bool obscureText;
 
-  TextFieldWidget({
-    this.borderRadius = 8.0,
-    this.borderColor = Colors.cyan,
-    this.borderWidth = 2.0,
-    required this.hintText,
-    this.labelText,
-    this.fontSize = 16.0,
-    this.height,
-    this.width,
-    this.textColor,
-    this.backgroundColor,
-    this.controller,
-    this.validator,
-    this.keyboardType,
-    this.maxLength, // Added maxLength parameter
-  });
+  TextFieldWidget(
+      {this.borderRadius = 8.0,
+      this.borderColor = Colors.cyan,
+      this.borderWidth = 2.0,
+      required this.hintText,
+      this.labelText,
+      this.fontSize = 16.0,
+      this.height,
+      this.width,
+      this.textColor,
+      this.backgroundColor,
+      this.controller,
+      this.validator,
+      this.keyboardType,
+      this.maxLength,
+      this.obscureText = false});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,8 @@ class TextFieldWidget extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
-        maxLength: maxLength, // Use the provided maxLength
+        maxLength: maxLength,
+        obscureText: obscureText,
         decoration: InputDecoration(
           hintText: hintText,
           labelText: labelText,
