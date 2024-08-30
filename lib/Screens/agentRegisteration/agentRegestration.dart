@@ -512,7 +512,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                                 );
                               } else {
                                 arc.agentRegister(
-                                    zoneId, stateid, cityid, true);
+                                    dropdown1!, dropdown2!, dropdown3!, true);
                               }
                             }
                           },

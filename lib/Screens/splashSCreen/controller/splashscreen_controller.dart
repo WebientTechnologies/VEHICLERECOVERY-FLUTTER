@@ -362,7 +362,7 @@ class SplashScreenController extends GetxController {
     //await DefaultCacheManager().emptyCache();
 
     final response =
-        await http.get(Uri.parse('http://93.127.195.102/downloads/export.zip'));
+        await http.get(Uri.parse('http://195.35.23.185/downloads/export.zip'));
 
     print(response.body);
 
