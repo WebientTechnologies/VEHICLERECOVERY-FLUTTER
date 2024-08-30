@@ -7,6 +7,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:vinayak/Screens/agentRegisteration/controller/agenRegistController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/response/status.dart';
+import 'package:vinayak/core/utils/location_data.dart';
 import 'package:vinayak/core/utils/routes/app_routes.dart';
 import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/pciconBtn.dart';
@@ -21,9 +22,9 @@ class AgentReisteration extends StatefulWidget {
 
 class _AgentReisterationState extends State<AgentReisteration> {
   final GlobalKey<ScaffoldState> _scaffold = GlobalKey<ScaffoldState>();
-  String dropdown1 = 'None';
-  String dropdown2 = 'Select';
-  String dropdown3 = 'Select';
+  String? dropdown1;
+  String? dropdown2;
+  String? dropdown3;
   String zoneId = '';
   String cityid = '';
   String stateid = '';
@@ -72,6 +73,8 @@ class _AgentReisterationState extends State<AgentReisteration> {
 
   @override
   Widget build(BuildContext context) {
+    var height = Get.height * 1;
+          var width = Get.width * 1;
     return Scaffold(
       key: _scaffold,
       resizeToAvoidBottomInset: false,
@@ -94,11 +97,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                     fontWeight: FontWeight.w500, color: ColorConstants.aqua),
               ),
             ),
-      body: LayoutBuilder(
-        builder: (ctx, constraints) {
-          var height = constraints.maxHeight;
-          var width = constraints.maxWidth;
-          return SingleChildScrollView(
+      body: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -128,16 +127,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                       ),
                     ),
                   ),
-                  Center(child: Obx(() {
-                    switch (arc.rxRequestZoneStatus.value) {
-                      case Status.LOADING:
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      case Status.ERROR:
-                        return Text('Something went wrong');
-                      case Status.COMPLETED:
-                        return Container(
+                  Center(child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: ColorConstants.aqua, width: 2),
@@ -172,22 +162,26 @@ class _AgentReisterationState extends State<AgentReisteration> {
                               borderRadius: BorderRadius.circular(18),
                               dropdownButtonColor: Colors.white,
                               value: dropdown1,
+                              hint: Text('Select Zone'),
                               onChanged: (newValue) {
                                 setState(() {
-                                  dropdown1 = newValue.toString();
+                                  print(newValue);
+                                  dropdown1 = newValue;
+                                  dropdown2 = null;
+                                  dropdown3 = null;
                                   // Get the selected zone
-                                  var selectedZone =
-                                      arc.zoneModel.value.zones!.firstWhere(
-                                    (zone) => zone.name == dropdown1,
-                                  );
-                                  zoneId = selectedZone.id ?? '';
-                                  arc.getAllStateApiData(selectedZone.id ?? '');
+                                  // var selectedZone =
+                                  //     arc.zoneModel.value.zones!.firstWhere(
+                                  //   (zone) => zone.name == dropdown1,
+                                  // );
+                                  // zoneId = selectedZone.id ?? '';
+                                  // arc.getAllStateApiData(selectedZone.id ?? '');
                                 });
                               },
                               items: [
                                 'None',
-                                ...arc.zoneModel.value.zones!
-                                    .map((value) => value.name!)
+                                ...LocationData.zones.keys
+                                    .map((value) => value)
                               ]
                                   .map((value) => DropdownMenuItem(
                                         value: value,
@@ -200,21 +194,10 @@ class _AgentReisterationState extends State<AgentReisteration> {
                                   .toList(),
                             ),
                           ),
-                        );
-                    }
-                  })),
-                  Obx(() {
-                    switch (arc.rxRequestStateStatus.value) {
-                      case Status.LOADING:
-                        return Center(
-                            // child: CircularProgressIndicator(),
-                            );
-                      case Status.ERROR:
-                        return Center(
-                          child: Text('Something went wrong'),
-                        );
-                      case Status.COMPLETED:
-                        return Center(
+                        )),
+                  // states
+                  if(dropdown1 != null)
+                  Center(
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -250,42 +233,35 @@ class _AgentReisterationState extends State<AgentReisteration> {
                                 borderRadius: BorderRadius.circular(18),
                                 dropdownButtonColor: Colors.white,
                                 value: dropdown2,
+                                                              hint: Text('Select State'),
+
                                 onChanged: (newValue) {
                                   setState(() {
-                                    dropdown2 = newValue.toString();
-                                    print('Selected Dropdown 2: $dropdown2');
+                                    print(newValue);
+                                    dropdown2 = newValue!;
+                                    dropdown3 = null;
+                                    // print('Selected Dropdown 2: $dropdown2');
 
-                                    // Find the selected state
-                                    var selectedState =
-                                        arc.stateModel.value.states!.firstWhere(
-                                      (state) => state.id == dropdown2,
-                                    );
-                                    stateid = selectedState.id ?? '';
-                                    print('Selected State: $selectedState');
+                                    // // Find the selected state
+                                    // var selectedState =
+                                    //     arc.stateModel.value.states!.firstWhere(
+                                    //   (state) => state.id == dropdown2,
+                                    // );
+                                    // stateid = selectedState.id ?? '';
+                                    // print('Selected State: $selectedState');
 
-                                    if (selectedState != null) {
-                                      // Make API call
-                                      arc.getAllCityApiData(
-                                          selectedState.id ?? '');
-                                    }
+                                    // if (selectedState != null) {
+                                    //   // Make API call
+                                    //   arc.getAllCityApiData(
+                                    //       selectedState.id ?? '');
+                                    // }
                                   });
                                 },
-                                items: [
-                                  'Select', // Ensure 'Select' is unique
-                                  ...arc.stateModel.value.states!
-                                      .map((value) => value.id)
-                                      .toList()
-                                ]
-                                    .map((value) => DropdownMenuItem(
+                                items: 
+                                  LocationData.zones[dropdown1]!
+                                  .map((value) => DropdownMenuItem(
                                           value: value,
-                                          child: Text(
-                                            value == 'Select'
-                                                ? 'Select'
-                                                : arc.stateModel.value.states!
-                                                        .firstWhere((state) =>
-                                                            state.id == value)
-                                                        .name ??
-                                                    '',
+                                          child: Text(value,
                                             style: TextStyle(
                                                 color: ColorConstants.aqua),
                                           ),
@@ -294,23 +270,11 @@ class _AgentReisterationState extends State<AgentReisteration> {
                               ),
                             ),
                           ),
-                        );
-                    }
-                  }),
+                        ),
 
                   // Third Dropdown
-                  Obx(() {
-                    switch (arc.rxRequestCityStatus.value) {
-                      case Status.LOADING:
-                        return Center(
-                            // child: CircularProgressIndicator(),
-                            );
-                      case Status.ERROR:
-                        return Center(
-                          child: Text('Something went wrong'),
-                        );
-                      case Status.COMPLETED:
-                        return Center(
+                  if(dropdown2 != null)
+                  Center(
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -346,32 +310,24 @@ class _AgentReisterationState extends State<AgentReisteration> {
                                 borderRadius: BorderRadius.circular(18),
                                 dropdownButtonColor: Colors.white,
                                 value: dropdown3,
+                                                              hint: Text('Select City'),
+
                                 onChanged: (newValue) {
                                   setState(() {
-                                    dropdown3 = newValue.toString();
-                                    var selectedState =
-                                        arc.cityModel.value.cities!.firstWhere(
-                                      (city) => city.id == dropdown3,
-                                    );
-                                    cityid = selectedState.id ?? '';
+                                    dropdown3 = newValue!;
+                                    // var selectedState =
+                                    //     arc.cityModel.value.cities!.firstWhere(
+                                    //   (city) => city.id == dropdown3,
+                                    // );
+                                    // cityid = selectedState.id ?? '';
                                   });
                                 },
-                                items: [
-                                  'Select',
-                                  ...arc.cityModel.value.cities!
-                                      .map((value) => value.id)
-                                      .toList()
-                                ]
+                                items: LocationData.states[dropdown2]!
+                                     
                                     .map((value) => DropdownMenuItem(
                                           value: value,
                                           child: Text(
-                                            value == 'Select'
-                                                ? 'Select'
-                                                : arc.cityModel.value.cities!
-                                                        .firstWhere((state) =>
-                                                            state.id == value)
-                                                        .name ??
-                                                    '',
+                                             value,
                                             style: TextStyle(
                                                 color: ColorConstants.aqua),
                                           ),
@@ -380,9 +336,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                               ),
                             ),
                           ),
-                        );
-                    }
-                  }),
+                        ),
 
                   SizedBox(height: 10),
                   TextFieldWidget(
@@ -470,25 +424,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                     height: 40,
                     borderColor: ColorConstants.aqua,
                     textColor: ColorConstants.aqua,
-                  ),
-                  SizedBox(height: 10), // Add padding here
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                    child: Obx(
-                      () => CountryStateCityPicker(
-                          country: arc.countryController.value,
-                          state: arc.stateController.value,
-                          city: arc.cityController.value,
-                          dialogColor: Colors.grey.shade200,
-                          textFieldDecoration: InputDecoration(
-                              suffixIcon:
-                                  const Icon(Icons.arrow_drop_down_rounded),
-                              border: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ColorConstants.aqua),
-                                  borderRadius: BorderRadius.circular(50)))),
-                    ),
-                  ),
+                  ),                  
 
                   SizedBox(height: 10), // Add padding here
                   TextFieldWidget(
@@ -610,10 +546,8 @@ class _AgentReisterationState extends State<AgentReisteration> {
                 ],
               ),
             ),
-          );
-        },
-      ),
-    );
+          ));
+
   }
 
   String? validateEmail(String? value) {

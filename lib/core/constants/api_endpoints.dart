@@ -1,5 +1,5 @@
 class ApiEndpoints {
-  static const String baseurl = "http://93.127.195.102/backend/api/v1/";
+  static const String baseurl = "http://195.35.23.185/backend/api/v1/";
   static const String login = '${baseurl}login';
   static const String getZone = '${baseurl}zones';
   static const String agentRegister = '${baseurl}register-repo-agent';
