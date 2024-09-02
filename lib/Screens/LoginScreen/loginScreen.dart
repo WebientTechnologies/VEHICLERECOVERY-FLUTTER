@@ -92,25 +92,18 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Center(
                         child: Container(
-                          width: width * 0.33,
-                          height: height * 0.15,
+                          height: 120,
                           margin: const EdgeInsets.only(top: 40),
                           decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: AssetImage('assets/images/logo.jpg'),
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                               alignment: Alignment.centerLeft,
                             ),
                           ),
                         ),
                       ),
-                      Text(
-                        'Vinayak Recovery',
-                        style: TextStyle(
-                          color: ColorConstants.aqua,
-                          fontSize: height * 0.03,
-                        ),
-                      ),
+                      
                       Padding(
                         padding: const EdgeInsets.all(22.0),
                         child: Column(

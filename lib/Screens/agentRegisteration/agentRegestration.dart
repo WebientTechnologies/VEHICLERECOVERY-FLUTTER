@@ -434,6 +434,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                     width: width * 0.95,
                     height: 40,
                     borderRadius: 18,
+                    maxLength: 6,
                     borderColor: ColorConstants.aqua,
                     textColor: ColorConstants.aqua,
                   ),
@@ -496,7 +497,7 @@ class _AgentReisterationState extends State<AgentReisteration> {
                                 );
                               } else {
                                 arc.agentRegister(
-                                    zoneId, stateid, cityid, false);
+                                    dropdown1!, dropdown2!, dropdown3!, false);
                               }
                             } else {
                               if (emailError != null) {

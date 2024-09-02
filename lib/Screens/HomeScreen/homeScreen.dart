@@ -262,16 +262,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GetX(
-                        init: UserController(),
-                        builder: (cc) {
-                          return Text(
-                            'Heyy ${cc.userDetails['role'] == 'office-staff' ? cc.userDetails['staf']['name'] ?? '' : cc.userDetails['agent']['name'] ?? ''}',
-                            style:
-                                TextStyle(color: ColorConstants.midGreyEAEAEA),
-                          );
-                        },
-                      ),
+                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

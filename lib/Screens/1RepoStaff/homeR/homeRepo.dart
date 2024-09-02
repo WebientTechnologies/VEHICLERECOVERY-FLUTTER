@@ -146,7 +146,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
         //     offlinePageNumber > 0 ? offlinePageN umber : 1);
-        // await ssc.downloadData();
+         await ssc.downloadData();
       }
     }
   }
@@ -183,40 +183,32 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GetX(
-                      init: UserController(),
-                      builder: (cc) {
-                        return Text(
-                          'Hey ${cc.userDetails['role'] == 'office-staff' ? cc.userDetails['staf']['name'] ?? '' : cc.userDetails['agent']['name'] ?? ''}',
-                          style: TextStyle(color: ColorConstants.midGreyEAEAEA),
-                        );
-                      },
+                   
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          mode,
+                          style: TextStyle(
+                              color: ColorConstants.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Switch(
+                            value: isOnline,
+                            onChanged: (value) async {
+                              await Helper.setBoolPreferences(
+                                  SharedPreferencesVar.isOnline, value);
+                              setState(() {
+                                isOnline = value;
+                                mode = value ? "Online" : "Offline";
+                              });
+                            }),
+                      ],
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [
-                    //     Text(
-                    //       mode,
-                    //       style: TextStyle(
-                    //           color: ColorConstants.white,
-                    //           fontSize: 16,
-                    //           fontWeight: FontWeight.bold),
-                    //     ),
-                    //     const SizedBox(
-                    //       width: 10,
-                    //     ),
-                    //     Switch(
-                    //         value: isOnline,
-                    //         onChanged: (value) async {
-                    //           await Helper.setBoolPreferences(
-                    //               SharedPreferencesVar.isOnline, value);
-                    //           setState(() {
-                    //             isOnline = value;
-                    //             mode = value ? "Online" : "Offline";
-                    //           });
-                    //         }),
-                    //   ],
-                    // ),
                     Image.asset('assets/images/logo_t.png')
                   ],
                 ),

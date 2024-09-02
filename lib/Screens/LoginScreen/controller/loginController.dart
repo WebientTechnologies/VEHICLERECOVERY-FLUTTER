@@ -113,6 +113,7 @@ class LoginController extends GetxController {
     Get.back();
     if (error is http.Response) {
       print(jsonDecode(error.body)['message']);
+      Fluttertoast.showToast(msg: jsonDecode(error.body)['message']);
       print('Error: ${error.statusCode}');
     } else {
       print(error);
