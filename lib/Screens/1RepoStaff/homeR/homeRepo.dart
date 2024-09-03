@@ -55,7 +55,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
     _chasisController1.addListener(_chasisScrollListener);
     _chasisController2.addListener(_chasisScrollListener);
-    uc.loadUserDetails();
+    //uc.loadUserDetails();
     checkMode();
     _getCurrentPosition();
     // DateTime today = DateTime.now();
@@ -107,12 +107,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   Future checkMode() async {
     ssc.currentPage.value =
         await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
-    await Helper.setBoolPreferences(SharedPreferencesVar.isOnline, false);
+    isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
     lastUpdateTime =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateTime);
-    //mode = isOnline ? "Online" : "Offline";
+    mode = isOnline ? "Online" : "Offline";
 
     final vehicleDb = VehicleDb();
     //sc.offlineData.value = await vehicleDb.fetchAll();

@@ -2,16 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:vinayak/Screens/searchVehicle/controller/searchController.dart';
 import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
 import 'package:vinayak/core/constants/helper.dart';
@@ -19,16 +16,10 @@ import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/core/network/network_api.dart';
 import 'package:vinayak/core/sqlite/vehicledb.dart';
-import 'package:http/http.dart' as http;
+
 import '../../../core/constants/api_endpoints.dart';
-import '../../../core/global_controller/hive_service.dart';
 import '../../../core/response/status.dart';
 import '../../../core/sqlite/database_helper.dart';
-import '../../../core/utils/routes/app_routes.dart';
-import '../../1RepoStaff/homeR/homeRepo.dart';
-import '../../HomeScreen/model/vehicle_single_modelss.dart';
-import '../../HomeScreen/model/vehicle_sm_hive.dart';
-import '../../searchVehicle/model/searchLastmodel.dart';
 
 class SplashScreenController extends GetxController {
   final _api = NetworkApi();

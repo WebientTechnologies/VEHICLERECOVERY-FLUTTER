@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/core/response/status.dart';
 import 'package:vinayak/widget/containerText.dart';
-import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/pciconBtn.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'controller/searchController.dart';
 

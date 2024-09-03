@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:vinayak/Screens/viewRequest/model/viewRequestModel.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/widget/containerText.dart';
-import 'package:vinayak/widget/myappbar.dart';
 
 class ViewRequestDetails extends StatefulWidget {
   //ld = last digit search from home page

@@ -1,18 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:http/http.dart' as http;
 import 'package:vinayak/Screens/HomeScreen/model/vehicle_single_modelss.dart';
-import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
 import 'package:vinayak/Screens/searchVehicle/model/seezer_model.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
-import 'package:vinayak/core/global_controller/hive_service.dart';
 import 'package:vinayak/core/network/network_api.dart';
-import 'package:http/http.dart' as http;
 import 'package:vinayak/core/sqlite/vehicledb.dart';
+
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/constants/helper.dart';
 import '../../../core/response/status.dart';
@@ -159,14 +156,14 @@ class VehicleSearchController extends GetxController {
     // }
 
     // print('search complete');
-    print('hive length - ${HiveService().myBox!.length}');
+    // print('hive length - ${HiveService().myBox!.length}');
 
-    offlineDataFiltered.value = HiveService()
-        .myBox!
-        .values
-        .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
-        .toList();
-    print(offlineDataFiltered.length);
+    // offlineDataFiltered.value = HiveService()
+    //     .myBox!
+    //     .values
+    //     .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
+    //     .toList();
+    // print(offlineDataFiltered.length);
 
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     setRxRequestSearchByLastStatus(Status.COMPLETED);

@@ -1,21 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
-import 'package:vinayak/core/global_controller/hive_service.dart';
 import 'package:vinayak/core/utils/routes/app_routes.dart';
 
 import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
-import '../../core/global_controller/user_controller.dart';
 import '../../core/response/status.dart';
 import '../../core/sqlite/vehicledb.dart';
 import '../searchVehicle/controller/searchController.dart';
@@ -63,21 +57,20 @@ class _HomeSCreenState extends State<HomeSCreen> {
     hc.getAllDashboardApiData();
     _getCurrentPosition();
     //hc.getGraphWeekApiData("search");
-    DateTime today = DateTime.now();
-    if (today.hour > 0 && today.hour < 12) {
-      hc.selectedGreeting.value = 0;
-    } else if (today.hour >= 12 && today.hour < 16) {
-      hc.selectedGreeting.value = 1;
-    } else {
-      hc.selectedGreeting.value = 2;
-    }
+    // DateTime today = DateTime.now();
+    // if (today.hour > 0 && today.hour < 12) {
+    //   hc.selectedGreeting.value = 0;
+    // } else if (today.hour >= 12 && today.hour < 16) {
+    //   hc.selectedGreeting.value = 1;
+    // } else {
+    //   hc.selectedGreeting.value = 2;
+    // }
 
     init();
   }
 
   @override
   void dispose() {
-    HiveService().myBox!.close();
 
     _focusNode.dispose();
     _controller1.removeListener(_scrollListener);
@@ -830,40 +823,40 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              SizedBox(
-                                width: Get.width * 1,
-                                height: 170,
-                                child: PieChart(PieChartData(sections: [
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Search'),
-                                      badgePositionPercentageOffset: 1.5,
-                                      color: ColorConstants.yellowF2C200,
-                                      value: hc
-                                          .dashboardModel.value.searchCount!
-                                          .toDouble()),
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Release'),
-                                      badgePositionPercentageOffset: 1.5,
-                                      color: Colors.red,
-                                      value: hc
-                                          .dashboardModel.value.releaseCount!
-                                          .toDouble()),
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Hold'),
-                                      badgePositionPercentageOffset: 1.5,
-                                      color: ColorConstants.orangeFC8543,
-                                      value: hc.dashboardModel.value.holdCount!
-                                          .toDouble()),
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Repo'),
-                                      badgePositionPercentageOffset: 1.5,
-                                      value: hc.dashboardModel.value.repoCount!
-                                          .toDouble()),
-                                ])),
-                              )
+                              // const SizedBox(
+                              //   height: 50,
+                              // ),
+                              // SizedBox(
+                              //   width: Get.width * 1,
+                              //   height: 170,
+                              //   child: PieChart(PieChartData(sections: [
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Search'),
+                              //         badgePositionPercentageOffset: 1.5,
+                              //         color: ColorConstants.yellowF2C200,
+                              //         value: hc
+                              //             .dashboardModel.value.searchCount!
+                              //             .toDouble()),
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Release'),
+                              //         badgePositionPercentageOffset: 1.5,
+                              //         color: Colors.red,
+                              //         value: hc
+                              //             .dashboardModel.value.releaseCount!
+                              //             .toDouble()),
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Hold'),
+                              //         badgePositionPercentageOffset: 1.5,
+                              //         color: ColorConstants.orangeFC8543,
+                              //         value: hc.dashboardModel.value.holdCount!
+                              //             .toDouble()),
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Repo'),
+                              //         badgePositionPercentageOffset: 1.5,
+                              //         value: hc.dashboardModel.value.repoCount!
+                              //             .toDouble()),
+                              //   ])),
+                              // )
                             ],
                           );
                       }

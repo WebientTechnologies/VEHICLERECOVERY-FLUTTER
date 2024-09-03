@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
-import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/repoContAgent.dart';
 
 import '../../core/response/status.dart';

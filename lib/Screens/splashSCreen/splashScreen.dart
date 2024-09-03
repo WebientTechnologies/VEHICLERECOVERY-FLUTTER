@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
 import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
 import 'package:vinayak/Screens/splashSCreen/controller/splashscreen_controller.dart';
 import 'package:vinayak/Screens/staff_container/staff_container.dart';
@@ -14,7 +11,6 @@ import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
 import '../../core/global_controller/user_controller.dart';
 import '../../core/utils/routes/app_routes.dart';
-import '../HomeScreen/model/vehicle_sm_hive.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

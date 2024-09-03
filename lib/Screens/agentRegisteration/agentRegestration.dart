@@ -1,15 +1,11 @@
-import 'package:country_state_city_pro/country_state_city_pro.dart';
-import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:vinayak/Screens/agentRegisteration/controller/agenRegistController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
-import 'package:vinayak/core/response/status.dart';
 import 'package:vinayak/core/utils/location_data.dart';
 import 'package:vinayak/core/utils/routes/app_routes.dart';
-import 'package:vinayak/widget/myappbar.dart';
 import 'package:vinayak/widget/pciconBtn.dart';
 import 'package:vinayak/widget/textfield.dart';
 

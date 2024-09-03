@@ -4,16 +4,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:vinayak/Screens/HomeScreen/model/vehicle_sm_hive.dart';
-import 'package:vinayak/core/utils/routes/app_routes.dart';
-import 'package:workmanager/workmanager.dart';
 
-import 'Screens/splashSCreen/controller/splashscreen_controller.dart';
-import 'core/constants/helper.dart';
-import 'core/constants/shared_preferences_var.dart';
-import 'core/global_controller/hive_service.dart';
+import 'package:vinayak/core/utils/routes/app_routes.dart';
 import 'core/global_controller/network_controller.dart';
 
 // @pragma(
@@ -144,7 +136,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Hive.initFlutter();
   // Hive.registerAdapter(VehicleSingleModelAdapter());
-  await HiveService().initialize();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 

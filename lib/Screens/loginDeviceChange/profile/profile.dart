@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:vinayak/Screens/contact_info/contact_info.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
-import 'package:vinayak/widget/myappbar.dart';
 
 import '../../../core/constants/helper.dart';
 import '../../../core/utils/routes/app_routes.dart';
