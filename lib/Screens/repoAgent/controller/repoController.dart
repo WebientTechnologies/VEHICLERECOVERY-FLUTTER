@@ -33,9 +33,9 @@ class RepoAgentController extends GetxController {
       setRxRequestAllRepoStatus(Status.COMPLETED);
       setAllRepoList(value);
     }).onError((error, stackTrace) {
-      // print(stackTrace);
-      // print('--------------------');
-      // print(error);
+       print(stackTrace);
+       print('--------------------');
+       print(error);
       setRxRequestAllRepoStatus(Status.ERROR);
     });
   }

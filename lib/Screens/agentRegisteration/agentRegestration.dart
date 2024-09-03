@@ -105,28 +105,28 @@ class _AgentReisterationState extends State<AgentReisteration> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(color: ColorConstants.aqua, width: 2),
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      margin: EdgeInsets.all(5),
-                      height: 40,
-                      width: width * 0.95,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
-                        child: Text(
-                          'S0011',
-                          style: TextStyle(
-                              color: ColorConstants.aqua,
-                              fontSize: height * 0.023,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Center(
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       border:
+                  //           Border.all(color: ColorConstants.aqua, width: 2),
+                  //       borderRadius: BorderRadius.circular(18),
+                  //     ),
+                  //     margin: EdgeInsets.all(5),
+                  //     height: 40,
+                  //     width: width * 0.95,
+                  //     child: Padding(
+                  //       padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                  //       child: Text(
+                  //         'S0011',
+                  //         style: TextStyle(
+                  //             color: ColorConstants.aqua,
+                  //             fontSize: height * 0.023,
+                  //             fontWeight: FontWeight.w500),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Center(child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
