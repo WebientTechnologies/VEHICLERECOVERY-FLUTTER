@@ -77,7 +77,6 @@ class _HoldDataReportsState extends State<HoldDataReports> {
           child: Column(
             children: [
               SizedBox(
-                height: Get.height * 0.08,
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 4),

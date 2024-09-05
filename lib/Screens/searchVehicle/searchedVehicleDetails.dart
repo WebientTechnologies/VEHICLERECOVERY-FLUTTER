@@ -155,6 +155,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                       value: sc.selectedLoadStatus.value,
                                       onChanged: (value) {
                                         sc.selectedLoadStatus.value = value!;
+                                        print(value!);
                                       }),
                                 ),
                               ),
@@ -421,8 +422,9 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
             IconButton(
                 onPressed: () async {
                   String msg =
-                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Detail:${data.loadStatus}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 ''';
+                  print(msg);
                   Share.share(msg);
 //                   final url = "https://wa.me?text=$msg";
 

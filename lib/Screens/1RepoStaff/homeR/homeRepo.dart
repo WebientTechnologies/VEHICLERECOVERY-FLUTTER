@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -146,7 +145,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
         //     offlinePageNumber > 0 ? offlinePageN umber : 1);
-         await ssc.downloadData();
+        await ssc.downloadData();
       }
     }
   }
@@ -183,7 +182,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -338,6 +336,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               last4digit.text = '';
                               setState(() {
                                 showlastdata = false;
+                                sc.firstHalf.clear();
+                                sc.secondHalf.clear();
                               });
                             },
                             icon: const Icon(Icons.close),
@@ -385,8 +385,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             const SizedBox(
               height: 10,
             ),
-            if ((showChasisNo == true || chasisNoHaveFocus) &&
-                showlastdata == false)
+            if ((showChasisNo == true) && showlastdata == false)
               Obx(() {
                 switch (sc.rxRequestsearchbyChasisNoStatus.value) {
                   case Status.LOADING:
@@ -527,8 +526,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                     }
                 }
               }),
-            if ((showlastdata == true || last4digitHaveFocus) &&
-                showChasisNo == false)
+            if ((showlastdata == true) && showChasisNo == false)
               Obx(() {
                 switch (sc.rxRequestsearchbyLastStatus.value) {
                   case Status.LOADING:
@@ -747,33 +745,33 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                              SizedBox(
-                                width: Get.width * 1,
-                                height: 170,
-                                child: PieChart(PieChartData(sections: [
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Release'),
-                                      badgePositionPercentageOffset: 1.7,
-                                      color: Colors.red,
-                                      value: hc
-                                          .dashboardModel.value.releaseCount!
-                                          .toDouble()),
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Hold'),
-                                      badgePositionPercentageOffset: 1.5,
-                                      color: ColorConstants.orangeFC8543,
-                                      value: hc.dashboardModel.value.holdCount!
-                                          .toDouble()),
-                                  PieChartSectionData(
-                                      badgeWidget: Text('Repo'),
-                                      badgePositionPercentageOffset: 1.5,
-                                      value: hc.dashboardModel.value.repoCount!
-                                          .toDouble()),
-                                ])),
-                              )
+                              // const SizedBox(
+                              //   height: 30,
+                              // ),
+                              // SizedBox(
+                              //   width: Get.width * 1,
+                              //   height: 170,
+                              //   child: PieChart(PieChartData(sections: [
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Release'),
+                              //         badgePositionPercentageOffset: 1.7,
+                              //         color: Colors.red,
+                              //         value: hc
+                              //             .dashboardModel.value.releaseCount!
+                              //             .toDouble()),
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Hold'),
+                              //         badgePositionPercentageOffset: 1.5,
+                              //         color: ColorConstants.orangeFC8543,
+                              //         value: hc.dashboardModel.value.holdCount!
+                              //             .toDouble()),
+                              //     PieChartSectionData(
+                              //         badgeWidget: Text('Repo'),
+                              //         badgePositionPercentageOffset: 1.5,
+                              //         value: hc.dashboardModel.value.repoCount!
+                              //             .toDouble()),
+                              //   ])),
+                              // )
                             ],
                           ),
                         );
