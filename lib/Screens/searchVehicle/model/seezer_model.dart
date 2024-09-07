@@ -24,9 +24,9 @@ class SeezerModel {
 class Agents {
   String? sId;
   String? agentId;
-  ZoneId? zoneId;
-  ZoneId? stateId;
-  ZoneId? cityId;
+  String? zoneId;
+  String? stateId;
+  String? cityId;
   String? name;
   String? mobile;
   String? alternativeMobile;
@@ -46,7 +46,7 @@ class Agents {
   String? updatedAt;
   int? iV;
   String? deviceId;
-  ZoneId? createdBy;
+  String? createdBy;
   String? createdByType;
 
   Agents(
@@ -80,12 +80,9 @@ class Agents {
   Agents.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     agentId = json['agentId'];
-    zoneId =
-        json['zoneId'] != null ? new ZoneId.fromJson(json['zoneId']) : null;
-    stateId =
-        json['stateId'] != null ? new ZoneId.fromJson(json['stateId']) : null;
-    cityId =
-        json['cityId'] != null ? new ZoneId.fromJson(json['cityId']) : null;
+    zoneId = json['zoneId'];
+    stateId = json['stateId'];
+    cityId = json['cityId'];
     name = json['name'];
     mobile = json['mobile'];
     alternativeMobile = json['alternativeMobile'];
@@ -105,9 +102,7 @@ class Agents {
     updatedAt = json['updatedAt'];
     iV = json['__v'];
     deviceId = json['deviceId'];
-    createdBy = json['createdBy'] != null
-        ? new ZoneId.fromJson(json['createdBy'])
-        : null;
+    createdBy = json['createdBy'];
     createdByType = json['createdByType'];
   }
 
@@ -115,15 +110,10 @@ class Agents {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['_id'] = this.sId;
     data['agentId'] = this.agentId;
-    if (this.zoneId != null) {
-      data['zoneId'] = this.zoneId!.toJson();
-    }
-    if (this.stateId != null) {
-      data['stateId'] = this.stateId!.toJson();
-    }
-    if (this.cityId != null) {
-      data['cityId'] = this.cityId!.toJson();
-    }
+    data['zoneId'] = this.zoneId;
+
+    data['stateId'] = this.stateId;
+    data['cityId'] = this.cityId;
     data['name'] = this.name;
     data['mobile'] = this.mobile;
     data['alternativeMobile'] = this.alternativeMobile;
@@ -143,9 +133,7 @@ class Agents {
     data['updatedAt'] = this.updatedAt;
     data['__v'] = this.iV;
     data['deviceId'] = this.deviceId;
-    if (this.createdBy != null) {
-      data['createdBy'] = this.createdBy!.toJson();
-    }
+    data['createdBy'] = this.createdBy;
     data['createdByType'] = this.createdByType;
     return data;
   }

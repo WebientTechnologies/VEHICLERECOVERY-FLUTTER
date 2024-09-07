@@ -117,7 +117,8 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                           chasisNo: src.data[index].chasisNo ?? '',
                           model: 'model',
                           seezerName: src.data[index].seezerId?.name ?? '',
-                          uploadDate: 'uploadDate',
+                          uploadDate:
+                              src.data[index].createdAt!.substring(0, 10),
                           backgroundColor: bgColor,
                         );
                       },

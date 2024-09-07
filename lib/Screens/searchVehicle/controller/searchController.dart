@@ -238,9 +238,9 @@ class VehicleSearchController extends GetxController {
       }
       setRxSeezerListStatus(Status.COMPLETED);
     }).onError((error, stackTrace) {
-      // print(stackTrace);
-      // print('--------------------');
-      // print(error);
+      print(stackTrace);
+      print('--------------------');
+      print(error);
       setRxSeezerListStatus(Status.ERROR);
     });
   }

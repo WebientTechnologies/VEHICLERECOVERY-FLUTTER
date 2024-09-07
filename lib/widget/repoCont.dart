@@ -95,11 +95,13 @@ class HoldRepoDetailsWidget extends StatelessWidget {
                 Fluttertoast.showToast(msg: 'Copied $value');
               });
             },
-            child: Text(
-              value,
-              style: TextStyle(
-                color: ColorConstants.white,
-                fontSize: 14.0,
+            child: Expanded(
+              child: Text(
+                value,
+                style: TextStyle(
+                  color: ColorConstants.white,
+                  fontSize: 14.0,
+                ),
               ),
             ),
           ),

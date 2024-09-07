@@ -247,6 +247,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               setState(() {
                                 showChasisNo = false;
                                 showlastdata = false;
+                                sc.firstHalf.clear();
+                                sc.secondHalf.clear();
                               });
                             },
                             icon: const Icon(Icons.close),
