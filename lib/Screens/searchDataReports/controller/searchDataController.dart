@@ -23,6 +23,9 @@ class SearchDataReportController extends GetxController {
       setRxSearchRepoStatus(Status.LOADING);
     }
     var url = ApiEndpoints.getSearch;
+    if (search.length > 1) {
+      url = ApiEndpoints.getSearch + "?search=$search";
+    }
     var response = await _api.getApi(url);
     print(response);
     return SearchData.fromJson(response);
@@ -37,8 +40,10 @@ class SearchDataReportController extends GetxController {
       if (onChange) {
         data.clear();
       }
-      for (Search b in searchReportModel.value.search!) {
-        data.add(b);
+      if (searchReportModel.value.search != null) {
+        for (Search b in searchReportModel.value.search!) {
+          data.add(b);
+        }
       }
       setRxSearchRepoStatus(Status.COMPLETED);
     } catch (e, s) {

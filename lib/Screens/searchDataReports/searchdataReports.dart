@@ -143,7 +143,7 @@ class _SearchDataReportsState extends State<SearchDataReports> {
     DateTime utcTime = DateTime.parse(time).toUtc();
 
     // Convert UTC to IST (UTC + 5:30)
-    DateTime istTime = utcTime.add(Duration(hours: 5, minutes: 30));
+    DateTime istTime = utcTime.subtract(Duration(hours: 5, minutes: 30));
 
     // Format the DateTime to the desired output format
     return DateFormat('yyyy-MM-dd – kk:mm:ss').format(istTime);
