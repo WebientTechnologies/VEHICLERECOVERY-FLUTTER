@@ -22,7 +22,8 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   VehicleSearchController sc = Get.put(VehicleSearchController());
   dynamic data;
   bool isRepoAgent = false, isOnline = false;
-  String role = '';
+
+  String role = '', from = '';
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UserController uc = Get.put(UserController());
   @override
@@ -32,6 +33,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
     role = Get.arguments[1];
     print('lengthhhh ${Get.arguments.length}');
     isOnline = Get.arguments[2];
+    from = Get.arguments[3];
     sc.getAllSeezerData();
     if (role == 'officeStaff') {
       isRepoAgent = false;
@@ -120,10 +122,20 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                     children: [
                       buildInfoRow(
                           'Registeration No', height, width, data.regNo ?? ''),
-                      buildInfoRow('Customer Name', height, width,
-                          data.customerName ?? ''),
                       buildInfoRow(
-                          'Bank Name', height, width, data.bankName ?? ''),
+                          'Customer Name',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.customerName
+                              : data.vehicleId.customerName),
+                      buildInfoRow(
+                          'Bank Name',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.bankName
+                              : data.vehicleId.bankName),
                       buildInfoRow('Vehicle Maker', height, width, ''),
                       const SizedBox(
                         height: 7,
@@ -253,73 +265,198 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                 border: Border.all(
                                     color: ColorConstants.aqua, width: 2),
                                 borderRadius: BorderRadius.circular(50)),
-                            child: Center(
-                              child: Obx(() {
-                                switch (sc.rxSeezerListStatus.value) {
-                                  case Status.LOADING:
-                                    return Center(
-                                      child: SizedBox(
-                                          width: 20,
-                                          height: 20,
-                                          child: CircularProgressIndicator()),
-                                    );
+                            child: from == 'home'
+                                ? Center(
+                                    child: Obx(() {
+                                      switch (sc.rxSeezerListStatus.value) {
+                                        case Status.LOADING:
+                                          return Center(
+                                            child: SizedBox(
+                                                width: 20,
+                                                height: 20,
+                                                child:
+                                                    CircularProgressIndicator()),
+                                          );
 
-                                  case Status.ERROR:
-                                    return Text('Error');
-                                  case Status.COMPLETED:
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 10.0),
-                                      child: DropdownButton(
-                                          underline: const SizedBox(),
-                                          isExpanded: true,
-                                          items: sc.seezerModel.value.agents!
-                                              .map((e) => DropdownMenuItem(
-                                                    child: Text(e.name!),
-                                                    value: e.sId,
-                                                  ))
-                                              .toList(),
-                                          value: sc.selectedSeezer.value,
-                                          onChanged: (value) {
-                                            sc.selectedSeezer.value = value!;
-                                          }),
-                                    );
-                                }
-                              }),
-                            ),
+                                        case Status.ERROR:
+                                          return Text('Error');
+                                        case Status.COMPLETED:
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10.0),
+                                            child: DropdownButton(
+                                                underline: const SizedBox(),
+                                                isExpanded: true,
+                                                items: sc
+                                                    .seezerModel.value.agents!
+                                                    .map((e) =>
+                                                        DropdownMenuItem(
+                                                          child: Text(e.name!),
+                                                          value: e.sId,
+                                                        ))
+                                                    .toList(),
+                                                value: sc.selectedSeezer.value,
+                                                onChanged: (value) {
+                                                  sc.selectedSeezer.value =
+                                                      value!;
+                                                }),
+                                          );
+                                      }
+                                    }),
+                                  )
+                                : Center(child: Text(data.seezerId!.name)),
                           )
                         ],
                       ),
                       buildInfoRow(
-                          'Registeration No', height, width, data.regNo ?? ''),
-                      buildInfoRow('Customer Name', height, width,
-                          data.customerName ?? ''),
+                          'Registeration No',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.regNo != null
+                                  ? data.regNo
+                                  : ''
+                              : data.vehicleId!.regNo != null
+                                  ? data.vehicleId!.regNo
+                                  : ''),
                       buildInfoRow(
-                          'Bank Name', height, width, data.bankName ?? ''),
-                      buildInfoRow('Branch', height, width, data.branch ?? ''),
+                          'Customer Name',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.customerName != null
+                                  ? data.customerName
+                                  : ''
+                              : data.vehicleId!.customerName != null
+                                  ? data.vehicleId!.customerName
+                                  : ''),
+                      buildInfoRow(
+                          'Bank Name',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.bankName != null
+                                  ? data.bankName
+                                  : ''
+                              : data.vehicleId!.bankName != null
+                                  ? data.vehicleId!.bankName
+                                  : ''),
+                      buildInfoRow(
+                          'Branch',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.branch != null
+                                  ? data.branch
+                                  : ''
+                              : ''),
                       buildInfoRow('EMI', height, width, ''),
                       buildInfoRow('Vehicle Maker', height, width, ''),
-                      buildInfoRow('Agreement No', height, width,
-                          data.agreementNo ?? ''),
                       buildInfoRow(
-                          'Chasis No', height, width, data.chasisNo ?? ''),
+                          'Agreement No',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.agreementNo != null
+                                  ? data.agreementNo
+                                  : ''
+                              : ''),
                       buildInfoRow(
-                          'Engine No', height, width, data.engineNo ?? ''),
+                          'Chasis No',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.chasisNo != null
+                                  ? data.chasisNo
+                                  : ''
+                              : data.vehicleId!.chasisNo != null
+                                  ? data.vehicleId!.chasisNo
+                                  : ''),
+                      buildInfoRow(
+                          'Engine No',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.engineNo != null
+                                  ? data.engineNo
+                                  : ''
+                              : data.vehicleId!.engineNo != null
+                                  ? data.vehicleId!.engineNo
+                                  : ''),
                       buildInfoRow('Model', height, width, ''),
-                      buildInfoRow('Call Center 1', height, width,
-                          data.callCenterNo1 ?? ''),
-                      buildInfoRow('Call Center No 1', height, width,
-                          data.callCenterNo1Name ?? ''),
-                      buildInfoRow('Call Center 2', height, width,
-                          data.callCenterNo2 ?? ''),
-                      buildInfoRow('Call Center No 2', height, width,
-                          data.callCenterNo2Name ?? ''),
+                      buildInfoRow(
+                          'Call Center 1',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo1 != null
+                                  ? data.callCenterNo1
+                                  : ''
+                              : data.vehicleId!.callCenterNo1 != null
+                                  ? data.vehicleId!.callCenterNo1
+                                  : ''),
+                      buildInfoRow(
+                          'Call Center No 1',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo1Name != null
+                                  ? data.callCenterNo1Name
+                                  : ''
+                              : ''),
+                      buildInfoRow(
+                          'Call Center 2',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo2 != null
+                                  ? data.callCenterNo2
+                                  : ''
+                              : ''),
+                      buildInfoRow(
+                          'Call Center No 2',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo2Name != null
+                                  ? data.callCenterNo2Name
+                                  : ''
+                              : ''),
                       // buildInfoRow('Call Center 2', height, width),
                       // buildInfoRow('Call Center No 3', height, width),
-                      buildInfoRow('Month', height, width, data.month ?? ''),
                       buildInfoRow(
-                          'Last Digit', height, width, data.lastDigit ?? ''),
-                      buildInfoRow('Status', height, width, data.status ?? ''),
+                          'Month',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.month != null
+                                  ? data.month
+                                  : ''
+                              : data.vehicleId!.month != null
+                                  ? data.vehicleId!.month
+                                  : ''),
+                      buildInfoRow(
+                          'Last Digit',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.lastDigit != null
+                                  ? data.lastDigit
+                                  : ''
+                              : data.vehicleId!.lastDigit != null
+                                  ? data.vehicleId!.lastDigit
+                                  : ''),
+                      buildInfoRow(
+                          'Status',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.status != null
+                                  ? data.status
+                                  : ''
+                              : data.vehicleId!.status != null
+                                  ? data.vehicleId!.status
+                                  : ''),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -398,35 +535,41 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                       buildInfoRow('SEC-17', height, width, ''),
                       buildInfoRow('SEC-09', height, width, ''),
                       buildInfoRow('Seasoning', height, width, ''),
-                      buildInfoRow('Upload Date', height, width,
-                          data.createdAt.substring(0, 10)),
+                      buildInfoRow(
+                          'Upload Date',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.createdAt.substring(0, 10)
+                              : data.vehicleId!.createdAt.substring(0, 10)),
                     ],
                   ),
           ),
         );
       }),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(left: 15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            PCIconButton(
-              onPressed: () {
-                sc.updateVehicleHoldRepo(context, data.id, isRepoAgent);
-              },
-              text: 'Hold',
-              width: Get.width * 0.8,
-              height: Get.height * 0.05,
-              textColor: Colors.white,
-              backgroundColor: ColorConstants.aqua,
-            ),
-            IconButton(
-                onPressed: () async {
-                  String msg =
-                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+      bottomNavigationBar: from == 'home'
+          ? Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PCIconButton(
+                    onPressed: () {
+                      sc.updateVehicleHoldRepo(context, data.id, isRepoAgent);
+                    },
+                    text: 'Hold',
+                    width: Get.width * 0.8,
+                    height: Get.height * 0.05,
+                    textColor: Colors.white,
+                    backgroundColor: ColorConstants.aqua,
+                  ),
+                  IconButton(
+                      onPressed: () async {
+                        String msg =
+                            '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 ''';
-                  print(msg);
-                  Share.share(msg);
+                        print(msg);
+                        Share.share(msg);
 //                   final url = "https://wa.me?text=$msg";
 
 //                   if (await canLaunchUrl(Uri.parse(url))) {
@@ -436,15 +579,16 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
 //                   }
 //                   if (!await launchUrl(Uri.parse(url)))
 //                     throw 'Could not launch $url';
-                },
-                icon: Icon(
-                  Icons.message,
-                  color: ColorConstants.aqua,
-                  size: 40,
-                ))
-          ],
-        ),
-      ),
+                      },
+                      icon: Icon(
+                        Icons.message,
+                        color: ColorConstants.aqua,
+                        size: 40,
+                      ))
+                ],
+              ),
+            )
+          : const SizedBox(),
     );
   }
 }

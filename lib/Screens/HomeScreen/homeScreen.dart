@@ -71,7 +71,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
 
   @override
   void dispose() {
-
     _focusNode.dispose();
     _controller1.removeListener(_scrollListener);
     _controller2.removeListener(_scrollListener);
@@ -255,7 +254,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -639,7 +637,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             arguments: [
                                               sc.firstHalf[index],
                                               'officeStaff',
-                                              isOnline
+                                              isOnline,
+                                              'home'
                                             ]);
                                       },
                                       child: Container(
@@ -678,7 +677,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             arguments: [
                                               sc.secondHalf[index],
                                               'officeStaff',
-                                              isOnline
+                                              isOnline,
+                                              'home'
                                             ]);
                                       },
                                       child: Container(

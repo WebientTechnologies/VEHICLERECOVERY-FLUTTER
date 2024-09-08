@@ -5,6 +5,7 @@ import 'package:vinayak/widget/searchDataWidget.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/response/status.dart';
+import '../../core/utils/routes/app_routes.dart';
 import 'controller/searchDataController.dart';
 
 class SearchDataReports extends StatefulWidget {
@@ -110,22 +111,33 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                         Color bgColor = index % 2 == 0
                             ? ColorConstants.back
                             : ColorConstants.aqua;
-                        return SearchDataWidget(
-                          regNo: src.data[index].vehicleId!.regNo ?? '',
-                          id: src.data[index].vehicleId!.sId ?? '',
-                          bankName: src.data[index].vehicleId!.bankName ?? '',
-                          custName:
-                              src.data[index].vehicleId!.customerName ?? '',
-                          chasisNo: src.data[index].vehicleId!.chasisNo ?? '',
-                          model: 'model',
-                          seezerName: src.data[index].seezerId?.name ?? '',
-                          uploadDate: src.data[index].vehicleId!.createdAt!
-                              .substring(0, 10),
-                          searchDate:
-                              src.data[index].createdAt!.substring(0, 10),
-                          searchTime: formatTime(src.data[index].createdAt!)
-                              .substring(13),
-                          backgroundColor: bgColor,
+                        return GestureDetector(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                arguments: [
+                                  src.data[index],
+                                  'officeStaff',
+                                  false,
+                                  'report'
+                                ]);
+                          },
+                          child: SearchDataWidget(
+                            regNo: src.data[index].vehicleId!.regNo ?? '',
+                            id: src.data[index].vehicleId!.sId ?? '',
+                            bankName: src.data[index].vehicleId!.bankName ?? '',
+                            custName:
+                                src.data[index].vehicleId!.customerName ?? '',
+                            chasisNo: src.data[index].vehicleId!.chasisNo ?? '',
+                            model: 'model',
+                            seezerName: src.data[index].seezerId?.name ?? '',
+                            uploadDate: src.data[index].vehicleId!.createdAt!
+                                .substring(0, 10),
+                            searchDate:
+                                src.data[index].createdAt!.substring(0, 10),
+                            searchTime: formatTime(src.data[index].createdAt!)
+                                .substring(13),
+                            backgroundColor: bgColor,
+                          ),
                         );
                       },
                     ),

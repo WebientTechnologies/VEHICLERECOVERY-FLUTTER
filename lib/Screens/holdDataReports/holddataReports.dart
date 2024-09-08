@@ -5,6 +5,7 @@ import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/widget/repoContAgent.dart';
 
 import '../../core/response/status.dart';
+import '../../core/utils/routes/app_routes.dart';
 import '../../widget/repoCont.dart';
 import 'controller/holdDataController.dart';
 
@@ -135,27 +136,54 @@ class _HoldDataReportsState extends State<HoldDataReports> {
                               ? ColorConstants.back
                               : ColorConstants.aqua;
                           return showExtra
-                              ? HoldRepoDetailsWidget(
-                                  bankName: hdc.data[index].bankName ?? '',
-                                  chasisNo: hdc.data[index].chasisNo ?? '',
-                                  id: hdc.data[index].id ?? '',
-                                  custName: hdc.data[index].customerName ?? '',
-                                  model: 'model',
-                                  regNo: hdc.data[index].regNo ?? '',
-                                  seezerName: hdc.data[index].seezerId != null
-                                      ? hdc.data[index].seezerId!.name!
-                                      : '',
-                                  backgroundColor: bgColor,
-                                  uploadDate: '',
+                              ? GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(
+                                        AppRoutes.searchedVehicleDetails,
+                                        arguments: [
+                                          hdc.data[index],
+                                          'officeStaff',
+                                          false,
+                                          'homee'
+                                        ]);
+                                  },
+                                  child: HoldRepoDetailsWidget(
+                                    bankName: hdc.data[index].bankName ?? '',
+                                    chasisNo: hdc.data[index].chasisNo ?? '',
+                                    id: hdc.data[index].id ?? '',
+                                    custName:
+                                        hdc.data[index].customerName ?? '',
+                                    model: 'model',
+                                    regNo: hdc.data[index].regNo ?? '',
+                                    seezerName: hdc.data[index].seezerId != null
+                                        ? hdc.data[index].seezerId!.name!
+                                        : '',
+                                    backgroundColor: bgColor,
+                                    uploadDate: '',
+                                  ),
                                 )
-                              : HoldRepoDetailsWidgetAgent(
-                                  bankName: hdc.data[index].bankName ?? '',
-                                  maker: hdc.data[index].maker ?? '',
-                                  loadStatus: hdc.data[index].loadStatus ?? '',
-                                  custName: hdc.data[index].customerName ?? '',
-                                  loadItem: hdc.data[index].loadItem ?? '',
-                                  regNo: hdc.data[index].regNo ?? '',
-                                  backgroundColor: bgColor,
+                              : GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(
+                                        AppRoutes.searchedVehicleDetails,
+                                        arguments: [
+                                          hdc.data[index],
+                                          'officeStaff',
+                                          false,
+                                          'homee'
+                                        ]);
+                                  },
+                                  child: HoldRepoDetailsWidgetAgent(
+                                    bankName: hdc.data[index].bankName ?? '',
+                                    maker: hdc.data[index].maker ?? '',
+                                    loadStatus:
+                                        hdc.data[index].loadStatus ?? '',
+                                    custName:
+                                        hdc.data[index].customerName ?? '',
+                                    loadItem: hdc.data[index].loadItem ?? '',
+                                    regNo: hdc.data[index].regNo ?? '',
+                                    backgroundColor: bgColor,
+                                  ),
                                 );
                         },
                       ),
