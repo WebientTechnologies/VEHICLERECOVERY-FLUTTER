@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:vinayak/Screens/agentRegisteration/model/zoneModel.dart';
 import 'package:vinayak/core/constants/helper.dart';
 import 'package:vinayak/core/network/network_api.dart';
@@ -49,6 +49,8 @@ class AgentRegistrationController extends GetxController {
       rxRequestCityStatus.value = value;
   final cityModel = GetCityByStateModel().obs;
   void setCityList(GetCityByStateModel value) => cityModel.value = value;
+
+  RxString agentId = 'S00'.obs;
 
   //post repo agent
 
@@ -180,6 +182,18 @@ class AgentRegistrationController extends GetxController {
       print('--------------------');
       print(error);
       setRxRequestCityStatus(Status.ERROR);
+    });
+  }
+
+  void getLastAgentId() async {
+    _api.getApiWithoutHead(ApiEndpoints.getLastAgentId).then((v) {
+      agentId.value = jsonDecode(jsonEncode(v))['agentId'];
+
+      int id = int.parse(agentId.value.substring(1)) + 1;
+
+      agentId.value = 'S00$id';
+
+      print(agentId.value);
     });
   }
 }

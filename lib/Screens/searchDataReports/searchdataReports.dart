@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:vinayak/widget/searchDataWidget.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/response/status.dart';
-import '../../widget/repoCont.dart';
 import 'controller/searchDataController.dart';
 
 class SearchDataReports extends StatefulWidget {
@@ -109,16 +110,21 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                         Color bgColor = index % 2 == 0
                             ? ColorConstants.back
                             : ColorConstants.aqua;
-                        return HoldRepoDetailsWidget(
-                          regNo: src.data[index].regNo ?? '',
-                          id: src.data[index].id ?? '',
-                          bankName: src.data[index].bankName ?? '',
-                          custName: src.data[index].customerName ?? '',
-                          chasisNo: src.data[index].chasisNo ?? '',
+                        return SearchDataWidget(
+                          regNo: src.data[index].vehicleId!.regNo ?? '',
+                          id: src.data[index].vehicleId!.sId ?? '',
+                          bankName: src.data[index].vehicleId!.bankName ?? '',
+                          custName:
+                              src.data[index].vehicleId!.customerName ?? '',
+                          chasisNo: src.data[index].vehicleId!.chasisNo ?? '',
                           model: 'model',
                           seezerName: src.data[index].seezerId?.name ?? '',
-                          uploadDate:
+                          uploadDate: src.data[index].vehicleId!.createdAt!
+                              .substring(0, 10),
+                          searchDate:
                               src.data[index].createdAt!.substring(0, 10),
+                          searchTime: formatTime(src.data[index].createdAt!)
+                              .substring(13),
                           backgroundColor: bgColor,
                         );
                       },
@@ -131,5 +137,15 @@ class _SearchDataReportsState extends State<SearchDataReports> {
       ),
       // drawer: MyDrawer(),
     );
+  }
+
+  String formatTime(time) {
+    DateTime utcTime = DateTime.parse(time).toUtc();
+
+    // Convert UTC to IST (UTC + 5:30)
+    DateTime istTime = utcTime.add(Duration(hours: 5, minutes: 30));
+
+    // Format the DateTime to the desired output format
+    return DateFormat('yyyy-MM-dd – kk:mm:ss').format(istTime);
   }
 }

@@ -26,6 +26,7 @@ class ApiEndpoints {
       '${baseurl}update-password-by-agent';
   static const String searchDataReport =
       '${baseurl}search-vehicle-list-by-staff';
+  static const String getSearch = '${baseurl}getSearch';
   static const String viewRequest = '${baseurl}request-for-staff';
   static const String updateHoldVehicleStatus =
       '${baseurl}change-vehicle-status-by-staff';
@@ -37,6 +38,7 @@ class ApiEndpoints {
   static const String releaseGraphData = '${baseurl}release-graph';
   static const String repoGraphData = '${baseurl}repo-graph';
   static const String getAllRepoAgents = '${baseurl}get-all-repo-agents';
+  static const String getLastAgentId = '${baseurl}getLastAgentId';
   static const String changeVehicleStatusByStaff =
       '${baseurl}change-vehicle-status-by-staff/';
 }

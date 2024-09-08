@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vinayak/Screens/searchDataReports/model/searchModel.dart';
 
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/network/network_api.dart';
 import '../../../core/response/status.dart';
-import '../model/searchDataModel.dart';
 
 class SearchDataReportController extends GetxController {
   var _api = NetworkApi();
@@ -12,20 +12,20 @@ class SearchDataReportController extends GetxController {
   final rxSearchReportRequestStatus = Status.LOADING.obs;
   void setRxSearchRepoStatus(Status value) =>
       rxSearchReportRequestStatus.value = value;
-  final searchReportModel = SearchDataReport().obs;
-  void setSearchRepoReportList(SearchDataReport value) =>
+  final searchReportModel = SearchData().obs;
+  void setSearchRepoReportList(SearchData value) =>
       searchReportModel.value = value;
-  List<VehiclesList> data = <VehiclesList>[].obs;
+  List<Search> data = <Search>[].obs;
 
-  Future<SearchDataReport> getAllSearchDataRepoApi(
+  Future<SearchData> getAllSearchDataRepoApi(
       String search, int pageNo, bool isRefresh, bool onChange) async {
     if (isRefresh || onChange) {
       setRxSearchRepoStatus(Status.LOADING);
     }
-    var url = ApiEndpoints.searchDataReport + '?search=$search&page=$pageNo';
+    var url = ApiEndpoints.getSearch;
     var response = await _api.getApi(url);
     print(response);
-    return SearchDataReport.fromJson(response);
+    return SearchData.fromJson(response);
   }
 
   void getAllSearchDataRepoData(
@@ -37,11 +37,12 @@ class SearchDataReportController extends GetxController {
       if (onChange) {
         data.clear();
       }
-      for (VehiclesList b in searchReportModel.value.vehiclesList!) {
+      for (Search b in searchReportModel.value.search!) {
         data.add(b);
       }
       setRxSearchRepoStatus(Status.COMPLETED);
-    } catch (e) {
+    } catch (e, s) {
+      print(s);
       print(e);
     }
   }
