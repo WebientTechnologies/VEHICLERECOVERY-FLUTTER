@@ -18,7 +18,7 @@ class VehicleDb {
           "branch" text null,
           "agreementNo" text null,
           "customerName" text null,
-          "regNo" text UNIQUE null,
+          "regNo" text null,
           "chasisNo" text null,
           "engineNo" text null,
           "callCenterNo1" text null,

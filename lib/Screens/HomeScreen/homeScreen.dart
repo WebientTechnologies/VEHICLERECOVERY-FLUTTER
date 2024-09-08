@@ -494,6 +494,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                               sc.firstHalf[index],
                                               'officeStaff',
                                               isOnline,
+                                              'home'
                                             ]);
                                       },
                                       child: Container(
@@ -532,6 +533,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                               sc.secondHalf[index],
                                               'officeStaff',
                                               isOnline,
+                                              'home'
                                             ]);
                                       },
                                       child: Container(
@@ -577,6 +579,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                         sc.offlineDataFiltered[index],
                                         'officeStaff',
                                         isOnline,
+                                        'home'
                                       ]);
                                 },
                                 child: Container(
@@ -723,7 +726,8 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       arguments: [
                                         sc.offlineDataFiltered[index],
                                         'officeStaff',
-                                        isOnline
+                                        isOnline,
+                                        'home'
                                       ]);
                                 },
                                 child: Container(

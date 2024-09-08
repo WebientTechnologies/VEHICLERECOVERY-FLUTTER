@@ -127,8 +127,8 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.customerName
-                              : data.vehicleId.customerName),
+                              ? data.customerName ?? ''
+                              : data.vehicleId.customerName ?? ''),
                       buildInfoRow(
                           'Bank Name',
                           height,

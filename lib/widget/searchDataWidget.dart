@@ -38,19 +38,21 @@ class SearchDataWidget extends StatelessWidget {
       color: backgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(5.0),
-        child: GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 10.0,
-            mainAxisSpacing: 20.0,
-            childAspectRatio: 2,
+        child: Expanded(
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10.0,
+              mainAxisSpacing: 20.0,
+              childAspectRatio: 2,
+            ),
+            itemCount: 9,
+            itemBuilder: (BuildContext context, int index) {
+              return _buildItem(index);
+            },
           ),
-          itemCount: 9,
-          itemBuilder: (BuildContext context, int index) {
-            return _buildItem(index);
-          },
         ),
       ),
     );
@@ -85,25 +87,25 @@ class SearchDataWidget extends StatelessWidget {
 
   Widget _buildItemWidget(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              color: ColorConstants.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 15.0,
+      padding: const EdgeInsets.only(left: 8, bottom: 10),
+      child: Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: ColorConstants.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 15.0,
+              ),
             ),
-          ),
-          GestureDetector(
-            onLongPress: () async {
-              await Clipboard.setData(ClipboardData(text: value)).then((v) {
-                Fluttertoast.showToast(msg: 'Copied $value');
-              });
-            },
-            child: Expanded(
+            GestureDetector(
+              onLongPress: () async {
+                await Clipboard.setData(ClipboardData(text: value)).then((v) {
+                  Fluttertoast.showToast(msg: 'Copied $value');
+                });
+              },
               child: Text(
                 value,
                 style: TextStyle(
@@ -112,8 +114,8 @@ class SearchDataWidget extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

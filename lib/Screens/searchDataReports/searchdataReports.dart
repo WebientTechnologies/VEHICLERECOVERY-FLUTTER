@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:vinayak/widget/searchDataWidget.dart';
 
 import '../../core/constants/color_constants.dart';
 import '../../core/response/status.dart';
@@ -112,33 +113,350 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                             ? ColorConstants.back
                             : ColorConstants.aqua;
                         return GestureDetector(
-                          onTap: () {
-                            Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                arguments: [
-                                  src.data[index],
-                                  'officeStaff',
-                                  false,
-                                  'report'
-                                ]);
-                          },
-                          child: SearchDataWidget(
-                            regNo: src.data[index].vehicleId!.regNo ?? '',
-                            id: src.data[index].vehicleId!.sId ?? '',
-                            bankName: src.data[index].vehicleId!.bankName ?? '',
-                            custName:
-                                src.data[index].vehicleId!.customerName ?? '',
-                            chasisNo: src.data[index].vehicleId!.chasisNo ?? '',
-                            model: 'model',
-                            seezerName: src.data[index].seezerId?.name ?? '',
-                            uploadDate: src.data[index].vehicleId!.createdAt!
-                                .substring(0, 10),
-                            searchDate:
-                                src.data[index].createdAt!.substring(0, 10),
-                            searchTime: formatTime(src.data[index].createdAt!)
-                                .substring(13),
-                            backgroundColor: bgColor,
-                          ),
-                        );
+                            onTap: () {
+                              Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                  arguments: [
+                                    src.data[index],
+                                    'officeStaff',
+                                    false,
+                                    'report'
+                                  ]);
+                            },
+                            child: Container(
+                              color: bgColor,
+                              padding: const EdgeInsets.all(10),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Bank Name',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onLongPress: () async {
+                                                await Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: src
+                                                                    .data[index]
+                                                                    .vehicleId!
+                                                                    .bankName ??
+                                                                ''))
+                                                    .then((v) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Copied ${src.data[index].vehicleId!.bankName ?? ''}');
+                                                });
+                                              },
+                                              child: Text(
+                                                src.data[index].vehicleId!
+                                                        .bankName ??
+                                                    '',
+                                                style: TextStyle(
+                                                  color: ColorConstants.white,
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Cust Name',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onLongPress: () async {
+                                                await Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: src
+                                                                    .data[index]
+                                                                    .vehicleId!
+                                                                    .customerName ??
+                                                                ''))
+                                                    .then((v) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Copied ${src.data[index].vehicleId!.customerName ?? ''}');
+                                                });
+                                              },
+                                              child: Text(
+                                                src.data[index].vehicleId!
+                                                        .customerName ??
+                                                    '',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: ColorConstants.white,
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Reg No',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onLongPress: () async {
+                                                await Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: src
+                                                                    .data[index]
+                                                                    .vehicleId!
+                                                                    .regNo ??
+                                                                ''))
+                                                    .then((v) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Copied ${src.data[index].vehicleId!.regNo ?? ''}');
+                                                });
+                                              },
+                                              child: Text(
+                                                src.data[index].vehicleId!
+                                                        .regNo ??
+                                                    '',
+                                                style: TextStyle(
+                                                  color: ColorConstants.white,
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Chasis No',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onLongPress: () async {
+                                                await Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: src
+                                                                    .data[index]
+                                                                    .vehicleId!
+                                                                    .chasisNo ??
+                                                                ''))
+                                                    .then((v) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Copied ${src.data[index].vehicleId!.chasisNo ?? ''}');
+                                                });
+                                              },
+                                              child: Text(
+                                                src.data[index].vehicleId!
+                                                        .chasisNo ??
+                                                    '',
+                                                style: TextStyle(
+                                                  color: ColorConstants.white,
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Model',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            Text(
+                                              '',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontSize: 14.0,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Seezer Name',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onLongPress: () async {
+                                                await Clipboard.setData(
+                                                        ClipboardData(
+                                                            text: src
+                                                                    .data[index]
+                                                                    .seezerId!
+                                                                    .name ??
+                                                                ''))
+                                                    .then((v) {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Copied ${src.data[index].seezerId!.name ?? ''}');
+                                                });
+                                              },
+                                              child: Text(
+                                                src.data[index].seezerId!
+                                                        .name ??
+                                                    '',
+                                                style: TextStyle(
+                                                  color: ColorConstants.white,
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Upload Date',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            Text(
+                                              src.data[index].vehicleId!
+                                                  .createdAt!
+                                                  .substring(0, 10),
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontSize: 14.0,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              'Search Date',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            Text(
+                                              src.data[index].createdAt!
+                                                  .substring(0, 10),
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontSize: 14.0,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Search Time',
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15.0,
+                                              ),
+                                            ),
+                                            Text(
+                                              formatTime(src
+                                                      .data[index].createdAt!)
+                                                  .substring(13),
+                                              style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontSize: 14.0,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ));
                       },
                     ),
                   );

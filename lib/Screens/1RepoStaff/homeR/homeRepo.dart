@@ -423,6 +423,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                           sc.firstHalf[index],
                                           'repoAgent',
                                           isOnline,
+                                          'home'
                                         ]);
                                   },
                                   child: Container(
@@ -461,6 +462,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                           sc.secondHalf[index],
                                           'repoAgent',
                                           isOnline,
+                                          'home'
                                         ]);
                                   },
                                   child: Container(
@@ -504,6 +506,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                       sc.offlineDataFiltered[index],
                                       'repoAgent',
                                       isOnline,
+                                      'home'
                                     ]);
                               },
                               child: Container(
@@ -563,7 +566,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                           arguments: [
                                             sc.firstHalf[index],
                                             'repoAgent',
-                                            isOnline
+                                            isOnline,
+                                            'home'
                                           ]);
                                     },
                                     child: Container(
@@ -602,7 +606,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                           arguments: [
                                             sc.secondHalf[index],
                                             'repoAgent',
-                                            isOnline
+                                            isOnline,
+                                            'home'
                                           ]);
                                     },
                                     child: Container(
@@ -647,7 +652,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     arguments: [
                                       sc.offlineDataFiltered[index],
                                       'repoAgent',
-                                      isOnline
+                                      isOnline,
+                                      'home'
                                     ]);
                               },
                               child: Container(
