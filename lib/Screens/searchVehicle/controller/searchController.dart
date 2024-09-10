@@ -103,12 +103,29 @@ class VehicleSearchController extends GetxController {
     });
   }
 
+  var offlinefirstHalf = [];
+  var offlinesecondHalf = [];
+
   void searchOfflineLastDigitData(String lastDigit) async {
     setRxRequestSearchByChasisNoStatus(Status.LOADING);
     setRxRequestSearchByLastStatus(Status.LOADING);
     //print(DateTime.now());
 
     offlineDataFiltered.value = await vdb.fetchByReg(lastDigit);
+
+    offlinefirstHalf.clear();
+    offlinesecondHalf.clear();
+
+    int length = offlineDataFiltered.length;
+    int halfLength = (offlineDataFiltered.length / 2).round();
+
+    for (int i = 0; i < halfLength; i++) {
+      offlinefirstHalf.add(offlineDataFiltered[i]);
+    }
+
+    for (int i = halfLength + 1; i < length; i++) {
+      offlinesecondHalf.add(offlineDataFiltered[i]);
+    }
     setRxRequestSearchByLastStatus(Status.COMPLETED);
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     //print(DateTime.now());

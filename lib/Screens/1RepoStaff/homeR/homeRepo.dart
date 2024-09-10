@@ -489,45 +489,88 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       ));
                     } else {
                       return Expanded(
-                        child: GridView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
-                                  childAspectRatio: 5),
-                          itemCount: sc.offlineDataFiltered.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                    arguments: [
-                                      sc.offlineDataFiltered[index],
-                                      'repoAgent',
-                                      isOnline,
-                                      'home'
-                                    ]);
+                          child: Row(
+                        children: [
+                          SizedBox(
+                            width: Get.width * 0.5,
+                            child: ListView.builder(
+                              controller: _chasisController1,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              itemCount: sc.offlinefirstHalf.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(
+                                        AppRoutes.searchedVehicleDetails,
+                                        arguments: [
+                                          sc.offlinefirstHalf[index],
+                                          'repoAgent',
+                                          isOnline,
+                                          'home'
+                                        ]);
+                                  },
+                                  child: Container(
+                                      height: 40,
+                                      width: width * 1,
+                                      margin: const EdgeInsets.only(top: 5),
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.aqua,
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                        sc.offlinefirstHalf[index].regNo ?? '',
+                                        style: TextStyle(
+                                            color: ColorConstants.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ))),
+                                );
                               },
-                              child: Container(
-                                  height: 40,
-                                  width: width * 0,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstants.aqua,
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    sc.offlineDataFiltered[index].regNo ?? '',
-                                    style: TextStyle(
-                                        color: ColorConstants.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ))),
-                            );
-                          },
-                        ),
-                      );
+                            ),
+                          ),
+                          SizedBox(
+                            width: Get.width * 0.5,
+                            child: ListView.builder(
+                              controller: _chasisController2,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              itemCount: sc.offlinesecondHalf.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Get.toNamed(
+                                        AppRoutes.searchedVehicleDetails,
+                                        arguments: [
+                                          sc.offlinesecondHalf[index],
+                                          'repoAgent',
+                                          isOnline,
+                                          'home'
+                                        ]);
+                                  },
+                                  child: Container(
+                                      height: 40,
+                                      width: width * 1,
+                                      margin: const EdgeInsets.only(top: 5),
+                                      decoration: BoxDecoration(
+                                        color: ColorConstants.aqua,
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: Center(
+                                          child: Text(
+                                        sc.offlinesecondHalf[index].regNo ?? '',
+                                        style: TextStyle(
+                                            color: ColorConstants.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ))),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ));
                     }
                 }
               }),
@@ -636,43 +679,91 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       );
                     } else {
                       return Expanded(
-                        child: GridView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 16.0,
-                                  crossAxisSpacing: 16.0,
-                                  childAspectRatio: 5),
-                          itemCount: sc.offlineDataFiltered.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                    arguments: [
-                                      sc.offlineDataFiltered[index],
-                                      'repoAgent',
-                                      isOnline,
-                                      'home'
-                                    ]);
-                              },
-                              child: Container(
-                                  height: 40,
-                                  width: width * 0,
-                                  decoration: BoxDecoration(
-                                    color: ColorConstants.aqua,
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                  child: Center(
-                                      child: Text(
-                                    sc.offlineDataFiltered[index].regNo ?? '',
-                                    style: TextStyle(
-                                        color: ColorConstants.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ))),
-                            );
-                          },
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: Get.width * 0.5,
+                              child: ListView.builder(
+                                controller: _controller1,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                itemCount: sc.offlinefirstHalf.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(
+                                          AppRoutes.searchedVehicleDetails,
+                                          arguments: [
+                                            sc.offlinefirstHalf[index],
+                                            'repoAgent',
+                                            isOnline,
+                                            'home'
+                                          ]);
+                                    },
+                                    child: Container(
+                                        height: 40,
+                                        width: width * 1,
+                                        margin: const EdgeInsets.only(top: 5),
+                                        decoration: BoxDecoration(
+                                          color: ColorConstants.aqua,
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          sc.offlinefirstHalf[index].regNo ??
+                                              '',
+                                          style: TextStyle(
+                                              color: ColorConstants.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ))),
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: Get.width * 0.5,
+                              child: ListView.builder(
+                                controller: _controller2,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                itemCount: sc.offlinesecondHalf.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Get.toNamed(
+                                          AppRoutes.searchedVehicleDetails,
+                                          arguments: [
+                                            sc.offlinesecondHalf[index],
+                                            'repoAgent',
+                                            isOnline,
+                                            'home'
+                                          ]);
+                                    },
+                                    child: Container(
+                                        height: 40,
+                                        width: width * 1,
+                                        margin: const EdgeInsets.only(top: 5),
+                                        decoration: BoxDecoration(
+                                          color: ColorConstants.aqua,
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          sc.offlinesecondHalf[index].regNo ??
+                                              '',
+                                          style: TextStyle(
+                                              color: ColorConstants.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18),
+                                        ))),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     }

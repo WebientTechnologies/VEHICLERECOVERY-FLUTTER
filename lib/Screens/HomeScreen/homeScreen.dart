@@ -604,8 +604,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       }
                   }
                 }),
-              if ((showlastdata == true || last4digitHaveFocus) &&
-                  showChasisNo == false)
+              if ((showlastdata == true) && showChasisNo == false)
                 Obx(() {
                   switch (sc.rxRequestsearchbyLastStatus.value) {
                     case Status.LOADING:
@@ -628,7 +627,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               SizedBox(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
-                                  controller: _scrollController,
+                                  controller: _chasisController1,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.firstHalf.length,
@@ -668,7 +667,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               SizedBox(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
-                                  controller: _scrollController,
+                                  controller: _chasisController2,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.secondHalf.length,
