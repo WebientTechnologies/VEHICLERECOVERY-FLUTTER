@@ -15,4 +15,5 @@ class ImageConstants {
   static String model4 = '${base}model4.png';
   static String model5 = '${base}model5.png';
   static String logo = '${base}naughty.png';
+  static String whatsapp = '${base}whatsapp.png';
 }

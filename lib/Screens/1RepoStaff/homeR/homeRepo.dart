@@ -106,12 +106,12 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   Future checkMode() async {
     ssc.currentPage.value =
         await Helper.getIntPreferences(SharedPreferencesVar.currentPage);
-    isOnline = await Helper.getBoolPreferences(SharedPreferencesVar.isOnline);
+    isOnline = false;
     lastUpdateDate =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateDate);
     lastUpdateTime =
         await Helper.getStringPreferences(SharedPreferencesVar.lastUpdateTime);
-    mode = isOnline ? "Online" : "Offline";
+    //mode = isOnline ? "Online" : "Offline";
 
     final vehicleDb = VehicleDb();
     //sc.offlineData.value = await vehicleDb.fetchAll();
@@ -182,31 +182,31 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          mode,
-                          style: TextStyle(
-                              color: ColorConstants.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Switch(
-                            value: isOnline,
-                            onChanged: (value) async {
-                              await Helper.setBoolPreferences(
-                                  SharedPreferencesVar.isOnline, value);
-                              setState(() {
-                                isOnline = value;
-                                mode = value ? "Online" : "Offline";
-                              });
-                            }),
-                      ],
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.end,
+                    //   children: [
+                    //     Text(
+                    //       mode,
+                    //       style: TextStyle(
+                    //           color: ColorConstants.white,
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.bold),
+                    //     ),
+                    //     const SizedBox(
+                    //       width: 10,
+                    //     ),
+                    //     Switch(
+                    //         value: isOnline,
+                    //         onChanged: (value) async {
+                    //           await Helper.setBoolPreferences(
+                    //               SharedPreferencesVar.isOnline, value);
+                    //           setState(() {
+                    //             isOnline = value;
+                    //             mode = value ? "Online" : "Offline";
+                    //           });
+                    //         }),
+                    //   ],
+                    // ),
                     Image.asset('assets/images/logo_t.png')
                   ],
                 ),

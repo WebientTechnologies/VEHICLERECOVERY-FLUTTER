@@ -709,43 +709,91 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         );
                       } else {
                         return Expanded(
-                          child: GridView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 8.0,
-                                    crossAxisSpacing: 8.0,
-                                    childAspectRatio: 5),
-                            itemCount: sc.offlineDataFiltered.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                      arguments: [
-                                        sc.offlineDataFiltered[index],
-                                        'officeStaff',
-                                        isOnline,
-                                        'home'
-                                      ]);
-                                },
-                                child: Container(
-                                    height: 40,
-                                    width: width * 0,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.aqua,
-                                      borderRadius: BorderRadius.circular(18),
-                                    ),
-                                    child: Center(
-                                        child: Text(
-                                      sc.offlineDataFiltered[index].regNo ?? '',
-                                      style: TextStyle(
-                                          color: ColorConstants.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    ))),
-                              );
-                            },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: Get.width * 0.5,
+                                child: ListView.builder(
+                                  controller: _chasisController1,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  itemCount: sc.offlinefirstHalf.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.offlinefirstHalf[index],
+                                              'officeStaff',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      },
+                                      child: Container(
+                                          height: 40,
+                                          width: width * 1,
+                                          margin: const EdgeInsets.only(top: 5),
+                                          decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                          ),
+                                          child: Center(
+                                              child: Text(
+                                            sc.offlinefirstHalf[index].regNo ??
+                                                '',
+                                            style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ))),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: Get.width * 0.5,
+                                child: ListView.builder(
+                                  controller: _chasisController2,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  itemCount: sc.offlinesecondHalf.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.offlinesecondHalf[index],
+                                              'officeStaff',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      },
+                                      child: Container(
+                                          height: 40,
+                                          width: width * 1,
+                                          margin: const EdgeInsets.only(top: 5),
+                                          decoration: BoxDecoration(
+                                            color: ColorConstants.aqua,
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                          ),
+                                          child: Center(
+                                              child: Text(
+                                            sc.offlinesecondHalf[index].regNo ??
+                                                '',
+                                            style: TextStyle(
+                                                color: ColorConstants.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          ))),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       }

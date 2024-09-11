@@ -77,7 +77,8 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
     }
   }
 
-  Widget buildInfoRow(String label, double height, double width, String value) {
+  Widget buildInfoRow(String label, double height, double width, String value,
+      {bool enableIcon = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -89,10 +90,12 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                 TextStyle(fontSize: height * 0.023, color: ColorConstants.aqua),
           ),
           ContainerWidget(
-            width: width * 0.5,
+            width: width * 0.6,
+            height: 40,
             borderRadius: 18,
             borderColor: ColorConstants.aqua,
             hintText: value,
+            enableIcon: enableIcon,
           ),
         ],
       ),
@@ -389,19 +392,20 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.callCenterNo1 != null
-                                  ? data.callCenterNo1
+                              ? data.callCenterNo1Name != null
+                                  ? data.callCenterNo1Name
                                   : ''
-                              : data.vehicleId!.callCenterNo1 != null
-                                  ? data.vehicleId!.callCenterNo1
+                              : data.vehicleId!.callCenterNo1Name != null
+                                  ? data.vehicleId!.callCenterNo1Name
                                   : ''),
                       buildInfoRow(
                           'Call Center No 1',
                           height,
                           width,
+                          enableIcon: true,
                           from == 'home' || from == 'homee'
-                              ? data.callCenterNo1Name != null
-                                  ? data.callCenterNo1Name
+                              ? data.callCenterNo1 != null
+                                  ? data.callCenterNo1
                                   : ''
                               : ''),
                       buildInfoRow(
@@ -409,8 +413,8 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.callCenterNo2 != null
-                                  ? data.callCenterNo2
+                              ? data.callCenterNo2Name != null
+                                  ? data.callCenterNo2Name
                                   : ''
                               : ''),
                       buildInfoRow(
@@ -418,8 +422,8 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.callCenterNo2Name != null
-                                  ? data.callCenterNo2Name
+                              ? data.callCenterNo2 != null
+                                  ? data.callCenterNo2
                                   : ''
                               : ''),
                       // buildInfoRow('Call Center 2', height, width),

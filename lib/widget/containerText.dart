@@ -1,6 +1,10 @@
+import 'package:direct_caller_sim_choice/direct_caller_sim_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:vinayak/core/constants/image_constants.dart';
 
 class ContainerWidget extends StatelessWidget {
   final double borderRadius;
@@ -13,49 +17,76 @@ class ContainerWidget extends StatelessWidget {
   final double? width;
   final Color? textColor;
   final Color? backgroundColor;
+  final bool enableIcon;
 
-  ContainerWidget({
-    this.borderRadius = 8.0,
-    this.borderColor = Colors.cyan,
-    this.borderWidth = 2.0,
-    required this.hintText,
-    this.labelText,
-    this.fontSize = 16.0,
-    this.height,
-    this.width,
-    this.textColor,
-    this.backgroundColor,
-  });
+  ContainerWidget(
+      {this.borderRadius = 8.0,
+      this.borderColor = Colors.cyan,
+      this.borderWidth = 2.0,
+      required this.hintText,
+      this.labelText,
+      this.fontSize = 16.0,
+      this.height,
+      this.width,
+      this.textColor,
+      this.backgroundColor,
+      this.enableIcon = false});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: height,
       width: width,
-      child: Container(
-        height: height,
-        width: width,
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(borderRadius),
-          border: Border.all(
-            color: borderColor,
-            width: borderWidth,
-          ),
+      padding: const EdgeInsets.only(left: 5),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: Border.all(
+          color: borderColor,
+          width: borderWidth,
         ),
-        child: Center(
-          child: GestureDetector(
-            onLongPress: () async {
-              await Clipboard.setData(ClipboardData(text: hintText));
-              Fluttertoast.showToast(msg: 'Copied $hintText');
-            },
-            child: Text(
-              hintText,
-              style: TextStyle(
-                fontSize: fontSize,
-                color: textColor,
+      ),
+      child: Center(
+        child: GestureDetector(
+          onLongPress: () async {
+            await Clipboard.setData(ClipboardData(text: hintText));
+            Fluttertoast.showToast(msg: 'Copied $hintText');
+          },
+          child: Row(
+            mainAxisAlignment: !enableIcon
+                ? MainAxisAlignment.center
+                : MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  if (hintText.length == 10) {
+                    await Permission.phone.request().then((v) {
+                      if (v.isGranted) {
+                        final DirectCaller directCaller = DirectCaller();
+                        directCaller.makePhoneCall(hintText);
+                      } else {
+                        launchUrl(Uri.parse('tel:$hintText'));
+                      }
+                    });
+                  }
+                },
+                child: Text(
+                  hintText,
+                  style: TextStyle(
+                    fontSize: fontSize,
+                    color: textColor,
+                  ),
+                ),
               ),
-            ),
+              if (enableIcon && hintText.isNotEmpty)
+                GestureDetector(
+                  onTap: () async {
+                    await launchUrl(
+                        Uri.parse('https://wa.me/$hintText?text=hiii'));
+                  },
+                  child: Image.asset(ImageConstants.whatsapp),
+                )
+            ],
           ),
         ),
       ),
