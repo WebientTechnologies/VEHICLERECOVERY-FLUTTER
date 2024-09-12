@@ -65,6 +65,7 @@ class _ReportsState extends State<Reports> {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorColor: ColorConstants.white,
                   dividerHeight: 0,
+                  physics: NeverScrollableScrollPhysics(),
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,
                   tabs: [
@@ -181,17 +182,21 @@ class _ReportsState extends State<Reports> {
             ),
             Expanded(
               child: showExtra
-                  ? const TabBarView(children: [
-                      SearchDataReports(),
-                      HoldDataReports(),
-                      RepoDataReports(),
-                      ReleaseDataReports()
-                    ])
-                  : const TabBarView(children: [
-                      HoldDataReports(),
-                      RepoDataReports(),
-                      ReleaseDataReports()
-                    ]),
+                  ? const TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                          SearchDataReports(),
+                          HoldDataReports(),
+                          RepoDataReports(),
+                          ReleaseDataReports()
+                        ])
+                  : const TabBarView(
+                      physics: NeverScrollableScrollPhysics(),
+                      children: [
+                          HoldDataReports(),
+                          RepoDataReports(),
+                          ReleaseDataReports()
+                        ]),
             )
           ],
         ),

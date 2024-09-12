@@ -2,6 +2,7 @@ import 'package:direct_caller_sim_choice/direct_caller_sim_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vinayak/core/constants/image_constants.dart';
@@ -35,7 +36,7 @@ class ContainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height,
+      constraints: BoxConstraints(minHeight: 50),
       width: width,
       padding: const EdgeInsets.only(left: 5),
       decoration: BoxDecoration(
@@ -70,13 +71,26 @@ class ContainerWidget extends StatelessWidget {
                     });
                   }
                 },
-                child: Text(
-                  hintText,
-                  style: TextStyle(
-                    fontSize: fontSize,
-                    color: textColor,
-                  ),
-                ),
+                child: enableIcon
+                    ? Text(
+                        hintText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: fontSize,
+                          color: textColor,
+                        ),
+                      )
+                    : SizedBox(
+                        width: Get.width * 0.6 * 0.95,
+                        child: Text(
+                          hintText,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: fontSize,
+                            color: textColor,
+                          ),
+                        ),
+                      ),
               ),
               if (enableIcon && hintText.isNotEmpty)
                 GestureDetector(
@@ -84,7 +98,10 @@ class ContainerWidget extends StatelessWidget {
                     await launchUrl(
                         Uri.parse('https://wa.me/$hintText?text=hiii'));
                   },
-                  child: Image.asset(ImageConstants.whatsapp),
+                  child: Image.asset(
+                    ImageConstants.whatsapp,
+                    width: 35,
+                  ),
                 )
             ],
           ),

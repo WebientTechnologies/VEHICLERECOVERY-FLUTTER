@@ -112,6 +112,7 @@ class VehicleSearchController extends GetxController {
     //print(DateTime.now());
 
     offlineDataFiltered.value = await vdb.fetchByReg(lastDigit);
+    print(offlineDataFiltered.value.length);
 
     offlinefirstHalf.clear();
     offlinesecondHalf.clear();

@@ -41,7 +41,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
   bool showlastdata = false;
   bool showChasisNo = false;
-  bool isOnline = true;
+  bool isOnline = false;
   String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
   bool last4digitHaveFocus = false, chasisNoHaveFocus = false;
   late FocusNode _focusNode;
@@ -262,8 +262,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         ),
                         onChanged: (value) async {
                           if (value.length == 6) {
-                            bool isOnline = await Helper.getBoolPreferences(
-                                SharedPreferencesVar.isOnline);
                             if (isOnline) {
                               sc.getAllSearchByChasisApiData(
                                   chasisNoCont.value.text.substring(0, 6));
@@ -354,8 +352,8 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         ),
                         onChanged: (value) async {
                           if (value.length == 4) {
-                            bool isOnline = await Helper.getBoolPreferences(
-                                SharedPreferencesVar.isOnline);
+                            // bool isOnline = await Helper.getBoolPreferences(
+                            //     SharedPreferencesVar.isOnline);
                             if (isOnline) {
                               sc.getAllSearchByLastDigitData(
                                   last4digit.value.text);

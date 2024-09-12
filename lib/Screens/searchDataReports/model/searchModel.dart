@@ -75,6 +75,11 @@ class VehicleId {
   String? engineNo;
   String? maker;
   String? callCenterNo1;
+  String? callCenterNo1Name;
+  String? callCenterNo2;
+  String? callCenterNo2Name;
+  String? callCenterNo3;
+  String? callCenterNo3Name;
   String? lastDigit;
   String? month;
   String? status;
@@ -97,6 +102,11 @@ class VehicleId {
       this.engineNo,
       this.maker,
       this.callCenterNo1,
+      this.callCenterNo1Name,
+      this.callCenterNo2,
+      this.callCenterNo2Name,
+      this.callCenterNo3,
+      this.callCenterNo3Name,
       this.lastDigit,
       this.month,
       this.status,
@@ -119,6 +129,11 @@ class VehicleId {
     engineNo = json['engineNo'];
     maker = json['maker'];
     callCenterNo1 = json['callCenterNo1'];
+    callCenterNo1Name = json['callCenterNo1Name'];
+    callCenterNo2 = json['callCenterNo2'];
+    callCenterNo2Name = json['callCenterNo2Name'];
+    callCenterNo3 = json['callCenterNo3'];
+    callCenterNo3Name = json['callCenterNo3Name'];
     lastDigit = json['lastDigit'];
     month = json['month'];
     status = json['status'];
@@ -143,6 +158,12 @@ class VehicleId {
     data['engineNo'] = this.engineNo;
     data['maker'] = this.maker;
     data['callCenterNo1'] = this.callCenterNo1;
+    data['callCenterNo1Name'] = this.callCenterNo1Name;
+    data['callCenterNo2'] = this.callCenterNo2;
+    data['callCenterNo2Name'] = this.callCenterNo2Name;
+    data['callCenterNo3'] = this.callCenterNo3;
+    data['callCenterNo3Name'] = this.callCenterNo3Name;
+
     data['lastDigit'] = this.lastDigit;
     data['month'] = this.month;
     data['status'] = this.status;

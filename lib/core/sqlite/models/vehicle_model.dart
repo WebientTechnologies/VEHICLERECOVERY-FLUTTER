@@ -13,6 +13,8 @@ class VehicleModel {
   String? callCenterNo1Name;
   String? callCenterNo2;
   String? callCenterNo2Name;
+  String? callCenterNo3;
+  String? callCenterNo3Name;
   String? lastDigit;
   String? month;
   String? status;
@@ -35,6 +37,8 @@ class VehicleModel {
     this.callCenterNo1Name,
     this.callCenterNo2,
     this.callCenterNo2Name,
+    this.callCenterNo3,
+    this.callCenterNo3Name,
     this.lastDigit,
     this.month,
     this.status,
@@ -59,6 +63,8 @@ class VehicleModel {
         callCenterNo1Name: json["callCenterNo1Name"],
         callCenterNo2: json["callCenterNo2"],
         callCenterNo2Name: json["callCenterNo2Name"],
+        callCenterNo3: json["callCenterNo3"],
+        callCenterNo3Name: json["callCenterNo3Name"],
         lastDigit: json["lastDigit"],
         month: json["month"],
         status: json["status"],

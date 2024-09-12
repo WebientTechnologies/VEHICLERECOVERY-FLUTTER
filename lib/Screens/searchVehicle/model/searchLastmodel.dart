@@ -32,6 +32,8 @@ class Data {
   String? callCenterNo1Name;
   String? callCenterNo2;
   String? callCenterNo2Name;
+  String? callCenterNo3;
+  String? callCenterNo3Name;
   String? lastDigit;
   String? month;
   String? status;
@@ -54,6 +56,8 @@ class Data {
       this.callCenterNo1Name,
       this.callCenterNo2,
       this.callCenterNo2Name,
+      this.callCenterNo3,
+      this.callCenterNo3Name,
       this.lastDigit,
       this.month,
       this.status,
@@ -76,6 +80,8 @@ class Data {
     callCenterNo1Name = json["callCenterNo1Name"];
     callCenterNo2 = json["callCenterNo2"];
     callCenterNo2Name = json["callCenterNo2Name"];
+    callCenterNo3 = json["callCenterNo3"];
+    callCenterNo3Name = json["callCenterNo3Name"];
     lastDigit = json["lastDigit"];
     month = json["month"];
     status = json["status"];
@@ -100,6 +106,8 @@ class Data {
     _data["callCenterNo1Name"] = callCenterNo1Name;
     _data["callCenterNo2"] = callCenterNo2;
     _data["callCenterNo2Name"] = callCenterNo2Name;
+    _data["callCenterNo3"] = callCenterNo3;
+    _data["callCenterNo3Name"] = callCenterNo3Name;
     _data["lastDigit"] = lastDigit;
     _data["month"] = month;
     _data["status"] = status;

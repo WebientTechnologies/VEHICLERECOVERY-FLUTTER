@@ -39,7 +39,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
       isRepoAgent = false;
     } else {
       isRepoAgent = true;
-      sc.updateSearchList(isOnline ? data.id : data.id.toString());
+      sc.updateSearchList(isOnline ? data.id : data.dataId.toString());
     }
     //print(data.chasisNo);
 
@@ -153,7 +153,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                 color: ColorConstants.aqua),
                           ),
                           Container(
-                            width: Get.width * 0.5,
+                            width: Get.width * 0.6,
                             height: 40,
                             decoration: BoxDecoration(
                                 border: Border.all(
@@ -196,7 +196,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                     color: ColorConstants.aqua),
                               ),
                               Container(
-                                  width: Get.width * 0.5,
+                                  width: Get.width * 0.6,
                                   height: 50,
                                   decoration: BoxDecoration(
                                       border: Border.all(
@@ -262,7 +262,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                 color: ColorConstants.aqua),
                           ),
                           Container(
-                            width: Get.width * 0.5,
+                            width: Get.width * 0.6,
                             height: 40,
                             decoration: BoxDecoration(
                                 border: Border.all(
@@ -407,7 +407,9 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                               ? data.callCenterNo1 != null
                                   ? data.callCenterNo1
                                   : ''
-                              : ''),
+                              : data.vehicleId!.callCenterNo1 != null
+                                  ? data.vehicleId!.callCenterNo1
+                                  : ''),
                       buildInfoRow(
                           'Call Center 2',
                           height,
@@ -416,16 +418,44 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                               ? data.callCenterNo2Name != null
                                   ? data.callCenterNo2Name
                                   : ''
-                              : ''),
+                              : data.vehicleId!.callCenterNo2Name != null
+                                  ? data.vehicleId!.callCenterNo2Name
+                                  : ''),
                       buildInfoRow(
                           'Call Center No 2',
                           height,
                           width,
+                          enableIcon: true,
                           from == 'home' || from == 'homee'
                               ? data.callCenterNo2 != null
                                   ? data.callCenterNo2
                                   : ''
-                              : ''),
+                              : data.vehicleId!.callCenterNo2 != null
+                                  ? data.vehicleId!.callCenterNo2
+                                  : ''),
+                      buildInfoRow(
+                          'Call Center 3',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo3Name != null
+                                  ? data.callCenterNo3Name
+                                  : ''
+                              : data.vehicleId!.callCenterNo3Name != null
+                                  ? data.vehicleId!.callCenterNo3Name
+                                  : ''),
+                      buildInfoRow(
+                          'Call Center No 3',
+                          height,
+                          width,
+                          enableIcon: true,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo3 != null
+                                  ? data.callCenterNo3
+                                  : ''
+                              : data.vehicleId!.callCenterNo3 != null
+                                  ? data.vehicleId!.callCenterNo3
+                                  : ''),
                       // buildInfoRow('Call Center 2', height, width),
                       // buildInfoRow('Call Center No 3', height, width),
                       buildInfoRow(
@@ -471,7 +501,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                 color: ColorConstants.aqua),
                           ),
                           Container(
-                            width: Get.width * 0.5,
+                            width: Get.width * 0.6,
                             height: 40,
                             decoration: BoxDecoration(
                                 border: Border.all(
@@ -513,7 +543,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                     color: ColorConstants.aqua),
                               ),
                               Container(
-                                  width: Get.width * 0.5,
+                                  width: Get.width * 0.6,
                                   height: 50,
                                   decoration: BoxDecoration(
                                       border: Border.all(
