@@ -25,7 +25,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     uc.loadUserDetails();
 
@@ -52,7 +51,6 @@ class _ProfileState extends State<Profile> {
       body: LayoutBuilder(
         builder: (ctx, constraints) {
           var height = constraints.maxHeight;
-          var width = constraints.maxWidth;
           return Column(
             children: [
               SizedBox(

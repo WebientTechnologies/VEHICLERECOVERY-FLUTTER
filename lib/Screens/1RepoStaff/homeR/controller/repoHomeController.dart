@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:vinayak/Screens/HomeScreen/model/homedashoboardModel.dart';
 import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../../core/constants/api_endpoints.dart';

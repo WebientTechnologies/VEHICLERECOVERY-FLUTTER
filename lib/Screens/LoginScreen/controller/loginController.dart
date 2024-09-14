@@ -1,22 +1,19 @@
 import 'dart:convert';
+
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:vinayak/Screens/1RepoStaff/homeR/homeRepo.dart';
+import 'package:http/http.dart' as http;
 import 'package:vinayak/Screens/repo_agent_container/repo_agent_container.dart';
 import 'package:vinayak/Screens/staff_container/staff_container.dart';
-import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/constants/helper.dart';
 import '../../../core/constants/shared_preferences_var.dart';
 import '../../../core/global_controller/user_controller.dart';
-import '../../../core/utils/routes/app_routes.dart';
 
 class LoginController extends GetxController {
-  final _api = NetworkApi();
   var emailcont = TextEditingController().obs;
   var passcont = TextEditingController().obs;
   final RxString emailError = RxString('');

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:vinayak/core/sqlite/models/vehicle_model.dart';
 
@@ -85,65 +83,11 @@ class VehicleDb {
     return id;
   }
 
-  Future<int> updateFile(int id, String projectid, String name, String path,
-      int ischecked, int folderid, Uint8List file, Uint8List rawFile) async {
-    final db = await DatabaseHelper().database;
-    return await db.update(
-        tableName,
-        {
-          'project_id': projectid,
-          'name': name,
-          'path': path,
-          'ischecked': ischecked,
-          'folderid': folderid,
-          'file': file,
-          'raw_file': rawFile
-        },
-        where: 'id = ?',
-        whereArgs: [id]);
-  }
-
-  Future<int> updateFileCheckUncheck(int id, int ischecked) async {
-    final db = await DatabaseHelper().database;
-    return await db.update(
-        tableName,
-        {
-          'ischecked': ischecked,
-        },
-        where: 'id = ?',
-        whereArgs: [id]);
-  }
-
-  Future<int> updateFileStatus(int id, int status) async {
-    final db = await DatabaseHelper().database;
-    return await db.update(
-        tableName,
-        {
-          'upload_status': status,
-        },
-        where: 'id = ?',
-        whereArgs: [id]);
-  }
-
   Future<void> delete(int id) async {
     final db = await DatabaseHelper().database;
     await db.rawDelete('''
       DELETE FROM $tableName WHERE id = ?
     ''', [id]);
-  }
-
-  Future<void> deleteByFolder(int parentId) async {
-    final db = await DatabaseHelper().database;
-    await db.rawDelete('''
-      DELETE FROM $tableName WHERE folderid = ?
-    ''', [parentId]);
-  }
-
-  Future<void> dropFile() async {
-    final db = await DatabaseHelper().database;
-    await db.rawQuery('''
-      DROP TABLE $tableName
-    ''');
   }
 
   Future<List<VehicleModel>> fetchAll() async {
@@ -158,8 +102,8 @@ class VehicleDb {
   Future<List<VehicleModel>> fetchByReg(String lastDigit) async {
     final db = await DatabaseHelper().database;
     final files = await db.rawQuery('''
-    select * from $tableName where status IN (?,?) AND lastDigit LIKE ? ORDER BY regNo ASC
-    ''', ['search', 'pending', '%$lastDigit%']);
+    select * from $tableName where status IN (?,?) AND lastDigit = ? ORDER BY regNo ASC
+    ''', ['search', 'pending', lastDigit]);
     //print(files);
     final List<VehicleModel> vehicles = files.map((Map<String, dynamic> row) {
       return VehicleModel.fromSqfliteDatabase(row);
@@ -171,19 +115,11 @@ class VehicleDb {
   Future<List<VehicleModel>> fetchByChasis(String chasis) async {
     final db = await DatabaseHelper().database;
     final files = await db.rawQuery('''
-    select * from $tableName where status IN (?,?) AND chasisNo LIKE ? ORDER BY regNo ASC
-    ''', ['search', 'pending', '%$chasis%']);
+    select * from $tableName where status IN (?,?) AND chasisNo = ? ORDER BY regNo ASC
+    ''', ['search', 'pending', chasis]);
     //print(files);
     return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
   }
-
-  // Future<List<FileModel>> fetchByFileId(int fileid) async {
-  //   final db = await DatabaseHelper().database;
-  //   final files = await db.rawQuery('''
-  //   select * from $tableName where id = ?
-  //   ''', [fileid]);
-  //   return files.map((e) => FileModel.fromSqfliteDatabase(e)).toList();
-  // }
 
   Future<int> getOfflineCount() async {
     final db = await DatabaseHelper().database;
@@ -194,12 +130,16 @@ class VehicleDb {
     return c;
   }
 
-  Future<int> getSelectedCountByProjectID(String projectid) async {
+  Future<void> createIndex() async {
     final db = await DatabaseHelper().database;
-    final count = await db.rawQuery('''
-    select count(id) from $tableName where project_id = ? and ischecked = 1
-    ''', [projectid]);
-    int c = Sqflite.firstIntValue(count) ?? 0;
-    return c;
+    await db
+        .execute('CREATE INDEX idx_lastDigit ON vehicles (lastDigit)')
+        .then((v) async {
+      await db
+          .execute('CREATE INDEX idx_chasisNo ON vehicles (chasisNo)')
+          .then((v) {
+        print('index created');
+      });
+    });
   }
 }

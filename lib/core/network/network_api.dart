@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:vinayak/core/utils/routes/app_routes.dart';
+
 import '../constants/helper.dart';
 import '../errors/app_exceptions.dart';
 import '../global_controller/user_controller.dart';

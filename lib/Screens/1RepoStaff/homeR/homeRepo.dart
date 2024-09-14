@@ -170,7 +170,6 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
       key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
       body: LayoutBuilder(builder: (ctx, constraints) {
-        var height = constraints.maxHeight;
         var width = constraints.maxWidth;
         return Column(
           children: [
@@ -364,6 +363,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               // final vehicleDb = VehicleDb();
                               // sc.offlineData.value =
                               //     await vehicleDb.fetchByReg(value);
+
                               sc.searchOfflineLastDigitData(value);
                               setState(() {
                                 showlastdata = true;

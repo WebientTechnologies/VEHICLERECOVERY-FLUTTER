@@ -16,7 +16,7 @@ class _ContactInfoState extends State<ContactInfo> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState();
     uc.loadUserDetails();
   }
 

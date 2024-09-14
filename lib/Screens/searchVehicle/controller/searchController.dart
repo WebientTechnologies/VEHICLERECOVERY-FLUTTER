@@ -78,6 +78,7 @@ class VehicleSearchController extends GetxController {
   var secondHalf = [];
 
   void getAllSearchByLastDigitData(String lastDigit) {
+    print(DateTime.now());
     getAllSearchByLastDigitApi(lastDigit).then((value) {
       setRxRequestSearchByLastStatus(Status.COMPLETED);
       setsearchbylastList(value);
@@ -95,6 +96,7 @@ class VehicleSearchController extends GetxController {
       for (int i = halfLength + 1; i < length; i++) {
         secondHalf.add(searchbylastModel.value.data![i]);
       }
+      print(DateTime.now());
     }).onError((error, stackTrace) {
       // print(stackTrace);
       // print('--------------------');
@@ -109,7 +111,7 @@ class VehicleSearchController extends GetxController {
   void searchOfflineLastDigitData(String lastDigit) async {
     setRxRequestSearchByChasisNoStatus(Status.LOADING);
     setRxRequestSearchByLastStatus(Status.LOADING);
-    //print(DateTime.now());
+    print(DateTime.now());
 
     offlineDataFiltered.value = await vdb.fetchByReg(lastDigit);
     print(offlineDataFiltered.value.length);
@@ -128,7 +130,9 @@ class VehicleSearchController extends GetxController {
       offlinesecondHalf.add(offlineDataFiltered[i]);
     }
     setRxRequestSearchByLastStatus(Status.COMPLETED);
-    setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
+    print(DateTime.now());
+
+    //setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     //print(DateTime.now());
     if (offlineDataFiltered.length == 0) {
       Fluttertoast.showToast(msg: 'No data found');

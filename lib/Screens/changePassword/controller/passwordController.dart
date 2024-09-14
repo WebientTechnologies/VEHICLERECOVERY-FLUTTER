@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:vinayak/core/global_controller/user_controller.dart';
-import 'package:vinayak/core/network/network_api.dart';
 import 'package:http/http.dart' as http;
+import 'package:vinayak/core/global_controller/user_controller.dart';
+
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/constants/helper.dart';
 
 class PasswordController extends GetxController {
-  var _api = NetworkApi();
   UserController uc = Get.put(UserController());
   Future<void> updatePassword(
       String oldPass, String newPass, String confirmPass) async {

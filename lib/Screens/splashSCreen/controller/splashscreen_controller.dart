@@ -342,11 +342,11 @@ class SplashScreenController extends GetxController {
       NotificationDetails(
         android: AndroidNotificationDetails('channel_id', 'channel_name',
             channelDescription: 'channel_description',
-            importance: Importance.min,
-            priority: Priority.min,
+            importance: Importance.high,
+            priority: Priority.high,
             ongoing: true,
-            playSound: false,
-            enableVibration: false),
+            playSound: true,
+            enableVibration: true),
       ),
     );
     //print(DateTime.now());
@@ -377,11 +377,11 @@ class SplashScreenController extends GetxController {
         NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
               channelDescription: 'channel_description',
-              importance: Importance.min,
-              priority: Priority.min,
+              importance: Importance.high,
+              priority: Priority.high,
               ongoing: true,
-              playSound: false,
-              enableVibration: false),
+              playSound: true,
+              enableVibration: true),
         ),
       );
 
@@ -483,6 +483,7 @@ class SplashScreenController extends GetxController {
 
       VehicleSearchController sc = Get.put(VehicleSearchController());
       sc.offlineDataCount.value = await VehicleDb().getOfflineCount();
+      await VehicleDb().createIndex();
 
       var now = DateTime.now();
       var formatter = DateFormat('yyyy-MM-dd');
@@ -501,11 +502,11 @@ class SplashScreenController extends GetxController {
         NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
               channelDescription: 'channel_description',
-              importance: Importance.min,
-              priority: Priority.min,
+              importance: Importance.high,
+              priority: Priority.high,
               ongoing: true,
-              playSound: false,
-              enableVibration: false),
+              playSound: true,
+              enableVibration: true),
         ),
       );
     } else {
@@ -516,11 +517,11 @@ class SplashScreenController extends GetxController {
         NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
               channelDescription: 'channel_description',
-              importance: Importance.min,
-              priority: Priority.min,
+              importance: Importance.high,
+              priority: Priority.high,
               ongoing: true,
-              playSound: false,
-              enableVibration: false),
+              playSound: true,
+              enableVibration: true),
         ),
       );
       throw Exception('Failed to download file');

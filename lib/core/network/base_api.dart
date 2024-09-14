@@ -6,6 +6,7 @@ abstract class BaseApi {
 
   Future<dynamic> getApiBody(String url, int id, String role);
   Future<dynamic> postApi(String url, dynamic data);
+  Future<dynamic> putWOHeadApi(String url, dynamic data);
   Future<dynamic> postApiHeader(String url, dynamic data);
   Future<dynamic> postApiWithoutHeader(String url, dynamic data);
 

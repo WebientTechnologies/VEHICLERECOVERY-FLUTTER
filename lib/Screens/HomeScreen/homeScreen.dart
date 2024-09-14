@@ -27,7 +27,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
   HomeController hc = Get.put(HomeController());
   VehicleSearchController sc = Get.put(VehicleSearchController());
   SplashScreenController ssc = Get.put(SplashScreenController());
-  ScrollController _scrollController = ScrollController();
 
   ScrollController _controller1 = ScrollController();
   ScrollController _controller2 = ScrollController();
@@ -242,7 +241,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
       // ),
       body: SafeArea(
         child: LayoutBuilder(builder: (ctx, constraints) {
-          var height = constraints.maxHeight;
           var width = constraints.maxWidth;
           return Column(
             children: [
