@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:vinayak/Screens/splashSCreen/controller/splashscreen_controller.dart';
 import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../../core/constants/api_endpoints.dart';
@@ -14,6 +15,7 @@ class HomeRepoAgentController extends GetxController {
       <String>['Good Morning', 'Good Afternoon', 'Good Evening'].obs;
   RxInt selectedGreeting = 0.obs;
   RxInt onlineDataCount = 0.obs;
+  RxBool showRefresh = false.obs;
 
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
@@ -24,6 +26,8 @@ class HomeRepoAgentController extends GetxController {
 
   final graphWeekModel = GraphWeekModel().obs;
   void setGraphWeekList(GraphWeekModel value) => graphWeekModel.value = value;
+
+  SplashScreenController ssc = Get.put(SplashScreenController());
 
   Future<HomeDashboardRepoModel> getAllDashboardApi() async {
     // setRxRequestZoneStatus(Status.LOADING);
@@ -39,7 +43,10 @@ class HomeRepoAgentController extends GetxController {
       setRxRequestDashboardStatus(Status.COMPLETED);
       setDashboardList(value);
 
+      showRefresh.value = true;
       onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
+
+      ssc.currentPage.value = (onlineDataCount.value / 100).ceil() + 1;
     }).onError((error, stackTrace) {
       print(stackTrace);
       print('--------------------');

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/HomeScreen/model/graph_week_model.dart';
 import 'package:vinayak/Screens/HomeScreen/model/homedashoboardModel.dart';
+import 'package:vinayak/Screens/splashSCreen/controller/splashscreen_controller.dart';
 import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../core/constants/api_endpoints.dart';
@@ -16,6 +17,7 @@ class HomeController extends GetxController {
   RxInt selectedGreeting = 0.obs;
   RxInt onlineDataCount = 0.obs;
   RxInt searchHoldReleaseRepoTotal = 0.obs;
+  RxBool showRefresh = false.obs;
 
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
@@ -26,6 +28,8 @@ class HomeController extends GetxController {
 
   final graphWeekModel = GraphWeekModel().obs;
   void setGraphWeekList(GraphWeekModel value) => graphWeekModel.value = value;
+
+  SplashScreenController ssc = Get.put(SplashScreenController());
 
   Future<HomeDashBoardModel> getAllDashboardApi() async {
     // setRxRequestZoneStatus(Status.LOADING);
@@ -40,11 +44,15 @@ class HomeController extends GetxController {
     getAllDashboardApi().then((value) {
       setRxRequestDashboardStatus(Status.COMPLETED);
       setDashboardList(value);
+
+      showRefresh.value = true;
       onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
       searchHoldReleaseRepoTotal.value = dashboardModel.value.holdCount! +
           dashboardModel.value.searchCount! +
           dashboardModel.value.releaseCount! +
           dashboardModel.value.repoCount!;
+
+      ssc.currentPage.value = (onlineDataCount.value / 100).ceil() + 1;
     }).onError((error, stackTrace) {
       print(stackTrace);
       print('--------------------');

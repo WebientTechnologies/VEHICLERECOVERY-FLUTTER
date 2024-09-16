@@ -4,6 +4,7 @@ class SharedPreferencesVar {
   static const String isOnline = 'isOnline';
   static const String totalData = 'totalData';
   static const String lastUpdateDate = 'lastUpdateDate';
+  static const String lastId = 'lastId';
   static const String lastUpdateTime = 'lastUpdateTime';
   static const String offlinePageNumber = 'offlinePageNumber';
   static const String offlineCount = 'offlineCount';

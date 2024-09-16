@@ -57,7 +57,7 @@ class VehicleDb {
   ) async {
     final db = await DatabaseHelper().database;
     int id = await db.rawInsert('''
-      INSERT OR REPLACE INTO $tableName (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+      INSERT INTO $tableName (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ''', [
       dataId,
       loadStatus,
@@ -79,7 +79,7 @@ class VehicleDb {
       createdAt,
       updatedAt,
     ]);
-    //print('vehicle created');
+    print('vehicle created');
     return id;
   }
 
@@ -88,6 +88,15 @@ class VehicleDb {
     await db.rawDelete('''
       DELETE FROM $tableName WHERE id = ?
     ''', [id]);
+  }
+
+  Future<String> getLastId() async {
+    final db = await DatabaseHelper().database;
+    final id = await db.rawQuery('''
+    select dataId from $tableName order by id desc limit 1
+    ''');
+    print(id[0]['dataId']);
+    return id[0]['dataId'].toString();
   }
 
   Future<List<VehicleModel>> fetchAll() async {

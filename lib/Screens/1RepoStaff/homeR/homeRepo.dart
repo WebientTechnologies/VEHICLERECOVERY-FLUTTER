@@ -44,6 +44,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   bool isOnline = false;
   String mode = "Online", lastUpdateDate = "", lastUpdateTime = "";
   bool last4digitHaveFocus = false, chasisNoHaveFocus = false;
+
   late FocusNode _focusNode;
   @override
   void initState() {
@@ -181,31 +182,40 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.end,
-                    //   children: [
-                    //     Text(
-                    //       mode,
-                    //       style: TextStyle(
-                    //           color: ColorConstants.white,
-                    //           fontSize: 16,
-                    //           fontWeight: FontWeight.bold),
-                    //     ),
-                    //     const SizedBox(
-                    //       width: 10,
-                    //     ),
-                    //     Switch(
-                    //         value: isOnline,
-                    //         onChanged: (value) async {
-                    //           await Helper.setBoolPreferences(
-                    //               SharedPreferencesVar.isOnline, value);
-                    //           setState(() {
-                    //             isOnline = value;
-                    //             mode = value ? "Online" : "Offline";
-                    //           });
-                    //         }),
-                    //   ],
-                    // ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Obx(() => hc.showRefresh.value
+                            ? GestureDetector(
+                                onTap: () async {
+                                  String id = await VehicleDb().getLastId();
+                                  ssc.getAllDashboardApiDataPeriodically(
+                                      context, id);
+                                },
+                                child: Text(
+                                  'Refresh',
+                                  style: TextStyle(
+                                      color: ColorConstants.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : const SizedBox()),
+                        // const SizedBox(
+                        //   width: 10,
+                        // ),
+                        // Switch(
+                        //     value: isOnline,
+                        //     onChanged: (value) async {
+                        //       await Helper.setBoolPreferences(
+                        //           SharedPreferencesVar.isOnline, value);
+                        //       setState(() {
+                        //         isOnline = value;
+                        //         mode = value ? "Online" : "Offline";
+                        //       });
+                        //     }),
+                      ],
+                    ),
                     Image.asset('assets/images/logo_t.png')
                   ],
                 ),
@@ -261,6 +271,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         ),
                         onChanged: (value) async {
                           if (value.length == 6) {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             if (isOnline) {
                               sc.getAllSearchByChasisApiData(
                                   chasisNoCont.value.text.substring(0, 6));
@@ -351,6 +362,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         ),
                         onChanged: (value) async {
                           if (value.length == 4) {
+                            FocusManager.instance.primaryFocus?.unfocus();
                             // bool isOnline = await Helper.getBoolPreferences(
                             //     SharedPreferencesVar.isOnline);
                             if (isOnline) {

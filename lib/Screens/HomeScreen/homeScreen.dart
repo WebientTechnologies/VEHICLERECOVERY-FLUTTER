@@ -253,28 +253,50 @@ class _HomeSCreenState extends State<HomeSCreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            mode,
-                            style: TextStyle(
-                                color: ColorConstants.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                          Obx(() => hc.showRefresh.value
+                              ? GestureDetector(
+                                  onTap: () async {
+                                    String id = await VehicleDb().getLastId();
+
+                                    ssc.getAllDashboardApiDataPeriodically(
+                                        context, id);
+                                  },
+                                  child: Text(
+                                    'Refresh',
+                                    style: TextStyle(
+                                        color: ColorConstants.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              : const SizedBox()),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                mode,
+                                style: TextStyle(
+                                    color: ColorConstants.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Switch(
+                                  value: isOnline,
+                                  onChanged: (value) async {
+                                    await Helper.setBoolPreferences(
+                                        SharedPreferencesVar.isOnline, value);
+                                    setState(() {
+                                      isOnline = value;
+                                      mode = value ? "Online" : "Offline";
+                                    });
+                                  }),
+                            ],
                           ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Switch(
-                              value: isOnline,
-                              onChanged: (value) async {
-                                await Helper.setBoolPreferences(
-                                    SharedPreferencesVar.isOnline, value);
-                                setState(() {
-                                  isOnline = value;
-                                  mode = value ? "Online" : "Offline";
-                                });
-                              }),
                         ],
                       ),
                       Image.asset('assets/images/logo_t.png')
@@ -331,6 +353,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           ),
                           onChanged: (value) async {
                             if (value.length == 6) {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               bool isOnline = await Helper.getBoolPreferences(
                                   SharedPreferencesVar.isOnline);
                               if (isOnline) {
@@ -423,6 +446,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               counterText: ''),
                           onChanged: (value) async {
                             if (value.length == 4) {
+                              FocusManager.instance.primaryFocus?.unfocus();
                               bool isOnline = await Helper.getBoolPreferences(
                                   SharedPreferencesVar.isOnline);
                               if (isOnline) {

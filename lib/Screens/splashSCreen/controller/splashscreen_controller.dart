@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -19,7 +20,6 @@ import 'package:vinayak/core/sqlite/vehicledb.dart';
 
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/response/status.dart';
-import '../../../core/sqlite/database_helper.dart';
 
 class SplashScreenController extends GetxController {
   final _api = NetworkApi();
@@ -39,10 +39,12 @@ class SplashScreenController extends GetxController {
   void setDashboardList(VehicleDataModel value) =>
       getSearchByLastDigitModel.value = value;
 
-  Future<VehicleDataModel> getAllDashboardApi(int pageNo, int limit) async {
+  Future<VehicleDataModel> getAllDashboardApi(
+      BuildContext context, String lastId, int limit) async {
     // setRxRequestZoneStatus(Status.LOADING);
-    var response = await _api
-        .getApi('${ApiEndpoints.getAllVehicleData}?page=$pageNo&limit=$limit');
+
+    var response =
+        await _api.getApi('${ApiEndpoints.getAllVehicleData}?lastId=$lastId');
 
     print(response);
 
@@ -78,169 +80,186 @@ class SplashScreenController extends GetxController {
     );
   }
 
-  void getAllDashboardApiData(int pageNo) {
-    getAllDashboardApi(pageNo, 35000).then((value) async {
-      setDashboardList(value);
-      downloadedData.value =
-          await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
-      await Helper.setIntPreferences(
-          SharedPreferencesVar.offlinePageNumber, currentPage.value);
+  // void getAllDashboardApiData(BuildContext context, String lastId) {
+  //   showDialog(
+  //       context: context,
+  //       builder: (context) {
+  //         return const Center(
+  //           child: CircularProgressIndicator(),
+  //         );
+  //       });
 
-      final vehicleDb = VehicleDb();
-      totalData.value = getSearchByLastDigitModel.value.totalRecords!;
-      totalPages.value = getSearchByLastDigitModel.value.totalPages!;
+  //   getAllDashboardApi(context, lastId, 35000).then((value) async {
+  //     setDashboardList(value);
+  //     downloadedData.value =
+  //         await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
+  //     await Helper.setIntPreferences(
+  //         SharedPreferencesVar.offlinePageNumber, currentPage.value);
 
-      if (getSearchByLastDigitModel.value.data != null) {
-        downloadedData.value += getSearchByLastDigitModel.value.data!.length;
-        await Helper.setIntPreferences(
-            SharedPreferencesVar.offlineCount, downloadedData.value);
-        final db = await DatabaseHelper().database;
-        var batch = db.batch();
-        await db.transaction((txn) async {
-          for (int i = 0;
-              i < getSearchByLastDigitModel.value.data!.length;
-              i++) {
-            txn.rawInsert('''
-          INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-         ''', [
-              getSearchByLastDigitModel.value.data![i].sId!,
-              getSearchByLastDigitModel.value.data![i].loadStatus,
-              getSearchByLastDigitModel.value.data![i].bankName,
-              getSearchByLastDigitModel.value.data![i].branch,
-              getSearchByLastDigitModel.value.data![i].agreementNo,
-              getSearchByLastDigitModel.value.data![i].customerName,
-              getSearchByLastDigitModel.value.data![i].regNo,
-              getSearchByLastDigitModel.value.data![i].chasisNo,
-              getSearchByLastDigitModel.value.data![i].engineNo,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
-              getSearchByLastDigitModel.value.data![i].lastDigit,
-              getSearchByLastDigitModel.value.data![i].month,
-              getSearchByLastDigitModel.value.data![i].status,
-              getSearchByLastDigitModel.value.data![i].fileName,
-              getSearchByLastDigitModel.value.data![i].createdAt,
-              getSearchByLastDigitModel.value.data![i].updatedAt
-            ]);
+  //     final vehicleDb = VehicleDb();
+  //     totalData.value = getSearchByLastDigitModel.value.totalRecords!;
+  //     totalPages.value = getSearchByLastDigitModel.value.totalPages!;
 
-            // batch.rawInsert('');
+  //     if (getSearchByLastDigitModel.value.data != null) {
+  //       downloadedData.value += getSearchByLastDigitModel.value.data!.length;
+  //       await Helper.setIntPreferences(
+  //           SharedPreferencesVar.offlineCount, downloadedData.value);
+  //       final db = await DatabaseHelper().database;
+  //       var batch = db.batch();
+  //       await db.transaction((txn) async {
+  //         for (int i = 0;
+  //             i < getSearchByLastDigitModel.value.data!.length;
+  //             i++) {
+  //           txn.rawInsert('''
+  //         INSERT OR REPLACE INTO vehicles (dataId,loadStatus,bankName,branch,agreementNo,customerName,regNo,chasisNo,engineNo,callCenterNo1,callCenterNo1Name,callCenterNo2,callCenterNo2Name,lastDigit,month,status,fileName,createdAt,updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+  //        ''', [
+  //             getSearchByLastDigitModel.value.data![i].sId!,
+  //             getSearchByLastDigitModel.value.data![i].loadStatus,
+  //             getSearchByLastDigitModel.value.data![i].bankName,
+  //             getSearchByLastDigitModel.value.data![i].branch,
+  //             getSearchByLastDigitModel.value.data![i].agreementNo,
+  //             getSearchByLastDigitModel.value.data![i].customerName,
+  //             getSearchByLastDigitModel.value.data![i].regNo,
+  //             getSearchByLastDigitModel.value.data![i].chasisNo,
+  //             getSearchByLastDigitModel.value.data![i].engineNo,
+  //             getSearchByLastDigitModel.value.data![i].callCenterNo1,
+  //             getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+  //             getSearchByLastDigitModel.value.data![i].callCenterNo2,
+  //             getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+  //             getSearchByLastDigitModel.value.data![i].lastDigit,
+  //             getSearchByLastDigitModel.value.data![i].month,
+  //             getSearchByLastDigitModel.value.data![i].status,
+  //             getSearchByLastDigitModel.value.data![i].fileName,
+  //             getSearchByLastDigitModel.value.data![i].createdAt,
+  //             getSearchByLastDigitModel.value.data![i].updatedAt
+  //           ]);
 
-            // await vehicleDb.insertVehicle(
-            //     getSearchByLastDigitModel.value.data![i].sId!,
-            //     getSearchByLastDigitModel.value.data![i].loadStatus,
-            //     getSearchByLastDigitModel.value.data![i].bankName,
-            //     getSearchByLastDigitModel.value.data![i].branch,
-            //     getSearchByLastDigitModel.value.data![i].agreementNo,
-            //     getSearchByLastDigitModel.value.data![i].customerName,
-            //     getSearchByLastDigitModel.value.data![i].regNo,
-            //     getSearchByLastDigitModel.value.data![i].chasisNo,
-            //     getSearchByLastDigitModel.value.data![i].engineNo,
-            //     getSearchByLastDigitModel.value.data![i].callCenterNo1,
-            //     getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
-            //     getSearchByLastDigitModel.value.data![i].callCenterNo2,
-            //     getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
-            //     getSearchByLastDigitModel.value.data![i].lastDigit,
-            //     getSearchByLastDigitModel.value.data![i].month,
-            //     getSearchByLastDigitModel.value.data![i].status,
-            //     getSearchByLastDigitModel.value.data![i].fileName,
-            //     getSearchByLastDigitModel.value.data![i].createdAt,
-            //     getSearchByLastDigitModel.value.data![i].updatedAt);
-          }
+  //           // batch.rawInsert('');
+
+  //           // await vehicleDb.insertVehicle(
+  //           //     getSearchByLastDigitModel.value.data![i].sId!,
+  //           //     getSearchByLastDigitModel.value.data![i].loadStatus,
+  //           //     getSearchByLastDigitModel.value.data![i].bankName,
+  //           //     getSearchByLastDigitModel.value.data![i].branch,
+  //           //     getSearchByLastDigitModel.value.data![i].agreementNo,
+  //           //     getSearchByLastDigitModel.value.data![i].customerName,
+  //           //     getSearchByLastDigitModel.value.data![i].regNo,
+  //           //     getSearchByLastDigitModel.value.data![i].chasisNo,
+  //           //     getSearchByLastDigitModel.value.data![i].engineNo,
+  //           //     getSearchByLastDigitModel.value.data![i].callCenterNo1,
+  //           //     getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
+  //           //     getSearchByLastDigitModel.value.data![i].callCenterNo2,
+  //           //     getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
+  //           //     getSearchByLastDigitModel.value.data![i].lastDigit,
+  //           //     getSearchByLastDigitModel.value.data![i].month,
+  //           //     getSearchByLastDigitModel.value.data![i].status,
+  //           //     getSearchByLastDigitModel.value.data![i].fileName,
+  //           //     getSearchByLastDigitModel.value.data![i].createdAt,
+  //           //     getSearchByLastDigitModel.value.data![i].updatedAt);
+  //         }
+  //       });
+  //       await _updateNotification(totalData.value, downloadedData.value);
+  //       if (currentPage.value % 10 == 0 && currentPage.value != 0) {
+  //         await DefaultCacheManager().emptyCache();
+  //         await db.execute('VACUUM');
+  //       }
+
+  //       //await batch.commit();
+  //     }
+
+  //     await Helper.setIntPreferences(
+  //         SharedPreferencesVar.currentPage, currentPage.value);
+
+  //     if (currentPage.value >= totalPages.value ||
+  //         downloadedData.value >= totalData.value) {
+  //       var now = DateTime.now();
+  //       var formatter = DateFormat('yyyy-MM-dd');
+  //       String formattedDate = formatter.format(now);
+  //       dynamic currentTime = DateFormat.jm().format(DateTime.now());
+
+  //       print(formattedDate);
+
+  //       await Helper.setIntPreferences(
+  //           SharedPreferencesVar.totalData, totalData.value);
+  //       await Helper.setStringPreferences(
+  //           SharedPreferencesVar.lastUpdateDate, formattedDate);
+  //       await Helper.setStringPreferences(
+  //           SharedPreferencesVar.lastUpdateTime, currentTime);
+
+  //       // if (uc.userDetails['role'] == 'repo-agent') {
+  //       //   Get.offAll(HomeScreenRepoStaff());
+  //       // } else {
+  //       //   Get.toNamed(AppRoutes.home);
+  //       // }
+  //       setRxRequestStatus(Status.COMPLETED);
+  //     } else {
+  //       currentPage.value++;
+  //       if (getSearchByLastDigitModel.value.data != null) {
+  //         getAllDashboardApiData(context, currentPage.value);
+  //       }
+  //     }
+
+  //     // await flutterLocalNotificationsPlugin.show(
+  //     //   0,
+  //     //   'Data downloaded',
+  //     //   "Data downloaded successfully",
+  //     //   const NotificationDetails(
+  //     //     android: AndroidNotificationDetails('channel_id', 'channel_name',
+  //     //         channelDescription: 'channel_description',
+  //     //         importance: Importance.min,
+  //     //         priority: Priority.min,
+  //     //         ongoing: true,
+  //     //         playSound: false,
+  //     //         enableVibration: false),
+  //     //   ),
+  //     // );
+  //   }).onError((error, stackTrace) async {
+  //     print(stackTrace);
+  //     print('--------------------');
+  //     print(error);
+  //     await flutterLocalNotificationsPlugin.show(
+  //       0,
+  //       'Error while downloading data',
+  //       "Data downloaded failed",
+  //       const NotificationDetails(
+  //         android: AndroidNotificationDetails('channel_id', 'channel_name',
+  //             channelDescription: 'channel_description',
+  //             importance: Importance.min,
+  //             priority: Priority.min,
+  //             ongoing: true,
+  //             playSound: false,
+  //             enableVibration: false),
+  //       ),
+  //     );
+  //   });
+  // }
+
+  void getAllDashboardApiDataPeriodically(
+      BuildContext context, String lastId) async {
+    final vehicleDb = VehicleDb();
+    downloadedData.value = await vehicleDb.getOfflineCount();
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         });
-        await _updateNotification(totalData.value, downloadedData.value);
-        if (currentPage.value % 10 == 0 && currentPage.value != 0) {
-          await DefaultCacheManager().emptyCache();
-          await db.execute('VACUUM');
-        }
 
-        //await batch.commit();
-      }
-
-      await Helper.setIntPreferences(
-          SharedPreferencesVar.currentPage, currentPage.value);
-
-      if (currentPage.value >= totalPages.value ||
-          downloadedData.value >= totalData.value) {
-        var now = DateTime.now();
-        var formatter = DateFormat('yyyy-MM-dd');
-        String formattedDate = formatter.format(now);
-        dynamic currentTime = DateFormat.jm().format(DateTime.now());
-
-        print(formattedDate);
-
-        await Helper.setIntPreferences(
-            SharedPreferencesVar.totalData, totalData.value);
-        await Helper.setStringPreferences(
-            SharedPreferencesVar.lastUpdateDate, formattedDate);
-        await Helper.setStringPreferences(
-            SharedPreferencesVar.lastUpdateTime, currentTime);
-
-        // if (uc.userDetails['role'] == 'repo-agent') {
-        //   Get.offAll(HomeScreenRepoStaff());
-        // } else {
-        //   Get.toNamed(AppRoutes.home);
-        // }
-        setRxRequestStatus(Status.COMPLETED);
-      } else {
-        currentPage.value++;
-        if (getSearchByLastDigitModel.value.data != null) {
-          getAllDashboardApiData(currentPage.value);
-        }
-      }
-
-      // await flutterLocalNotificationsPlugin.show(
-      //   0,
-      //   'Data downloaded',
-      //   "Data downloaded successfully",
-      //   const NotificationDetails(
-      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
-      //         channelDescription: 'channel_description',
-      //         importance: Importance.min,
-      //         priority: Priority.min,
-      //         ongoing: true,
-      //         playSound: false,
-      //         enableVibration: false),
-      //   ),
-      // );
-    }).onError((error, stackTrace) async {
-      print(stackTrace);
-      print('--------------------');
-      print(error);
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Error while downloading data',
-        "Data downloaded failed",
-        const NotificationDetails(
-          android: AndroidNotificationDetails('channel_id', 'channel_name',
-              channelDescription: 'channel_description',
-              importance: Importance.min,
-              priority: Priority.min,
-              ongoing: true,
-              playSound: false,
-              enableVibration: false),
-        ),
-      );
-    });
-  }
-
-  void getAllDashboardApiDataPeriodically(int pageNo) {
-    getAllDashboardApi(pageNo, 1000).then((value) async {
+    getAllDashboardApi(context, lastId, 100).then((value) async {
       setDashboardList(value);
-      downloadedData.value =
-          await Helper.getIntPreferences(SharedPreferencesVar.offlineCount);
-      await Helper.setIntPreferences(
-          SharedPreferencesVar.offlinePageNumber, currentPage.value);
+      // await Helper.setIntPreferences(
+      //     SharedPreferencesVar.offlinePageNumber, currentPage.value);
 
       final vehicleDb = VehicleDb();
-      totalData.value = getSearchByLastDigitModel.value.totalRecords!;
-      totalPages.value = getSearchByLastDigitModel.value.totalPages!;
+      totalData.value = getSearchByLastDigitModel.value.totalRecords ?? 0;
+      totalPages.value = getSearchByLastDigitModel.value.totalPages ?? 0;
 
       if (getSearchByLastDigitModel.value.data != null) {
         for (int i = 0; i < getSearchByLastDigitModel.value.data!.length; i++) {
           downloadedData.value++;
-          await Helper.setIntPreferences(
-              SharedPreferencesVar.offlineCount, downloadedData.value);
+
           await vehicleDb.insertVehicle(
               getSearchByLastDigitModel.value.data![i].sId!,
               getSearchByLastDigitModel.value.data![i].loadStatus,
@@ -273,17 +292,21 @@ class SplashScreenController extends GetxController {
 
       //print(formattedDate);
 
-      int currPage = currentPage.value++;
+      //int currPage = currentPage.value++;
       //print('ddddd - $currPage');
 
-      await Helper.setIntPreferences(
-          SharedPreferencesVar.currentPage, currPage);
-      await Helper.setIntPreferences(
-          SharedPreferencesVar.totalData, totalData.value);
+      // await Helper.setIntPreferences(
+      //     SharedPreferencesVar.currentPage, currPage);
+      // await Helper.setIntPreferences(
+      //     SharedPreferencesVar.totalData, totalData.value);
+      VehicleSearchController sc = Get.put(VehicleSearchController());
+      sc.offlineDataCount.value = await VehicleDb().getOfflineCount();
       await Helper.setStringPreferences(
           SharedPreferencesVar.lastUpdateDate, formattedDate);
       await Helper.setStringPreferences(
           SharedPreferencesVar.lastUpdateTime, currentTime);
+
+      Get.back();
 
       // if (uc.userDetails['role'] == 'repo-agent') {
       //   Get.offAll(HomeScreenRepoStaff());
