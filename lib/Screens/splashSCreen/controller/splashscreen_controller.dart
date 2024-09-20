@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/Screens/searchVehicle/controller/searchController.dart';
 import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
 import 'package:vinayak/core/constants/helper.dart';
@@ -20,6 +22,7 @@ import 'package:vinayak/core/sqlite/vehicledb.dart';
 
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/response/status.dart';
+import '../../1RepoStaff/homeR/controller/repoHomeController.dart';
 
 class SplashScreenController extends GetxController {
   final _api = NetworkApi();
@@ -30,6 +33,7 @@ class SplashScreenController extends GetxController {
   RxInt currentPage = 1.obs;
   RxInt totalData = 0.obs;
   RxInt downloadedData = 0.obs;
+  RxBool isDownloading = false.obs;
 
   UserController uc = Get.put(UserController(), permanent: true);
 
@@ -373,46 +377,13 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> downloadData() async {
-    print('downloading - ${DateTime.now()}');
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      'Downloading',
-      'Downloading Data',
-      NotificationDetails(
-        android: AndroidNotificationDetails('channel_id', 'channel_name',
-            channelDescription: 'channel_description',
-            importance: Importance.high,
-            priority: Priority.high,
-            ongoing: true,
-            playSound: true,
-            enableVibration: true),
-      ),
-    );
-    //print(DateTime.now());
-    //await DefaultCacheManager().emptyCache();
-
-    final response =
-        await http.get(Uri.parse('http://195.35.23.185/downloads/export.zip'));
-
-    print(response.body);
-
-    if (response.statusCode == 200) {
-      Directory appDocumentsDirectory =
-          await getApplicationDocumentsDirectory();
-      print(appDocumentsDirectory.path);
-      final file = File('${appDocumentsDirectory.path}/export.zip');
-      await file.writeAsBytes(response.bodyBytes);
-      //print('File downloaded to: ${appDocumentsDirectory.path}');
-      //final directory = Directory(appDocumentsDirectory.path);
-      // List<FileSystemEntity> files = await directory.list().toList();
-      // for (var file in files) {
-      //   print(file.path);
-      // }
-      await DefaultCacheManager().emptyCache();
+    if (!isDownloading.value) {
+      isDownloading.value = true;
+      print('downloading - ${DateTime.now()}');
       await flutterLocalNotificationsPlugin.show(
         0,
-        'Extracting Data',
-        '',
+        'Downloading',
+        'Downloading Data',
         NotificationDetails(
           android: AndroidNotificationDetails('channel_id', 'channel_name',
               channelDescription: 'channel_description',
@@ -424,146 +395,100 @@ class SplashScreenController extends GetxController {
         ),
       );
 
-      try {
-        await ZipFile.extractToDirectory(
-          zipFile: file,
-          destinationDir: appDocumentsDirectory,
+      final response = await http
+          .get(Uri.parse('http://195.35.23.185/downloads/export.zip'));
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        Directory appDocumentsDirectory =
+            await getApplicationDocumentsDirectory();
+        print(appDocumentsDirectory.path);
+        final file = File('${appDocumentsDirectory.path}/export.zip');
+        await file.writeAsBytes(response.bodyBytes);
+
+        await DefaultCacheManager().emptyCache();
+        await flutterLocalNotificationsPlugin.show(
+          0,
+          'Extracting Data',
+          '',
+          NotificationDetails(
+            android: AndroidNotificationDetails('channel_id', 'channel_name',
+                channelDescription: 'channel_description',
+                importance: Importance.high,
+                priority: Priority.high,
+                ongoing: true,
+                playSound: true,
+                enableVibration: true),
+          ),
         );
-        print('File extracted successfully.');
-      } catch (e) {
-        print('Error extracting file: $e');
+
+        try {
+          await ZipFile.extractToDirectory(
+            zipFile: file,
+            destinationDir: appDocumentsDirectory,
+          );
+          print('File extracted successfully.');
+        } catch (e) {
+          print('Error extracting file: $e');
+        }
+
+        VehicleSearchController sc = Get.put(VehicleSearchController());
+        sc.offlineDataCount.value = await VehicleDb().getOfflineCount();
+        await VehicleDb().createIndex();
+
+        HomeRepoAgentController hc = Get.put(HomeRepoAgentController());
+        hc.blinkRefresh.value = false;
+
+        HomeController hcc = Get.put(HomeController());
+        hcc.blinkRefresh.value = false;
+
+        var now = DateTime.now();
+        var formatter = DateFormat('yyyy-MM-dd');
+        String formattedDate = formatter.format(now);
+        dynamic currentTime = DateFormat.jm().format(DateTime.now());
+
+        await Helper.setStringPreferences(
+            SharedPreferencesVar.lastUpdateDate, formattedDate);
+        await Helper.setStringPreferences(
+            SharedPreferencesVar.lastUpdateTime, currentTime);
+
+        await flutterLocalNotificationsPlugin.show(
+          0,
+          'Downloading Complete',
+          '',
+          NotificationDetails(
+            android: AndroidNotificationDetails('channel_id', 'channel_name',
+                channelDescription: 'channel_description',
+                importance: Importance.high,
+                priority: Priority.high,
+                ongoing: true,
+                playSound: true,
+                enableVibration: true),
+          ),
+        );
+        isDownloading.value = false;
+      } else {
+        isDownloading.value = false;
+
+        await flutterLocalNotificationsPlugin.show(
+          0,
+          'Error',
+          'Error Downloading Data',
+          NotificationDetails(
+            android: AndroidNotificationDetails('channel_id', 'channel_name',
+                channelDescription: 'channel_description',
+                importance: Importance.high,
+                priority: Priority.high,
+                ongoing: true,
+                playSound: true,
+                enableVibration: true),
+          ),
+        );
+        throw Exception('Failed to download file');
       }
-      // await file.delete();
-      // await DefaultCacheManager().emptyCache();
-
-      // await flutterLocalNotificationsPlugin.show(
-      //   0,
-      //   'Compiling resources',
-      //   '',
-      //   NotificationDetails(
-      //     android: AndroidNotificationDetails('channel_id', 'channel_name',
-      //         channelDescription: 'channel_description',
-      //         importance: Importance.min,
-      //         priority: Priority.min,
-      //         ongoing: true,
-      //         playSound: false,
-      //         enableVibration: false),
-      //   ),
-      // );
-
-      // final jsonFile = File('${appDocumentsDirectory.path}/export1.json');
-
-      // Stream<String> f =
-      //     jsonFile.openRead().transform(utf8.decoder).transform(LineSplitter());
-
-      // int i = 0;
-      // int length = await f.length;
-      // Stream<String> ff =
-      //     jsonFile.openRead().transform(utf8.decoder).transform(LineSplitter());
-      // print('f length $length');
-      //f.where((event) => event.contains('other'));
-      // List<VehicleSingleModelss> batch = [];
-      // int batchSize = 1000;
-      // final db = await DatabaseHelper().database;
-      // var batchs = db.batch();
-      // // try {
-      // await f.forEach((String line) async {
-      //   //i++;
-      //   VehicleSingleModelss vsm =
-      //       VehicleSingleModelss.fromJson(jsonDecode(line));
-
-      //   await HiveService().myBox!.add(VehicleSingleModel(
-      //       vsm.iId!.oid ?? '',
-      //       vsm.bankName ?? '',
-      //       vsm.branch ?? '',
-      //       vsm.agreementNo ?? '',
-      //       vsm.customerName ?? '',
-      //       vsm.regNo ?? '',
-      //       vsm.chasisNo ?? '',
-      //       vsm.engineNo ?? '',
-      //       vsm.maker ?? '',
-      //       vsm.dlCode ?? '',
-      //       vsm.bucket ?? '',
-      //       vsm.emi ?? '',
-      //       vsm.color ?? '',
-      //       vsm.callCenterNo1 ?? '',
-      //       vsm.callCenterNo1Name ?? '',
-      //       vsm.callCenterNo2 ?? '',
-      //       vsm.callCenterNo2Name ?? '',
-      //       vsm.lastDigit ?? '',
-      //       vsm.month ?? '',
-      //       vsm.status ?? '',
-      //       vsm.loadStatus ?? '',
-      //       vsm.fileName ?? '',
-      //       vsm.iV ?? 0,
-      //       vsm.createdAt!.date ?? '',
-      //       vsm.updatedAt!.date ?? ''));
-
-      //   await Timer(Duration(milliseconds: 2), () {});
-      // });
-
-      // } catch (e) {
-      //   print(e.toString());
-      //   await flutterLocalNotificationsPlugin.show(
-      //     0,
-      //     'Downloading Failed',
-      //     e.toString(),
-      //     NotificationDetails(
-      //       android: AndroidNotificationDetails('channel_id', 'channel_name',
-      //           channelDescription: 'channel_description',
-      //           importance: Importance.min,
-      //           priority: Priority.min,
-      //           ongoing: true,
-      //           playSound: false,
-      //           enableVibration: false),
-      //     ),
-      //   );
-      // }
-
-      VehicleSearchController sc = Get.put(VehicleSearchController());
-      sc.offlineDataCount.value = await VehicleDb().getOfflineCount();
-      await VehicleDb().createIndex();
-
-      var now = DateTime.now();
-      var formatter = DateFormat('yyyy-MM-dd');
-      String formattedDate = formatter.format(now);
-      dynamic currentTime = DateFormat.jm().format(DateTime.now());
-
-      await Helper.setStringPreferences(
-          SharedPreferencesVar.lastUpdateDate, formattedDate);
-      await Helper.setStringPreferences(
-          SharedPreferencesVar.lastUpdateTime, currentTime);
-
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Downloading Complete',
-        '',
-        NotificationDetails(
-          android: AndroidNotificationDetails('channel_id', 'channel_name',
-              channelDescription: 'channel_description',
-              importance: Importance.high,
-              priority: Priority.high,
-              ongoing: true,
-              playSound: true,
-              enableVibration: true),
-        ),
-      );
     } else {
-      await flutterLocalNotificationsPlugin.show(
-        0,
-        'Error',
-        'Error Downloading Data',
-        NotificationDetails(
-          android: AndroidNotificationDetails('channel_id', 'channel_name',
-              channelDescription: 'channel_description',
-              importance: Importance.high,
-              priority: Priority.high,
-              ongoing: true,
-              playSound: true,
-              enableVibration: true),
-        ),
-      );
-      throw Exception('Failed to download file');
+      Fluttertoast.showToast(msg: 'Data is already downloading. Please wait');
     }
 
     print(DateTime.now());

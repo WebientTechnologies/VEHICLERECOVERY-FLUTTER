@@ -65,7 +65,6 @@ class _ReportsState extends State<Reports> {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorColor: ColorConstants.white,
                   dividerHeight: 0,
-                  physics: NeverScrollableScrollPhysics(),
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,
                   tabs: [

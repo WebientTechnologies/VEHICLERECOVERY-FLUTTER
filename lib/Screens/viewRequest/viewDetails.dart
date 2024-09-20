@@ -35,8 +35,8 @@ class _ViewRequestDetailsState extends State<ViewRequestDetails> {
                 TextStyle(fontSize: height * 0.023, color: ColorConstants.aqua),
           ),
           ContainerWidget(
-            width: width * 0.5,
-            height: height * 0.05,
+            width: width * 0.6,
+            height: 50,
             borderRadius: 18,
             borderColor: ColorConstants.aqua,
             hintText: value,
@@ -67,12 +67,13 @@ class _ViewRequestDetailsState extends State<ViewRequestDetails> {
             child: Column(
               children: [
                 buildInfoRow('Seezer Name', height, width, 'name'),
-                buildInfoRow(
-                    'Registeration No', height, width, data?.regNo ?? ''),
-                buildInfoRow(
-                    'Customer Name', height, width, data?.customerName ?? ''),
                 buildInfoRow('Bank Name', height, width, data?.bankName ?? ''),
                 buildInfoRow('Branch', height, width, data?.branch ?? ''),
+                buildInfoRow(
+                    'Registeration No', height, width - 5, data?.regNo ?? ''),
+
+                buildInfoRow(
+                    'Customer Name', height, width, data?.customerName ?? ''),
                 buildInfoRow('EMI', height, width, ''),
                 buildInfoRow('Vehicle Maker', height, width, ''),
                 buildInfoRow(
@@ -93,13 +94,8 @@ class _ViewRequestDetailsState extends State<ViewRequestDetails> {
                 // buildInfoRow('Month', height, width, data?.month ?? ''),
                 // buildInfoRow('Last Digit', height, width, data?.lastDigit ?? ''),
                 // buildInfoRow('Status', height, width, data?.status ?? ''),
-                buildInfoRow('DL Code', height, width, ''),
-                buildInfoRow('TBR Flag', height, width, ''),
-                buildInfoRow('Executive Name', height, width, ''),
+
                 buildInfoRow('SEC-17', height, width, ''),
-                buildInfoRow('SEC-09', height, width, ''),
-                buildInfoRow('Seasoning', height, width, ''),
-                buildInfoRow('Upload Date', height, width, ''),
               ],
             ),
           ),

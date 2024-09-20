@@ -6,6 +6,7 @@ import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../core/constants/api_endpoints.dart';
 import '../../../core/response/status.dart';
+import '../../../core/sqlite/vehicledb.dart';
 
 class HomeController extends GetxController {
   var _api = NetworkApi();
@@ -18,6 +19,7 @@ class HomeController extends GetxController {
   RxInt onlineDataCount = 0.obs;
   RxInt searchHoldReleaseRepoTotal = 0.obs;
   RxBool showRefresh = false.obs;
+  RxBool blinkRefresh = false.obs;
 
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
@@ -41,12 +43,19 @@ class HomeController extends GetxController {
   }
 
   void getAllDashboardApiData() {
-    getAllDashboardApi().then((value) {
+    getAllDashboardApi().then((value) async {
       setRxRequestDashboardStatus(Status.COMPLETED);
       setDashboardList(value);
 
       showRefresh.value = true;
       onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
+
+      final vehicleDb = VehicleDb();
+      int count = await vehicleDb.getOfflineCount();
+
+      if (count != onlineDataCount.value) {
+        blinkRefresh.value = true;
+      }
       // searchHoldReleaseRepoTotal.value = dashboardModel.value.holdCount! +
       //     dashboardModel.value.searchCount! +
       //     dashboardModel.value.releaseCount! +

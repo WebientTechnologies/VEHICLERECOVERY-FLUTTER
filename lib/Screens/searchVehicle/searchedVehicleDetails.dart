@@ -337,7 +337,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                       buildInfoRow(
                           'Registeration No',
                           height,
-                          width,
+                          width - 5,
                           from == 'home' || from == 'homee'
                               ? data.regNo != null
                                   ? data.regNo
@@ -490,7 +490,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   ? data.vehicleId!.callCenterNo1
                                   : '',
                           text:
-                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 '''),
                       buildInfoRow(
                           'Call Center Email 1',
@@ -528,7 +528,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   ? data.vehicleId!.callCenterNo2
                                   : '',
                           text:
-                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 '''),
                       buildInfoRow(
                           'Call Center Email 2',
@@ -566,7 +566,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   ? data.vehicleId!.callCenterNo3
                                   : '',
                           text:
-                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 '''),
                       buildInfoRow(
                           'Call Center Email 3',
@@ -602,105 +602,113 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                               : data.vehicleId!.sec17 != null
                                   ? data.vehicleId!.sec17
                                   : ''),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Load Status',
-                            style: TextStyle(
-                                fontSize: height * 0.023,
-                                color: ColorConstants.aqua),
-                          ),
-                          Container(
-                            width: Get.width * 0.6,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: ColorConstants.aqua, width: 2),
-                                borderRadius: BorderRadius.circular(50)),
-                            child: Center(
-                              child: Obx(
-                                () => Padding(
-                                  padding: const EdgeInsets.only(left: 10.0),
-                                  child: DropdownButton(
-                                      underline: const SizedBox(),
-                                      isExpanded: true,
-                                      items: sc.loadStatus,
-                                      value: sc.selectedLoadStatus.value,
-                                      onChanged: (value) {
-                                        sc.selectedLoadStatus.value = value!;
-                                      }),
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Obx(
-                        () => Visibility(
-                          visible: sc.selectedLoadStatus.value
-                              .toLowerCase()
-                              .contains('g'),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Load Item',
-                                style: TextStyle(
-                                    fontSize: height * 0.023,
-                                    color: ColorConstants.aqua),
-                              ),
-                              Container(
-                                  width: Get.width * 0.6,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: ColorConstants.aqua, width: 2),
-                                      borderRadius: BorderRadius.circular(12)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: TextFormField(
-                                      decoration: const InputDecoration(
-                                          hintText: 'Load Item',
-                                          border: InputBorder.none),
-                                      controller: sc.loadItemCont.value,
-                                    ),
-                                  ))
-                            ],
-                          ),
-                        ),
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Text(
+                      //       'Load Status',
+                      //       style: TextStyle(
+                      //           fontSize: height * 0.023,
+                      //           color: ColorConstants.aqua),
+                      //     ),
+                      //     Container(
+                      //       width: Get.width * 0.6,
+                      //       height: 40,
+                      //       decoration: BoxDecoration(
+                      //           border: Border.all(
+                      //               color: ColorConstants.aqua, width: 2),
+                      //           borderRadius: BorderRadius.circular(50)),
+                      //       child: Center(
+                      //         child: Obx(
+                      //           () => Padding(
+                      //             padding: const EdgeInsets.only(left: 10.0),
+                      //             child: DropdownButton(
+                      //                 underline: const SizedBox(),
+                      //                 isExpanded: true,
+                      //                 items: sc.loadStatus,
+                      //                 value: sc.selectedLoadStatus.value,
+                      //                 onChanged: (value) {
+                      //                   sc.selectedLoadStatus.value = value!;
+                      //                 }),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Obx(
+                      //   () => Visibility(
+                      //     visible: sc.selectedLoadStatus.value
+                      //         .toLowerCase()
+                      //         .contains('g'),
+                      //     child: Row(
+                      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       children: [
+                      //         Text(
+                      //           'Load Item',
+                      //           style: TextStyle(
+                      //               fontSize: height * 0.023,
+                      //               color: ColorConstants.aqua),
+                      //         ),
+                      //         Container(
+                      //             width: Get.width * 0.6,
+                      //             height: 50,
+                      //             decoration: BoxDecoration(
+                      //                 border: Border.all(
+                      //                     color: ColorConstants.aqua, width: 2),
+                      //                 borderRadius: BorderRadius.circular(12)),
+                      //             child: Padding(
+                      //               padding: const EdgeInsets.only(left: 8.0),
+                      //               child: TextFormField(
+                      //                 decoration: const InputDecoration(
+                      //                     hintText: 'Load Item',
+                      //                     border: InputBorder.none),
+                      //                 controller: sc.loadItemCont.value,
+                      //               ),
+                      //             ))
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
           ),
         );
       }),
-      bottomNavigationBar: from == 'home'
-          ? Padding(
-              padding: const EdgeInsets.only(left: 15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  PCIconButton(
-                    onPressed: () {
-                      sc.updateVehicleHoldRepo(context, data.id, isRepoAgent);
-                    },
-                    text: 'Hold',
-                    width: Get.width * 0.8,
-                    height: Get.height * 0.05,
-                    textColor: Colors.white,
-                    backgroundColor: ColorConstants.aqua,
-                  ),
-                  IconButton(
-                      onPressed: () async {
-                        String msg =
-                            '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            PCIconButton(
+              onPressed: () {
+                sc.updateVehicleHoldRepo(
+                    context,
+                    from == 'home' || from == 'homee'
+                        ? data.dataId != null
+                            ? data.dataId
+                            : ''
+                        : data.vehicleId!.id != null
+                            ? data.vehicleId!.id
+                            : '',
+                    isRepoAgent);
+              },
+              text: 'Hold',
+              width: Get.width * 0.8,
+              height: Get.height * 0.05,
+              textColor: Colors.white,
+              backgroundColor: ColorConstants.aqua,
+            ),
+            IconButton(
+                onPressed: () async {
+                  String msg =
+                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
 ''';
-                        print(msg);
-                        Share.share(msg);
+                  print(msg);
+                  Share.share(msg);
 //                   final url = "https://wa.me?text=$msg";
 
 //                   if (await canLaunchUrl(Uri.parse(url))) {
@@ -710,16 +718,15 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
 //                   }
 //                   if (!await launchUrl(Uri.parse(url)))
 //                     throw 'Could not launch $url';
-                      },
-                      icon: Icon(
-                        Icons.message,
-                        color: ColorConstants.aqua,
-                        size: 40,
-                      ))
-                ],
-              ),
-            )
-          : const SizedBox(),
+                },
+                icon: Icon(
+                  Icons.message,
+                  color: ColorConstants.aqua,
+                  size: 40,
+                ))
+          ],
+        ),
+      ),
     );
   }
 }

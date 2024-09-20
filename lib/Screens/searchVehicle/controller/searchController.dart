@@ -285,9 +285,9 @@ class VehicleSearchController extends GetxController {
           );
         });
     try {
-      double lat = await Helper.getStringPreferences(SharedPreferencesVar.lat);
+      double lat = await Helper.getDoublePreferences(SharedPreferencesVar.lat);
       double long =
-          await Helper.getStringPreferences(SharedPreferencesVar.long);
+          await Helper.getDoublePreferences(SharedPreferencesVar.long);
       var data = null;
       if (isStaff)
         data = {
@@ -344,8 +344,8 @@ class VehicleSearchController extends GetxController {
     var token = await Helper.getStringPreferences('token');
     print(token);
 
-    String lat = await Helper.getStringPreferences(SharedPreferencesVar.lat);
-    String longi = await Helper.getStringPreferences(SharedPreferencesVar.long);
+    double lat = await Helper.getDoublePreferences(SharedPreferencesVar.lat);
+    double longi = await Helper.getDoublePreferences(SharedPreferencesVar.long);
     var body = {"latitude": lat, "longitude": longi};
     print(body);
     try {
@@ -363,12 +363,12 @@ class VehicleSearchController extends GetxController {
 
       if (response.statusCode == 200) {
         // Handle success
-        Fluttertoast.showToast(msg: 'Message sent Sucessfully');
+        //Fluttertoast.showToast(msg: 'Vehicle status updated to search');
       } else {
         // Handle other status codes or errors
       }
     } catch (error) {
-      Fluttertoast.showToast(msg: 'Message sending failed');
+      Fluttertoast.showToast(msg: 'something went wrong');
 
       print('Error: $error');
       // Handle error

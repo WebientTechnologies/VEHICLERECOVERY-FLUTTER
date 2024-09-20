@@ -9,7 +9,7 @@ class VehicleDb {
   static Future<void> createTable(Database database) async {
     await database.execute('''
         CREATE TABLE IF NOT EXISTS vehicles(
-          "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+          "id" integer null,
           "dataId" text null,
           "bankName" text null,
           "branch" text null,

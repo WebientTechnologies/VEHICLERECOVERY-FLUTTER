@@ -66,7 +66,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     //   hc.selectedGreeting.value = 2;
     // }
 
-    //init();
+    init();
   }
 
   @override
@@ -261,14 +261,22 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   onTap: () async {
                                     await ssc.downloadData();
                                   },
-                                  child: BlinkText(
-                                    'Refresh',
-                                    style: TextStyle(
-                                        color: ColorConstants.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                    endColor: Colors.orange,
-                                  ),
+                                  child: hc.blinkRefresh.value
+                                      ? BlinkText(
+                                          'Refresh',
+                                          style: TextStyle(
+                                              color: ColorConstants.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                          endColor: Colors.orange,
+                                        )
+                                      : Text(
+                                          'Refresh',
+                                          style: TextStyle(
+                                              color: ColorConstants.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                 )
                               : const SizedBox()),
                           Row(

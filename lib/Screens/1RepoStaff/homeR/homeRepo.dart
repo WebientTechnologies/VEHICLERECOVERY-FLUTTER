@@ -69,7 +69,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     // }
     //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
-    //init();
+    init();
   }
 
   @override
@@ -187,17 +187,29 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Obx(() => hc.showRefresh.value
-                            ? GestureDetector(
-                                onTap: () async {
-                                  await ssc.downloadData();
-                                },
-                                child: BlinkText(
-                                  'Refresh',
-                                  style: TextStyle(
-                                      color: ColorConstants.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                  endColor: Colors.orange,
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 10.0, top: 5),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    await ssc.downloadData();
+                                  },
+                                  child: hc.blinkRefresh.value
+                                      ? BlinkText(
+                                          'Refresh',
+                                          style: TextStyle(
+                                              color: ColorConstants.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                          endColor: Colors.orange,
+                                        )
+                                      : Text(
+                                          'Refresh',
+                                          style: TextStyle(
+                                              color: ColorConstants.white,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                 ),
                               )
                             : const SizedBox()),
