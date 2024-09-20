@@ -285,19 +285,26 @@ class VehicleSearchController extends GetxController {
           );
         });
     try {
+      double lat = await Helper.getStringPreferences(SharedPreferencesVar.lat);
+      double long =
+          await Helper.getStringPreferences(SharedPreferencesVar.long);
       var data = null;
       if (isStaff)
         data = {
           "id": id,
           "loadStatus": selectedLoadStatus.value,
-          "loadItem": loadItemCont.value.text
+          "loadItem": loadItemCont.value.text,
+          "latitude": lat,
+          "longitude": long,
         };
       if (!isStaff)
         data = {
           "status": "hold",
           "loadStatus": selectedLoadStatus.value,
           "loadItem": loadItemCont.value.text,
-          "seezerId": selectedSeezer.value
+          "seezerId": selectedSeezer.value,
+          "latitude": lat,
+          "longitude": long,
         };
       print(data);
       var response = await http.put(

@@ -4,6 +4,7 @@ import 'package:vinayak/core/network/network_api.dart';
 
 import '../../../../core/constants/api_endpoints.dart';
 import '../../../../core/response/status.dart';
+import '../../../../core/sqlite/vehicledb.dart';
 import '../../../HomeScreen/model/graph_week_model.dart';
 import '../model/homeRepoModel.dart';
 
@@ -16,6 +17,7 @@ class HomeRepoAgentController extends GetxController {
   RxInt selectedGreeting = 0.obs;
   RxInt onlineDataCount = 0.obs;
   RxBool showRefresh = false.obs;
+  RxBool blinkRefresh = false.obs;
 
   final rxRequestDashboardStatus = Status.LOADING.obs;
   void setRxRequestDashboardStatus(Status value) =>
@@ -38,13 +40,20 @@ class HomeRepoAgentController extends GetxController {
     return HomeDashboardRepoModel.fromJson(response);
   }
 
-  void getAllDashboardApiData() {
-    getAllDashboardApi().then((value) {
+  void getAllDashboardApiData() async {
+    getAllDashboardApi().then((value) async {
       setRxRequestDashboardStatus(Status.COMPLETED);
       setDashboardList(value);
 
       showRefresh.value = true;
       onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
+
+      final vehicleDb = VehicleDb();
+      int count = await vehicleDb.getOfflineCount();
+
+      if (count != onlineDataCount.value) {
+        blinkRefresh.value = true;
+      }
 
       ssc.currentPage.value = (onlineDataCount.value / 100).ceil() + 1;
     }).onError((error, stackTrace) {

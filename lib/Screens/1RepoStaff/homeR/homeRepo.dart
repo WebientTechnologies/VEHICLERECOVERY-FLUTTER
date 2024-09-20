@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:blinking_text/blinking_text.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -68,7 +69,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     // }
     //hcc.getGraphWeekApiData("search");
     hc.getAllDashboardApiData();
-    init();
+    //init();
   }
 
   @override
@@ -156,10 +157,10 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
     if (!hasPermission) return;
     await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
         .then((Position position) async {
-      await Helper.setStringPreferences(
-          SharedPreferencesVar.lat, position.latitude.toString());
-      await Helper.setStringPreferences(
-          SharedPreferencesVar.long, position.longitude.toString());
+      await Helper.setDoublePreferences(
+          SharedPreferencesVar.lat, position.latitude);
+      await Helper.setDoublePreferences(
+          SharedPreferencesVar.long, position.longitude);
     }).catchError((e) {
       debugPrint(e);
     });
@@ -188,16 +189,15 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                         Obx(() => hc.showRefresh.value
                             ? GestureDetector(
                                 onTap: () async {
-                                  String id = await VehicleDb().getLastId();
-                                  ssc.getAllDashboardApiDataPeriodically(
-                                      context, id);
+                                  await ssc.downloadData();
                                 },
-                                child: Text(
+                                child: BlinkText(
                                   'Refresh',
                                   style: TextStyle(
                                       color: ColorConstants.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
+                                  endColor: Colors.orange,
                                 ),
                               )
                             : const SizedBox()),

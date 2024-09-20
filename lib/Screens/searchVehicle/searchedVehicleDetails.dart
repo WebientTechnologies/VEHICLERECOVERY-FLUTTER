@@ -78,7 +78,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   }
 
   Widget buildInfoRow(String label, double height, double width, String value,
-      {bool enableIcon = false}) {
+      {bool enableIcon = false, String text = ''}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -96,6 +96,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
             borderColor: ColorConstants.aqua,
             hintText: value,
             enableIcon: enableIcon,
+            text: text,
           ),
         ],
       ),
@@ -312,28 +313,6 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                         ],
                       ),
                       buildInfoRow(
-                          'Registeration No',
-                          height,
-                          width,
-                          from == 'home' || from == 'homee'
-                              ? data.regNo != null
-                                  ? data.regNo
-                                  : ''
-                              : data.vehicleId!.regNo != null
-                                  ? data.vehicleId!.regNo
-                                  : ''),
-                      buildInfoRow(
-                          'Customer Name',
-                          height,
-                          width,
-                          from == 'home' || from == 'homee'
-                              ? data.customerName != null
-                                  ? data.customerName
-                                  : ''
-                              : data.vehicleId!.customerName != null
-                                  ? data.vehicleId!.customerName
-                                  : ''),
-                      buildInfoRow(
                           'Bank Name',
                           height,
                           width,
@@ -352,18 +331,64 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                               ? data.branch != null
                                   ? data.branch
                                   : ''
-                              : ''),
-                      buildInfoRow('EMI', height, width, ''),
-                      buildInfoRow('Vehicle Maker', height, width, ''),
+                              : data.vehicleId!.branch != null
+                                  ? data.vehicleId!.branch
+                                  : ''),
                       buildInfoRow(
-                          'Agreement No',
+                          'Registeration No',
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.agreementNo != null
-                                  ? data.agreementNo
+                              ? data.regNo != null
+                                  ? data.regNo
                                   : ''
-                              : ''),
+                              : data.vehicleId!.regNo != null
+                                  ? data.vehicleId!.regNo
+                                  : ''),
+                      buildInfoRow(
+                          'Loan No',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.loanNo != null
+                                  ? data.loanNo
+                                  : ''
+                              : data.vehicleId!.loanNo != null
+                                  ? data.vehicleId!.loanNo
+                                  : ''),
+                      buildInfoRow(
+                          'Customer Name',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.customerName != null
+                                  ? data.customerName
+                                  : ''
+                              : data.vehicleId!.customerName != null
+                                  ? data.vehicleId!.customerName
+                                  : ''),
+                      buildInfoRow(
+                          'Model',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.model != null
+                                  ? data.model
+                                  : ''
+                              : data.vehicleId!.model != null
+                                  ? data.vehicleId!.model
+                                  : ''),
+                      buildInfoRow(
+                          'Make',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.maker != null
+                                  ? data.maker
+                                  : ''
+                              : data.vehicleId!.maker != null
+                                  ? data.vehicleId!.maker
+                                  : ''),
                       buildInfoRow(
                           'Chasis No',
                           height,
@@ -386,7 +411,61 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                               : data.vehicleId!.engineNo != null
                                   ? data.vehicleId!.engineNo
                                   : ''),
-                      buildInfoRow('Model', height, width, ''),
+                      buildInfoRow(
+                          'EMI',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.emi != null
+                                  ? data.emi
+                                  : ''
+                              : data.vehicleId!.emi != null
+                                  ? data.vehicleId!.emi
+                                  : ''),
+                      buildInfoRow(
+                          'Bucket',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.bucket != null
+                                  ? data.bucket
+                                  : ''
+                              : data.vehicleId!.bucket != null
+                                  ? data.vehicleId!.bucket
+                                  : ''),
+                      buildInfoRow(
+                          'POS',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.pos != null
+                                  ? data.pos
+                                  : ''
+                              : data.vehicleId!.pos != null
+                                  ? data.vehicleId!.pos
+                                  : ''),
+                      buildInfoRow(
+                          'TOS',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.tos != null
+                                  ? data.tos
+                                  : ''
+                              : data.vehicleId!.tos != null
+                                  ? data.vehicleId!.tos
+                                  : ''),
+                      buildInfoRow(
+                          'Allocation',
+                          height,
+                          width,
+                          from == 'home' || from == 'homee'
+                              ? data.allocation != null
+                                  ? data.allocation
+                                  : ''
+                              : data.vehicleId!.allocation != null
+                                  ? data.vehicleId!.allocation
+                                  : ''),
                       buildInfoRow(
                           'Call Center 1',
                           height,
@@ -409,6 +488,21 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   : ''
                               : data.vehicleId!.callCenterNo1 != null
                                   ? data.vehicleId!.callCenterNo1
+                                  : '',
+                          text:
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+'''),
+                      buildInfoRow(
+                          'Call Center Email 1',
+                          height,
+                          Get.width * 0.9,
+                          enableIcon: true,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo1Email != null
+                                  ? data.callCenterNo1Email
+                                  : ''
+                              : data.vehicleId!.callCenterNo1Email != null
+                                  ? data.vehicleId!.callCenterNo1Email
                                   : ''),
                       buildInfoRow(
                           'Call Center 2',
@@ -432,6 +526,21 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   : ''
                               : data.vehicleId!.callCenterNo2 != null
                                   ? data.vehicleId!.callCenterNo2
+                                  : '',
+                          text:
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+'''),
+                      buildInfoRow(
+                          'Call Center Email 2',
+                          height,
+                          Get.width * 0.9,
+                          enableIcon: true,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo2Email != null
+                                  ? data.callCenterNo2Email
+                                  : ''
+                              : data.vehicleId!.callCenterNo2Email != null
+                                  ? data.vehicleId!.callCenterNo2Email
                                   : ''),
                       buildInfoRow(
                           'Call Center 3',
@@ -455,41 +564,43 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   : ''
                               : data.vehicleId!.callCenterNo3 != null
                                   ? data.vehicleId!.callCenterNo3
-                                  : ''),
-                      // buildInfoRow('Call Center 2', height, width),
-                      // buildInfoRow('Call Center No 3', height, width),
+                                  : '',
+                          text:
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+'''),
                       buildInfoRow(
-                          'Month',
+                          'Call Center Email 3',
+                          height,
+                          Get.width * 0.9,
+                          enableIcon: true,
+                          from == 'home' || from == 'homee'
+                              ? data.callCenterNo3Email != null
+                                  ? data.callCenterNo3Email
+                                  : ''
+                              : data.vehicleId!.callCenterNo3Email != null
+                                  ? data.vehicleId!.callCenterNo3Email
+                                  : ''),
+                      buildInfoRow(
+                          'Address',
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.month != null
-                                  ? data.month
+                              ? data.address != null
+                                  ? data.address
                                   : ''
-                              : data.vehicleId!.month != null
-                                  ? data.vehicleId!.month
+                              : data.vehicleId!.address != null
+                                  ? data.vehicleId!.address
                                   : ''),
                       buildInfoRow(
-                          'Last Digit',
+                          'SEC - 17',
                           height,
                           width,
                           from == 'home' || from == 'homee'
-                              ? data.lastDigit != null
-                                  ? data.lastDigit
+                              ? data.sec17 != null
+                                  ? data.sec17
                                   : ''
-                              : data.vehicleId!.lastDigit != null
-                                  ? data.vehicleId!.lastDigit
-                                  : ''),
-                      buildInfoRow(
-                          'Status',
-                          height,
-                          width,
-                          from == 'home' || from == 'homee'
-                              ? data.status != null
-                                  ? data.status
-                                  : ''
-                              : data.vehicleId!.status != null
-                                  ? data.vehicleId!.status
+                              : data.vehicleId!.sec17 != null
+                                  ? data.vehicleId!.sec17
                                   : ''),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -562,20 +673,6 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           ),
                         ),
                       ),
-
-                      buildInfoRow('DL Code', height, width, ''),
-                      buildInfoRow('TBR Flag', height, width, ''),
-                      buildInfoRow('Executive Name', height, width, ''),
-                      buildInfoRow('SEC-17', height, width, ''),
-                      buildInfoRow('SEC-09', height, width, ''),
-                      buildInfoRow('Seasoning', height, width, ''),
-                      buildInfoRow(
-                          'Upload Date',
-                          height,
-                          width,
-                          from == 'home' || from == 'homee'
-                              ? data.createdAt.substring(0, 10)
-                              : data.vehicleId!.createdAt.substring(0, 10)),
                     ],
                   ),
           ),

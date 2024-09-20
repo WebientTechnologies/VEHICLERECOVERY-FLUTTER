@@ -47,10 +47,10 @@ class HomeController extends GetxController {
 
       showRefresh.value = true;
       onlineDataCount.value = dashboardModel.value.totalOnlineData ?? 0;
-      searchHoldReleaseRepoTotal.value = dashboardModel.value.holdCount! +
-          dashboardModel.value.searchCount! +
-          dashboardModel.value.releaseCount! +
-          dashboardModel.value.repoCount!;
+      // searchHoldReleaseRepoTotal.value = dashboardModel.value.holdCount! +
+      //     dashboardModel.value.searchCount! +
+      //     dashboardModel.value.releaseCount! +
+      //     dashboardModel.value.repoCount!;
 
       ssc.currentPage.value = (onlineDataCount.value / 100).ceil() + 1;
     }).onError((error, stackTrace) {

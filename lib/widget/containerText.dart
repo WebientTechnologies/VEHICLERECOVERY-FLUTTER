@@ -19,6 +19,7 @@ class ContainerWidget extends StatelessWidget {
   final Color? textColor;
   final Color? backgroundColor;
   final bool enableIcon;
+  final String? text;
 
   ContainerWidget(
       {this.borderRadius = 8.0,
@@ -31,7 +32,8 @@ class ContainerWidget extends StatelessWidget {
       this.width,
       this.textColor,
       this.backgroundColor,
-      this.enableIcon = false});
+      this.enableIcon = false,
+      this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +98,7 @@ class ContainerWidget extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     await launchUrl(
-                        Uri.parse('https://wa.me/$hintText?text=hiii'));
+                        Uri.parse('https://wa.me/$hintText?text=$text'));
                   },
                   child: Image.asset(
                     ImageConstants.whatsapp,
