@@ -119,7 +119,7 @@ class VehicleDb {
     status,
     fileName,
     createdAt,
-    updatedAt,) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    updatedAt) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
       ''', [
       dataId,
       bankName,
@@ -189,8 +189,8 @@ class VehicleDb {
   Future<List<VehicleModel>> fetchByReg(String lastDigit) async {
     final db = await DatabaseHelper().database;
     final files = await db.rawQuery('''
-    select * from $tableName where status IN (?,?) AND lastDigit = ? ORDER BY regNo ASC
-    ''', ['search', 'pending', lastDigit]);
+    select * from $tableName where lastDigit = ? ORDER BY regNo ASC
+    ''', [lastDigit]);
     //print(files);
     final List<VehicleModel> vehicles = files.map((Map<String, dynamic> row) {
       return VehicleModel.fromSqfliteDatabase(row);
@@ -202,8 +202,8 @@ class VehicleDb {
   Future<List<VehicleModel>> fetchByChasis(String chasis) async {
     final db = await DatabaseHelper().database;
     final files = await db.rawQuery('''
-    select * from $tableName where status IN (?,?) AND chasisNo = ? ORDER BY regNo ASC
-    ''', ['search', 'pending', chasis]);
+    select * from $tableName where chasisNo = ? ORDER BY regNo ASC
+    ''', [chasis]);
     //print(files);
     return files.map((e) => VehicleModel.fromSqfliteDatabase(e)).toList();
   }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:vinayak/Screens/1RepoStaff/homeR/controller/dashboard_controller.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/utils/routes/app_routes.dart';
@@ -28,6 +29,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
   HomeController hc = Get.put(HomeController());
   VehicleSearchController sc = Get.put(VehicleSearchController());
   SplashScreenController ssc = Get.put(SplashScreenController());
+  DashboardController dc = Get.put(DashboardController());
 
   ScrollController _controller1 = ScrollController();
   ScrollController _controller2 = ScrollController();
@@ -54,7 +56,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
     _chasisController1.addListener(_chasisScrollListener);
     _chasisController2.addListener(_chasisScrollListener);
     checkMode();
-    hc.getAllDashboardApiData();
+    dc.getAllDashboardApiData();
     _getCurrentPosition();
     //hc.getGraphWeekApiData("search");
     // DateTime today = DateTime.now();
@@ -251,17 +253,27 @@ class _HomeSCreenState extends State<HomeSCreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Obx(() => hc.showRefresh.value
+                          Obx(() => dc.showRefresh.value
                               ? GestureDetector(
                                   onTap: () async {
-                                    await ssc.downloadData();
+                                    if (dc.onlineDataCount.value -
+                                            sc.offlineDataCount.value <
+                                        5000) {
+                                      String lastId =
+                                          await VehicleDb().getLastId();
+
+                                      ssc.getAllDashboardApiDataPeriodically(
+                                          context, lastId);
+                                    } else {
+                                      await ssc.downloadData();
+                                    }
                                   },
-                                  child: hc.blinkRefresh.value
+                                  child: dc.blinkRefresh.value
                                       ? BlinkText(
                                           'Refresh',
                                           style: TextStyle(
@@ -306,7 +318,10 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           ),
                         ],
                       ),
-                      Image.asset('assets/images/logo_t.png')
+                      Image.asset(
+                        'assets/images/logo_t.png',
+                        height: 100,
+                      )
                     ],
                   ),
                 ),
@@ -527,22 +542,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             ]);
                                       },
                                       child: Container(
-                                          height: 40,
+                                          height: 30,
                                           width: width * 1,
-                                          margin: const EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                          ),
-                                          child: Center(
-                                              child: Text(
+                                          child: Text(
                                             sc.firstHalf[index].regNo ?? '',
                                             style: TextStyle(
-                                                color: ColorConstants.white,
+                                                color: ColorConstants.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ))),
+                                                fontSize: 18),
+                                          )),
                                     );
                                   },
                                 ),
@@ -566,22 +574,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             ]);
                                       },
                                       child: Container(
-                                          height: 40,
+                                          height: 30,
                                           width: width * 1,
-                                          margin: const EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                          ),
-                                          child: Center(
-                                              child: Text(
+                                          child: Text(
                                             sc.secondHalf[index].regNo ?? '',
                                             style: TextStyle(
-                                                color: ColorConstants.white,
+                                                color: ColorConstants.black,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: 15),
-                                          ))),
+                                                fontSize: 18),
+                                          )),
                                     );
                                   },
                                 ),
@@ -612,20 +613,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       ]);
                                 },
                                 child: Container(
-                                    height: 40,
-                                    width: width * 0,
-                                    decoration: BoxDecoration(
-                                      color: ColorConstants.aqua,
-                                      borderRadius: BorderRadius.circular(18),
-                                    ),
-                                    child: Center(
-                                        child: Text(
+                                    height: 30,
+                                    width: width * 1,
+                                    child: Text(
                                       sc.offlineDataFiltered[index].regNo ?? '',
                                       style: TextStyle(
-                                          color: ColorConstants.white,
+                                          color: ColorConstants.black,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18),
-                                    ))),
+                                    )),
                               );
                             },
                           ),
@@ -652,8 +648,9 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       if (isOnline) {
                         return Expanded(
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SizedBox(
+                              Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
                                   controller: _chasisController1,
@@ -673,27 +670,20 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             ]);
                                       },
                                       child: Container(
-                                          height: 40,
+                                          height: 30,
                                           width: width * 1,
-                                          margin: const EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                          ),
-                                          child: Center(
-                                              child: Text(
+                                          child: Text(
                                             sc.firstHalf[index].regNo ?? '',
                                             style: TextStyle(
-                                                color: ColorConstants.white,
+                                                color: ColorConstants.black,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18),
-                                          ))),
+                                          )),
                                     );
                                   },
                                 ),
                               ),
-                              SizedBox(
+                              Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
                                   controller: _chasisController2,
@@ -713,22 +703,15 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             ]);
                                       },
                                       child: Container(
-                                          height: 40,
+                                          height: 30,
                                           width: width * 1,
-                                          margin: const EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                          ),
-                                          child: Center(
-                                              child: Text(
+                                          child: Text(
                                             sc.secondHalf[index].regNo ?? '',
                                             style: TextStyle(
-                                                color: ColorConstants.white,
+                                                color: ColorConstants.black,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18),
-                                          ))),
+                                          )),
                                     );
                                   },
                                 ),
@@ -740,7 +723,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         return Expanded(
                           child: Row(
                             children: [
-                              SizedBox(
+                              Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
                                   controller: _chasisController1,
@@ -760,28 +743,21 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             ]);
                                       },
                                       child: Container(
-                                          height: 40,
+                                          height: 30,
                                           width: width * 1,
-                                          margin: const EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                          ),
-                                          child: Center(
-                                              child: Text(
+                                          child: Text(
                                             sc.offlinefirstHalf[index].regNo ??
                                                 '',
                                             style: TextStyle(
-                                                color: ColorConstants.white,
+                                                color: ColorConstants.black,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18),
-                                          ))),
+                                          )),
                                     );
                                   },
                                 ),
                               ),
-                              SizedBox(
+                              Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
                                   controller: _chasisController2,
@@ -801,23 +777,16 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                             ]);
                                       },
                                       child: Container(
-                                          height: 40,
+                                          height: 30,
                                           width: width * 1,
-                                          margin: const EdgeInsets.only(top: 5),
-                                          decoration: BoxDecoration(
-                                            color: ColorConstants.aqua,
-                                            borderRadius:
-                                                BorderRadius.circular(18),
-                                          ),
-                                          child: Center(
-                                              child: Text(
+                                          child: Text(
                                             sc.offlinesecondHalf[index].regNo ??
                                                 '',
                                             style: TextStyle(
-                                                color: ColorConstants.white,
+                                                color: ColorConstants.black,
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18),
-                                          ))),
+                                          )),
                                     );
                                   },
                                 ),
@@ -846,7 +815,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                       ),
                     ),
                     Obx(() {
-                      switch (hc.rxRequestDashboardStatus.value) {
+                      switch (dc.rxRequestDashboardStatus.value) {
                         case Status.LOADING:
                           return const Center(
                             child: CircularProgressIndicator(),
@@ -892,7 +861,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                     child: Center(
                                       child: Obx(
                                         () => Text(
-                                          'Online Data \n${hc.onlineDataCount.value}',
+                                          'Online Data \n${dc.onlineDataCount.value}',
                                           style: TextStyle(
                                               fontSize: 17,
                                               color: ColorConstants.white),

@@ -1,5 +1,7 @@
+import 'package:direct_caller_sim_choice/direct_caller_sim_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
@@ -26,9 +28,12 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   String role = '', from = '';
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   UserController uc = Get.put(UserController());
+  String stafMobile = "";
   @override
   void initState() {
     super.initState();
+
+    stafMobile = uc.userDetails['staf']['mobile'];
     data = Get.arguments[0];
     role = Get.arguments[1];
     print('lengthhhh ${Get.arguments.length}');
@@ -69,12 +74,21 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   }
 
   void _launchPhoneDialer(String phoneNumber) async {
-    final url = 'tel:$phoneNumber';
-    if (phoneNumber != null && await canLaunch(url)) {
-      await launch(url);
-    } else {
-      print('Could not launch $url');
-    }
+    await Permission.phone.request().then((v) {
+      if (v.isGranted) {
+        final DirectCaller directCaller = DirectCaller();
+        directCaller.makePhoneCall(phoneNumber);
+      } else {
+        launchUrl(Uri.parse('tel:$phoneNumber'));
+      }
+    });
+
+    // final url = 'tel:$phoneNumber';
+    // if (phoneNumber != null && await canLaunch(url)) {
+    //   await launch(url);
+    // } else {
+    //   print('Could not launch $url');
+    // }
   }
 
   Widget buildInfoRow(String label, double height, double width, String value,
@@ -490,7 +504,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   ? data.vehicleId!.callCenterNo1
                                   : '',
                           text:
-                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
 '''),
                       buildInfoRow(
                           'Call Center Email 1',
@@ -528,7 +542,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   ? data.vehicleId!.callCenterNo2
                                   : '',
                           text:
-                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
 '''),
                       buildInfoRow(
                           'Call Center Email 2',
@@ -566,7 +580,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                                   ? data.vehicleId!.callCenterNo3
                                   : '',
                           text:
-                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                              '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
 '''),
                       buildInfoRow(
                           'Call Center Email 3',
@@ -705,7 +719,7 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
             IconButton(
                 onPressed: () async {
                   String msg =
-                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${data.bankName}\nCustomer Name:${data.customerName}\nRegistration:${data.regNo}\nChasis No:${data.chasisNo}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\nList upload date:${data.createdAt.substring(0, 10)}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n*VINAYAK ASSOCIATES*
+                      '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
 ''';
                   print(msg);
                   Share.share(msg);

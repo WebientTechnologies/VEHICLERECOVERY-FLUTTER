@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:vinayak/Screens/add%20vehicle/addvehicle.dart';
 import 'package:vinayak/Screens/contact_info/contact_info.dart';
 import 'package:vinayak/core/constants/color_constants.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
@@ -183,6 +184,38 @@ class _ProfileState extends State<Profile> {
                         ),
                         const Text(
                           'View Request',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 17),
+                        ),
+                        const Spacer(),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: ColorConstants.aqua,
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              if (showExtra) const Divider(),
+              if (showExtra)
+                GestureDetector(
+                  onTap: () {
+                    Get.to(Addvehicle());
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 5),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.car_repair,
+                          color: ColorConstants.aqua,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Add Vehicle',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 17),
                         ),

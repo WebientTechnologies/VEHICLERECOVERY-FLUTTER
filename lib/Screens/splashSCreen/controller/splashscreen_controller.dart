@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:vinayak/Screens/1RepoStaff/homeR/controller/dashboard_controller.dart';
 import 'package:vinayak/Screens/HomeScreen/controller/homeController.dart';
 import 'package:vinayak/Screens/searchVehicle/controller/searchController.dart';
 import 'package:vinayak/Screens/splashSCreen/model/vehicledata_model.dart';
@@ -251,7 +252,7 @@ class SplashScreenController extends GetxController {
           );
         });
 
-    getAllDashboardApi(context, lastId, 100).then((value) async {
+    getAllDashboardApi(context, lastId, 5000).then((value) async {
       setDashboardList(value);
       // await Helper.setIntPreferences(
       //     SharedPreferencesVar.offlinePageNumber, currentPage.value);
@@ -266,37 +267,37 @@ class SplashScreenController extends GetxController {
 
           await vehicleDb.insertVehicle(
               getSearchByLastDigitModel.value.data![i].sId!,
-              getSearchByLastDigitModel.value.data![i].bankName,
-              getSearchByLastDigitModel.value.data![i].branch,
-              getSearchByLastDigitModel.value.data![i].regNo,
-              getSearchByLastDigitModel.value.data![i].loanNo,
-              getSearchByLastDigitModel.value.data![i].customerName,
-              getSearchByLastDigitModel.value.data![i].model,
-              getSearchByLastDigitModel.value.data![i].maker,
-              getSearchByLastDigitModel.value.data![i].chasisNo,
-              getSearchByLastDigitModel.value.data![i].engineNo,
-              getSearchByLastDigitModel.value.data![i].emi,
-              getSearchByLastDigitModel.value.data![i].bucket,
-              getSearchByLastDigitModel.value.data![i].pos,
-              getSearchByLastDigitModel.value.data![i].tos,
-              getSearchByLastDigitModel.value.data![i].allocation,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1Name,
-              getSearchByLastDigitModel.value.data![i].callCenterNo1Email,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2Name,
-              getSearchByLastDigitModel.value.data![i].callCenterNo2Email,
-              getSearchByLastDigitModel.value.data![i].callCenterNo3,
-              getSearchByLastDigitModel.value.data![i].callCenterNo3Name,
-              getSearchByLastDigitModel.value.data![i].callCenterNo3Email,
-              getSearchByLastDigitModel.value.data![i].address,
-              getSearchByLastDigitModel.value.data![i].sec17,
-              getSearchByLastDigitModel.value.data![i].agreementNo,
-              getSearchByLastDigitModel.value.data![i].dlCode,
-              getSearchByLastDigitModel.value.data![i].color,
-              getSearchByLastDigitModel.value.data![i].lastDigit,
-              getSearchByLastDigitModel.value.data![i].month,
-              getSearchByLastDigitModel.value.data![i].status,
+              getSearchByLastDigitModel.value.data![i].bankName ?? '',
+              getSearchByLastDigitModel.value.data![i].branch ?? '',
+              getSearchByLastDigitModel.value.data![i].regNo ?? '',
+              getSearchByLastDigitModel.value.data![i].loanNo ?? '',
+              getSearchByLastDigitModel.value.data![i].customerName ?? '',
+              getSearchByLastDigitModel.value.data![i].model ?? '',
+              getSearchByLastDigitModel.value.data![i].maker ?? '',
+              getSearchByLastDigitModel.value.data![i].chasisNo ?? '',
+              getSearchByLastDigitModel.value.data![i].engineNo ?? '',
+              getSearchByLastDigitModel.value.data![i].emi ?? '',
+              getSearchByLastDigitModel.value.data![i].bucket ?? '',
+              getSearchByLastDigitModel.value.data![i].pos ?? '',
+              getSearchByLastDigitModel.value.data![i].tos ?? '',
+              getSearchByLastDigitModel.value.data![i].allocation ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo1 ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo1Name ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo1Email ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo2 ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo2Name ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo2Email ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo3 ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo3Name ?? '',
+              getSearchByLastDigitModel.value.data![i].callCenterNo3Email ?? '',
+              getSearchByLastDigitModel.value.data![i].address ?? '',
+              getSearchByLastDigitModel.value.data![i].sec17 ?? '',
+              getSearchByLastDigitModel.value.data![i].agreementNo ?? '',
+              getSearchByLastDigitModel.value.data![i].dlCode ?? '',
+              getSearchByLastDigitModel.value.data![i].color ?? '',
+              getSearchByLastDigitModel.value.data![i].lastDigit ?? '',
+              getSearchByLastDigitModel.value.data![i].month ?? '',
+              getSearchByLastDigitModel.value.data![i].status ?? '',
               '',
               getSearchByLastDigitModel.value.data![i].createdAt,
               getSearchByLastDigitModel.value.data![i].updatedAt);
@@ -327,6 +328,9 @@ class SplashScreenController extends GetxController {
           SharedPreferencesVar.lastUpdateTime, currentTime);
 
       Get.back();
+
+      DashboardController dc = Get.put(DashboardController());
+      dc.blinkRefresh.value = false;
 
       // if (uc.userDetails['role'] == 'repo-agent') {
       //   Get.offAll(HomeScreenRepoStaff());

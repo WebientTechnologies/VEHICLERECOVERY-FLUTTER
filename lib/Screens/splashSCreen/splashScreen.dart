@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     //         AndroidFlutterLocalNotificationsPlugin>()
     //     ?.requestNotificationsPermission();
 
-    Timer(const Duration(milliseconds: 1500), () {
+    Timer(const Duration(milliseconds: 500), () {
       checkSignin();
     });
   }

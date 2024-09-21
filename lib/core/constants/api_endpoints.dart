@@ -10,6 +10,7 @@ class ApiEndpoints {
   static const String getCityByState = '${baseurl}get-city-by-state';
   static const String getHomeDashboard = '${baseurl}office-staff-dashboard';
   static const String getHomeDashboardRepoStaff = '${baseurl}agent-dashboard';
+  static const String getDashboard = '${baseurl}getDashboard';
   static const String getAllVehicleData = '${baseurl}get-all-data';
 
   static const String searchvehicle = '${baseurl}search-details';
@@ -41,4 +42,5 @@ class ApiEndpoints {
   static const String getLastAgentId = '${baseurl}getLastAgentId';
   static const String changeVehicleStatusByStaff =
       '${baseurl}change-vehicle-status-by-staff/';
+  static const String addVehicle = '${baseurl}addVehicle';
 }
