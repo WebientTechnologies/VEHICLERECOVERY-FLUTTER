@@ -1,4 +1,4 @@
-package com.example.vinayak
+package com.vinayakrecovery
 
 import io.flutter.embedding.android.FlutterActivity
 

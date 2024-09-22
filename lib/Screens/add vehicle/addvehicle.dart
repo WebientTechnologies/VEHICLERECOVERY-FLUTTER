@@ -109,6 +109,8 @@ class _AddvehicleState extends State<Addvehicle> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    maxLength: 10,
                     decoration: const InputDecoration(
                         hintText: 'Mobile Number', border: InputBorder.none),
                     controller: avc.mobileCont.value,

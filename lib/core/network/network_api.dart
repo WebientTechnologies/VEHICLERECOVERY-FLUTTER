@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:vinayak/core/utils/routes/app_routes.dart';
@@ -289,7 +290,7 @@ class NetworkApi extends BaseApi {
         return responseJson;
       case 401:
         dynamic responseJson = jsonDecode(response.body);
-        // Fluttertoast.showToast(msg: 'Session expired. please login again');
+        Fluttertoast.showToast(msg: 'Session expired. please login again');
         UserController uc = Get.find<UserController>();
         uc.deleteUserDetails();
         await Helper.setStringPreferences('token', '');
@@ -298,6 +299,12 @@ class NetworkApi extends BaseApi {
         return responseJson;
       case 403:
         dynamic responseJson = jsonDecode(response.body);
+        Fluttertoast.showToast(msg: 'Access Denied. Please contact admin.');
+        UserController uc = Get.find<UserController>();
+        uc.deleteUserDetails();
+        await Helper.setStringPreferences('token', '');
+        await FirebaseAuth.instance.signOut();
+        Get.offAllNamed(AppRoutes.signin);
         return responseJson;
       case 500:
         dynamic responseJson = jsonDecode(response.body);
