@@ -194,9 +194,15 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                     const EdgeInsets.only(right: 10.0, top: 5),
                                 child: GestureDetector(
                                   onTap: () async {
-                                    if (dc.onlineDataCount.value -
-                                            sc.offlineDataCount.value <
-                                        5000) {
+                                    String total = (dc.onlineDataCount.value -
+                                            sc.offlineDataCount.value)
+                                        .toString();
+
+                                    int tt = total.contains('-')
+                                        ? int.parse(total.substring(1))
+                                        : int.parse(total);
+
+                                    if (tt < 5000 && tt > 0) {
                                       String lastId =
                                           await VehicleDb().getLastId();
 
