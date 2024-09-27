@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:blinking_text/blinking_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:vinayak/Screens/1RepoStaff/homeR/controller/dashboard_controller.dart';
@@ -276,7 +277,13 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                       ssc.getAllDashboardApiDataPeriodically(
                                           context, lastId);
                                     } else {
-                                      await ssc.downloadData();
+                                      if (dc.onlineDataCount.value !=
+                                          sc.offlineDataCount.value) {
+                                        await ssc.downloadData();
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: 'No updates available');
+                                      }
                                     }
                                   },
                                   child: dc.blinkRefresh.value

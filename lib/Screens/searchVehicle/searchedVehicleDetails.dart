@@ -33,7 +33,6 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
   void initState() {
     super.initState();
 
-    stafMobile = uc.userDetails['staf']['mobile'];
     data = Get.arguments[0];
     role = Get.arguments[1];
     print('lengthhhh ${Get.arguments.length}');
@@ -41,6 +40,8 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
     from = Get.arguments[3];
     sc.getAllSeezerData();
     if (role == 'officeStaff') {
+      stafMobile = uc.userDetails['staf']['mobile'];
+
       isRepoAgent = false;
     } else {
       isRepoAgent = true;

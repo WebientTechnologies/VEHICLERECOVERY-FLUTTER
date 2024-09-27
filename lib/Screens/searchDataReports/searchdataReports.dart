@@ -114,13 +114,15 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                             : ColorConstants.aqua;
                         return GestureDetector(
                             onTap: () {
-                              Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                  arguments: [
-                                    src.data[index],
-                                    'officeStaff',
-                                    false,
-                                    'report'
-                                  ]);
+                              if (src.data[index].vehicleId != null) {
+                                Get.toNamed(AppRoutes.searchedVehicleDetails,
+                                    arguments: [
+                                      src.data[index],
+                                      'officeStaff',
+                                      false,
+                                      'report'
+                                    ]);
+                              }
                             },
                             child: Container(
                               color: bgColor,
@@ -160,9 +162,12 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                                 });
                                               },
                                               child: Text(
-                                                src.data[index].vehicleId!
-                                                        .bankName ??
-                                                    '',
+                                                src.data[index].vehicleId !=
+                                                        null
+                                                    ? src.data[index].vehicleId!
+                                                            .bankName ??
+                                                        ''
+                                                    : '',
                                                 style: TextStyle(
                                                   color: ColorConstants.white,
                                                   fontSize: 14.0,
@@ -201,9 +206,12 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                                 });
                                               },
                                               child: Text(
-                                                src.data[index].vehicleId!
-                                                        .customerName ??
-                                                    '',
+                                                src.data[index].vehicleId !=
+                                                        null
+                                                    ? src.data[index].vehicleId!
+                                                            .customerName ??
+                                                        ''
+                                                    : '',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   color: ColorConstants.white,
@@ -243,9 +251,12 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                                 });
                                               },
                                               child: Text(
-                                                src.data[index].vehicleId!
-                                                        .regNo ??
-                                                    '',
+                                                src.data[index].vehicleId !=
+                                                        null
+                                                    ? src.data[index].vehicleId!
+                                                            .bankName ??
+                                                        ''
+                                                    : '',
                                                 style: TextStyle(
                                                   color: ColorConstants.white,
                                                   fontSize: 14.0,
@@ -293,9 +304,12 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                                 });
                                               },
                                               child: Text(
-                                                src.data[index].vehicleId!
-                                                        .chasisNo ??
-                                                    '',
+                                                src.data[index].vehicleId !=
+                                                        null
+                                                    ? src.data[index].vehicleId!
+                                                            .bankName ??
+                                                        ''
+                                                    : '',
                                                 style: TextStyle(
                                                   color: ColorConstants.white,
                                                   fontSize: 14.0,
@@ -319,7 +333,11 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                               ),
                                             ),
                                             Text(
-                                              '',
+                                              src.data[index].vehicleId != null
+                                                  ? src.data[index].vehicleId!
+                                                          .model ??
+                                                      ''
+                                                  : '',
                                               style: TextStyle(
                                                 color: ColorConstants.white,
                                                 fontSize: 14.0,
@@ -392,9 +410,11 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                               ),
                                             ),
                                             Text(
-                                              src.data[index].vehicleId!
-                                                  .createdAt!
-                                                  .substring(0, 10),
+                                              src.data[index].vehicleId != null
+                                                  ? src.data[index].vehicleId!
+                                                      .createdAt!
+                                                      .substring(0, 10)
+                                                  : '',
                                               style: TextStyle(
                                                 color: ColorConstants.white,
                                                 fontSize: 14.0,
@@ -417,8 +437,10 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                               ),
                                             ),
                                             Text(
-                                              src.data[index].createdAt!
-                                                  .substring(0, 10),
+                                              src.data[index].vehicleId != null
+                                                  ? src.data[index].createdAt!
+                                                      .substring(0, 10)
+                                                  : '',
                                               style: TextStyle(
                                                 color: ColorConstants.white,
                                                 fontSize: 14.0,
@@ -441,9 +463,11 @@ class _SearchDataReportsState extends State<SearchDataReports> {
                                               ),
                                             ),
                                             Text(
-                                              formatTime(src
-                                                      .data[index].createdAt!)
-                                                  .substring(13),
+                                              src.data[index].createdAt != null
+                                                  ? formatTime(src.data[index]
+                                                          .createdAt!)
+                                                      .substring(13)
+                                                  : '',
                                               style: TextStyle(
                                                 color: ColorConstants.white,
                                                 fontSize: 14.0,
@@ -476,6 +500,6 @@ class _SearchDataReportsState extends State<SearchDataReports> {
     DateTime istTime = utcTime.subtract(Duration(hours: 5, minutes: 30));
 
     // Format the DateTime to the desired output format
-    return DateFormat('yyyy-MM-dd – kk:mm:ss').format(istTime);
+    return DateFormat('yyyy-MM-dd – hh:mm aa').format(istTime);
   }
 }
