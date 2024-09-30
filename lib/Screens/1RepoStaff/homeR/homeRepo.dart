@@ -54,8 +54,18 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
-    _controller1.addListener(_scrollListener);
-    _controller2.addListener(_scrollListener);
+    _controller1.addListener(() {
+      if (_controller2.hasClients &&
+          !_controller2.position.isScrollingNotifier.value) {
+        _controller2.jumpTo(_controller1.offset);
+      }
+    });
+    _controller2.addListener(() {
+      if (_controller1.hasClients &&
+          !_controller1.position.isScrollingNotifier.value) {
+        _controller1.jumpTo(_controller2.offset);
+      }
+    });
 
     _chasisController1.addListener(_chasisScrollListener);
     _chasisController2.addListener(_chasisScrollListener);
@@ -467,14 +477,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.searchedVehicleDetails,
-                                        arguments: [
-                                          sc.firstHalf[index],
-                                          'repoAgent',
-                                          isOnline,
-                                          'home'
-                                        ]);
+                                    if (sc.firstHalf[index].regNo) {
+                                      Get.toNamed(
+                                          AppRoutes.searchedVehicleDetails,
+                                          arguments: [
+                                            sc.firstHalf[index],
+                                            'repoAgent',
+                                            isOnline,
+                                            'home'
+                                          ]);
+                                    }
                                   },
                                   child: Container(
                                       height: 30,
@@ -500,14 +512,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.searchedVehicleDetails,
-                                        arguments: [
-                                          sc.secondHalf[index],
-                                          'repoAgent',
-                                          isOnline,
-                                          'home'
-                                        ]);
+                                    if (sc.secondHalf[index].regNo) {
+                                      Get.toNamed(
+                                          AppRoutes.searchedVehicleDetails,
+                                          arguments: [
+                                            sc.secondHalf[index],
+                                            'repoAgent',
+                                            isOnline,
+                                            'home'
+                                          ]);
+                                    }
                                   },
                                   child: Container(
                                       height: 30,
@@ -539,14 +553,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.searchedVehicleDetails,
-                                        arguments: [
-                                          sc.offlinefirstHalf[index],
-                                          'repoAgent',
-                                          isOnline,
-                                          'home'
-                                        ]);
+                                    if (sc.offlinefirstHalf[index].regNo) {
+                                      Get.toNamed(
+                                          AppRoutes.searchedVehicleDetails,
+                                          arguments: [
+                                            sc.offlinefirstHalf[index],
+                                            'repoAgent',
+                                            isOnline,
+                                            'home'
+                                          ]);
+                                    }
                                   },
                                   child: Container(
                                       height: 30,
@@ -572,14 +588,17 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
-                                    Get.toNamed(
-                                        AppRoutes.searchedVehicleDetails,
-                                        arguments: [
-                                          sc.offlinesecondHalf[index],
-                                          'repoAgent',
-                                          isOnline,
-                                          'home'
-                                        ]);
+                                    if (sc.offlinesecondHalf[index].regNo !=
+                                        null) {
+                                      Get.toNamed(
+                                          AppRoutes.searchedVehicleDetails,
+                                          arguments: [
+                                            sc.offlinesecondHalf[index],
+                                            'repoAgent',
+                                            isOnline,
+                                            'home'
+                                          ]);
+                                    }
                                   },
                                   child: Container(
                                       height: 30,
@@ -630,14 +649,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Get.toNamed(
-                                          AppRoutes.searchedVehicleDetails,
-                                          arguments: [
-                                            sc.firstHalf[index],
-                                            'repoAgent',
-                                            isOnline,
-                                            'home'
-                                          ]);
+                                      if (sc.firstHalf[index].regNo != null) {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.firstHalf[index],
+                                              'repoAgent',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      }
                                     },
                                     child: Container(
                                         height: 30,
@@ -663,14 +684,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Get.toNamed(
-                                          AppRoutes.searchedVehicleDetails,
-                                          arguments: [
-                                            sc.secondHalf[index],
-                                            'repoAgent',
-                                            isOnline,
-                                            'home'
-                                          ]);
+                                      if (sc.secondHalf[index].regNo != null) {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.secondHalf[index],
+                                              'repoAgent',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      }
                                     },
                                     child: Container(
                                         height: 30,
@@ -703,14 +726,17 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Get.toNamed(
-                                          AppRoutes.searchedVehicleDetails,
-                                          arguments: [
-                                            sc.offlinefirstHalf[index],
-                                            'repoAgent',
-                                            isOnline,
-                                            'home'
-                                          ]);
+                                      if (sc.offlinefirstHalf[index].regNo !=
+                                          null) {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.offlinefirstHalf[index],
+                                              'repoAgent',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      }
                                     },
                                     child: Container(
                                         height: 30,
@@ -737,14 +763,17 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Get.toNamed(
-                                          AppRoutes.searchedVehicleDetails,
-                                          arguments: [
-                                            sc.offlinesecondHalf[index],
-                                            'repoAgent',
-                                            isOnline,
-                                            'home'
-                                          ]);
+                                      if (sc.offlinesecondHalf[index].regNo !=
+                                          null) {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.offlinesecondHalf[index],
+                                              'repoAgent',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      }
                                     },
                                     child: Container(
                                         height: 30,

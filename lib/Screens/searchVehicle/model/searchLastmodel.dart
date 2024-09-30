@@ -126,7 +126,7 @@ class Data {
       this.createdAt,
       this.updatedAt});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<dynamic, dynamic> json) {
     sId = json['_id'];
     bankName = json['bankName'];
     branch = json['branch'];

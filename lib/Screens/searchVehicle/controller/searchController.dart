@@ -86,15 +86,25 @@ class VehicleSearchController extends GetxController {
       firstHalf.clear();
       secondHalf.clear();
 
-      int length = searchbylastModel.value.data!.length;
-      int halfLength = (searchbylastModel.value.data!.length / 2).round();
+      int mid = (searchbylastModel.value.data!.length / 2).ceil();
 
-      for (int i = 0; i < halfLength; i++) {
-        firstHalf.add(searchbylastModel.value.data![i]);
-      }
+      firstHalf = searchbylastModel.value.data!.sublist(0, mid);
+      secondHalf = searchbylastModel.value.data!.sublist(mid);
 
-      for (int i = halfLength + 1; i < length; i++) {
-        secondHalf.add(searchbylastModel.value.data![i]);
+      try {
+        GetSearchByLastDigitModel ld = GetSearchByLastDigitModel.fromJson({
+          "data": [{}]
+        });
+
+        if (firstHalf.length > secondHalf.length) {
+          secondHalf.add(ld.data![0]);
+        } else if (secondHalf.length > firstHalf.length) {
+          firstHalf.add(ld.data![0]);
+        }
+      } catch (e, s) {
+        print(e);
+        print("---");
+        print(s);
       }
       print(DateTime.now());
     }).onError((error, stackTrace) {
@@ -114,21 +124,31 @@ class VehicleSearchController extends GetxController {
     print(DateTime.now());
 
     offlineDataFiltered.value = await vdb.fetchByReg(lastDigit);
-    print(offlineDataFiltered.value.length);
 
     offlinefirstHalf.clear();
     offlinesecondHalf.clear();
 
-    int length = offlineDataFiltered.length;
-    int halfLength = (offlineDataFiltered.length / 2).round();
+    int mid = (offlineDataFiltered.length / 2).ceil();
 
-    for (int i = 0; i < halfLength; i++) {
-      offlinefirstHalf.add(offlineDataFiltered[i]);
+    offlinefirstHalf = offlineDataFiltered.sublist(0, mid);
+    offlinesecondHalf = offlineDataFiltered.sublist(mid);
+
+    try {
+      GetSearchByLastDigitModel ld = GetSearchByLastDigitModel.fromJson({
+        "data": [{}]
+      });
+
+      if (offlinefirstHalf.length > offlinesecondHalf.length) {
+        offlinesecondHalf.add(ld.data![0]);
+      } else if (offlinesecondHalf.length > offlinefirstHalf.length) {
+        offlinefirstHalf.add(ld.data![0]);
+      }
+    } catch (e, s) {
+      print(e);
+      print("---");
+      print(s);
     }
 
-    for (int i = halfLength + 1; i < length; i++) {
-      offlinesecondHalf.add(offlineDataFiltered[i]);
-    }
     setRxRequestSearchByLastStatus(Status.COMPLETED);
     print(DateTime.now());
 
@@ -140,64 +160,31 @@ class VehicleSearchController extends GetxController {
     // print('offline data ${offlineDataFiltered.length}');
   }
 
-  void searchOfflineLastDigitDataHive(String lastDigit) {
-    setRxRequestSearchByChasisNoStatus(Status.LOADING);
-    setRxRequestSearchByLastStatus(Status.LOADING);
-    // final hive = HiveService().myBox!;
-    // print(hive.length);
-    // print('searching');
-    //offlineDataFiltered.clear();
-    // for (int i = 0; i < hive.length; i++) {
-    //   if (hive.getAt(i).lastDigit!.toLowerCase().contains(lastDigit)) {
-    //     setRxRequestSearchByLastStatus(Status.COMPLETED);
-    //     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
-    //     print('offline data ${offlineDataFiltered.length}');
-    //     offlineDataFiltered.add(VehicleModel(
-    //       hive.getAt(i).iId ?? '',
-    //       agreementNo: hive.getAt(i).agreementNo ?? '',
-    //       bankName: hive.getAt(i).bankName ?? '',
-    //       branch: hive.getAt(i).branch ?? '',
-    //       callCenterNo1: hive.getAt(i).callCenterNo1 ?? '',
-    //       callCenterNo1Name: hive.getAt(i).callCenterNo1Name ?? '',
-    //       callCenterNo2: hive.getAt(i).callCenterNo2 ?? '',
-    //       callCenterNo2Name: hive.getAt(i).callCenterNo2Name ?? '',
-    //       chasisNo: hive.getAt(i).chasisNo ?? '',
-    //       createdAt: hive.getAt(i).createdAt ?? '',
-    //       customerName: hive.getAt(i).customerName ?? '',
-    //       dataId: '',
-    //       engineNo: hive.getAt(i).engineNo ?? '',
-    //       fileName: hive.getAt(i).fileName ?? '',
-    //       lastDigit: hive.getAt(i).lastDigit ?? '',
-    //       loadStatus: hive.getAt(i).loadStatus ?? '',
-    //       month: hive.getAt(i).month ?? '',
-    //       regNo: hive.getAt(i).regNo ?? '',
-    //       status: hive.getAt(i).status ?? '',
-    //       updatedAt: hive.getAt(i).updatedAt ?? '',
-    //     ));
-    //   }
-    // }
-
-    // print('search complete');
-    // print('hive length - ${HiveService().myBox!.length}');
-
-    // offlineDataFiltered.value = HiveService()
-    //     .myBox!
-    //     .values
-    //     .where((p0) => p0.lastDigit!.toLowerCase().contains(lastDigit))
-    //     .toList();
-    // print(offlineDataFiltered.length);
-
-    setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
-    setRxRequestSearchByLastStatus(Status.COMPLETED);
-  }
-
   Future searchOfflineChasisData(String chasisNo) async {
     setRxRequestSearchByChasisNoStatus(Status.LOADING);
     offlineDataFiltered.value = await vdb.fetchByChasis(chasisNo);
 
-    // offlineDataFiltered.value = offlineData
-    //     .where((p0) => p0.chasisNo!.toLowerCase().contains(chasisNo))
-    //     .toList();
+    int mid = (offlineDataFiltered.length / 2).ceil();
+
+    offlinefirstHalf = offlineDataFiltered.sublist(0, mid);
+    offlinesecondHalf = offlineDataFiltered.sublist(mid);
+
+    try {
+      GetSearchByLastDigitModel ld = GetSearchByLastDigitModel.fromJson({
+        "data": [{}]
+      });
+
+      if (offlinefirstHalf.length > offlinesecondHalf.length) {
+        offlinesecondHalf.add(ld.data![0]);
+      } else if (offlinesecondHalf.length > offlinefirstHalf.length) {
+        offlinefirstHalf.add(ld.data![0]);
+      }
+    } catch (e, s) {
+      print(e);
+      print("---");
+      print(s);
+    }
+
     setRxRequestSearchByChasisNoStatus(Status.COMPLETED);
     print('offline data ${offlineDataFiltered.length}');
     if (offlineDataFiltered.length == 0) {
@@ -225,15 +212,25 @@ class VehicleSearchController extends GetxController {
       firstHalf.clear();
       secondHalf.clear();
 
-      int length = searchbyChasisNoModel.value.data!.length;
-      int halfLength = (searchbyChasisNoModel.value.data!.length / 2).round();
+      int mid = (searchbyChasisNoModel.value.data!.length / 2).ceil();
 
-      for (int i = 0; i < halfLength; i++) {
-        firstHalf.add(searchbyChasisNoModel.value.data![i]);
-      }
+      firstHalf = searchbyChasisNoModel.value.data!.sublist(0, mid);
+      secondHalf = searchbyChasisNoModel.value.data!.sublist(mid);
 
-      for (int i = halfLength + 1; i < length; i++) {
-        secondHalf.add(searchbyChasisNoModel.value.data![i]);
+      try {
+        GetSearchByLastDigitModel ld = GetSearchByLastDigitModel.fromJson({
+          "data": [{}]
+        });
+
+        if (firstHalf.length > secondHalf.length) {
+          secondHalf.add(ld.data![0]);
+        } else if (secondHalf.length > firstHalf.length) {
+          firstHalf.add(ld.data![0]);
+        }
+      } catch (e, s) {
+        print(e);
+        print("---");
+        print(s);
       }
     }).onError((error, stackTrace) {
       // print(stackTrace);

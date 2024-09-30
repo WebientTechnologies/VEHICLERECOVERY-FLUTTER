@@ -51,8 +51,18 @@ class _HomeSCreenState extends State<HomeSCreen> {
   void initState() {
     super.initState();
     _focusNode = FocusNode();
-    _controller1.addListener(_scrollListener);
-    _controller2.addListener(_scrollListener);
+    _controller1.addListener(() {
+      if (_controller2.hasClients &&
+          !_controller2.position.isScrollingNotifier.value) {
+        _controller2.jumpTo(_controller1.offset);
+      }
+    });
+    _controller2.addListener(() {
+      if (_controller1.hasClients &&
+          !_controller1.position.isScrollingNotifier.value) {
+        _controller1.jumpTo(_controller2.offset);
+      }
+    });
 
     _chasisController1.addListener(_chasisScrollListener);
     _chasisController2.addListener(_chasisScrollListener);
@@ -88,9 +98,6 @@ class _HomeSCreenState extends State<HomeSCreen> {
   }
 
   void _scrollListener() {
-    if (_controller1.offset != _controller2.offset) {
-      _controller1.jumpTo(_controller2.offset);
-    }
     if (_controller2.offset != _controller1.offset) {
       _controller2.jumpTo(_controller1.offset);
     }
@@ -539,6 +546,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               SizedBox(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
+                                  controller: _controller1,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.firstHalf.length,
@@ -571,6 +579,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               SizedBox(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
+                                  controller: _controller2,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.secondHalf.length,
@@ -605,38 +614,77 @@ class _HomeSCreenState extends State<HomeSCreen> {
                         );
                       } else {
                         return Expanded(
-                          child: GridView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 16.0,
-                                    crossAxisSpacing: 16.0,
-                                    childAspectRatio: 5),
-                            itemCount: sc.offlineDataFiltered.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  Get.toNamed(AppRoutes.searchedVehicleDetails,
-                                      arguments: [
-                                        sc.offlineDataFiltered[index],
-                                        'officeStaff',
-                                        isOnline,
-                                        'home'
-                                      ]);
-                                },
-                                child: Container(
-                                    height: 30,
-                                    width: width * 1,
-                                    child: Text(
-                                      sc.offlineDataFiltered[index].regNo ?? '',
-                                      style: TextStyle(
-                                          color: ColorConstants.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18),
-                                    )),
-                              );
-                            },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: Get.width * 0.5,
+                                child: ListView.builder(
+                                  controller: _controller1,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  itemCount: sc.offlinefirstHalf.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.offlineData[index],
+                                              'officeStaff',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      },
+                                      child: Container(
+                                          height: 30,
+                                          width: width * 1,
+                                          child: Text(
+                                            sc.offlinefirstHalf[index].regNo ??
+                                                '',
+                                            style: TextStyle(
+                                                color: ColorConstants.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          )),
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: Get.width * 0.5,
+                                child: ListView.builder(
+                                  controller: _controller2,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12),
+                                  itemCount: sc.offlinesecondHalf.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            AppRoutes.searchedVehicleDetails,
+                                            arguments: [
+                                              sc.offlinesecondHalf[index],
+                                              'officeStaff',
+                                              isOnline,
+                                              'home'
+                                            ]);
+                                      },
+                                      child: Container(
+                                          height: 30,
+                                          width: width * 1,
+                                          child: Text(
+                                            sc.offlinesecondHalf[index].regNo ??
+                                                '',
+                                            style: TextStyle(
+                                                color: ColorConstants.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18),
+                                          )),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         );
                       }
@@ -666,21 +714,24 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
-                                  controller: _chasisController1,
+                                  controller: _controller1,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.firstHalf.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(
-                                            AppRoutes.searchedVehicleDetails,
-                                            arguments: [
-                                              sc.firstHalf[index],
-                                              'officeStaff',
-                                              isOnline,
-                                              'home'
-                                            ]);
+                                        if (sc.firstHalf[index].regNo.length >
+                                            0) {
+                                          Get.toNamed(
+                                              AppRoutes.searchedVehicleDetails,
+                                              arguments: [
+                                                sc.firstHalf[index],
+                                                'officeStaff',
+                                                isOnline,
+                                                'home'
+                                              ]);
+                                        }
                                       },
                                       child: Container(
                                           height: 30,
@@ -699,21 +750,24 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
-                                  controller: _chasisController2,
+                                  controller: _controller2,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.secondHalf.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(
-                                            AppRoutes.searchedVehicleDetails,
-                                            arguments: [
-                                              sc.secondHalf[index],
-                                              'officeStaff',
-                                              isOnline,
-                                              'home'
-                                            ]);
+                                        if (sc.secondHalf[index].regNo.length >
+                                            0) {
+                                          Get.toNamed(
+                                              AppRoutes.searchedVehicleDetails,
+                                              arguments: [
+                                                sc.secondHalf[index],
+                                                'officeStaff',
+                                                isOnline,
+                                                'home'
+                                              ]);
+                                        }
                                       },
                                       child: Container(
                                           height: 30,
@@ -739,21 +793,25 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
-                                  controller: _chasisController1,
+                                  controller: _controller1,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.offlinefirstHalf.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(
-                                            AppRoutes.searchedVehicleDetails,
-                                            arguments: [
-                                              sc.offlinefirstHalf[index],
-                                              'officeStaff',
-                                              isOnline,
-                                              'home'
-                                            ]);
+                                        if (sc.offlinefirstHalf[index].regNo
+                                                .length >
+                                            0) {
+                                          Get.toNamed(
+                                              AppRoutes.searchedVehicleDetails,
+                                              arguments: [
+                                                sc.offlinefirstHalf[index],
+                                                'officeStaff',
+                                                isOnline,
+                                                'home'
+                                              ]);
+                                        }
                                       },
                                       child: Container(
                                           height: 30,
@@ -773,21 +831,25 @@ class _HomeSCreenState extends State<HomeSCreen> {
                               Container(
                                 width: Get.width * 0.5,
                                 child: ListView.builder(
-                                  controller: _chasisController2,
+                                  controller: _controller2,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 12),
                                   itemCount: sc.offlinesecondHalf.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Get.toNamed(
-                                            AppRoutes.searchedVehicleDetails,
-                                            arguments: [
-                                              sc.offlinesecondHalf[index],
-                                              'officeStaff',
-                                              isOnline,
-                                              'home'
-                                            ]);
+                                        if (sc.offlinesecondHalf[index].regNo
+                                                .length >
+                                            0) {
+                                          Get.toNamed(
+                                              AppRoutes.searchedVehicleDetails,
+                                              arguments: [
+                                                sc.offlinesecondHalf[index],
+                                                'officeStaff',
+                                                isOnline,
+                                                'home'
+                                              ]);
+                                        }
                                       },
                                       child: Container(
                                           height: 30,
