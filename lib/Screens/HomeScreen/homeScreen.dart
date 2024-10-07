@@ -269,28 +269,12 @@ class _HomeSCreenState extends State<HomeSCreen> {
                           Obx(() => dc.showRefresh.value
                               ? GestureDetector(
                                   onTap: () async {
-                                    String total = (dc.onlineDataCount.value -
-                                            sc.offlineDataCount.value)
-                                        .toString();
-
-                                    int tt = total.contains('-')
-                                        ? int.parse(total.substring(1))
-                                        : int.parse(total);
-
-                                    if (tt < 5000 && tt > 0) {
-                                      String lastId =
-                                          await VehicleDb().getLastId();
-
-                                      ssc.getAllDashboardApiDataPeriodically(
-                                          context, lastId);
+                                    if (dc.onlineDataCount.value !=
+                                        sc.offlineDataCount.value) {
+                                      await ssc.downloadData();
                                     } else {
-                                      if (dc.onlineDataCount.value !=
-                                          sc.offlineDataCount.value) {
-                                        await ssc.downloadData();
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg: 'No updates available');
-                                      }
+                                      Fluttertoast.showToast(
+                                          msg: 'No updates available');
                                     }
                                   },
                                   child: dc.blinkRefresh.value
