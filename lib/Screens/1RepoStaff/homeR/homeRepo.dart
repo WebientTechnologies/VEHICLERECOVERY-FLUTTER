@@ -11,6 +11,7 @@ import 'package:vinayak/core/constants/helper.dart';
 import 'package:vinayak/core/constants/shared_preferences_var.dart';
 import 'package:vinayak/core/global_controller/user_controller.dart';
 import 'package:vinayak/core/sqlite/vehicledb.dart';
+import 'package:vinayak/core/styles/text_styles.dart';
 import 'package:vinayak/core/utils/routes/app_routes.dart';
 
 import '../../../core/response/status.dart';
@@ -160,7 +161,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
         //     offlinePageNumber > 0 ? offlinePageN umber : 1);
-        await ssc.downloadData();
+        await ssc.downloadData(context);
       }
     }
   }
@@ -207,7 +208,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                                   onTap: () async {
                                     if (dc.onlineDataCount.value !=
                                         sc.offlineDataCount.value) {
-                                      await ssc.downloadData();
+                                      await ssc.downloadData(ctx);
                                     } else {
                                       Fluttertoast.showToast(
                                           msg: 'No updates available');
@@ -431,6 +432,27 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             const SizedBox(
               height: 10,
             ),
+
+            Obx(() => ssc.isDownloading.value
+                ? Column(
+                    children: [
+                      SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: CircularProgressIndicator(
+                            value: ssc.progress.value,
+                          )),
+                      Text(
+                        '${(ssc.progress.value * 100).toStringAsFixed(0)} %',
+                        style: TextStyles.aqua18,
+                      )
+                    ],
+                  )
+                : const SizedBox()),
+            const SizedBox(
+              height: 10,
+            ),
+
             if ((showChasisNo == true) && showlastdata == false)
               Obx(() {
                 switch (sc.rxRequestsearchbyChasisNoStatus.value) {

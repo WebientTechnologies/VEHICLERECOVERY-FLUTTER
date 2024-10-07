@@ -181,7 +181,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
         //     SharedPreferencesVar.offlinePageNumber);
         // ssc.getAllDashboardApiData(
         //     offlinePageNumber > 0 ? offlinePageNumber : 1);
-        await ssc.downloadData();
+        await ssc.downloadData(context);
       }
     }
   }
@@ -271,7 +271,7 @@ class _HomeSCreenState extends State<HomeSCreen> {
                                   onTap: () async {
                                     if (dc.onlineDataCount.value !=
                                         sc.offlineDataCount.value) {
-                                      await ssc.downloadData();
+                                      await ssc.downloadData(ctx);
                                     } else {
                                       Fluttertoast.showToast(
                                           msg: 'No updates available');

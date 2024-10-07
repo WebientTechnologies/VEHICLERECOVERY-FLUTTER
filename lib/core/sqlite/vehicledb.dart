@@ -189,18 +189,10 @@ class VehicleDb {
   Future<List<VehicleModel>> fetchByReg(String lastDigit) async {
     final db = await DatabaseHelper().database;
     final files = await db.rawQuery('''
-   SELECT *
-FROM (
-    SELECT *,
-        SUBSTR(regNo, 1, INSTR(regNo, '0') - 1) AS regNoAlpha,
-        CAST(SUBSTR(regNo, INSTR(regNo, '0')) AS INT) AS regNoNumeric,
-        ROW_NUMBER() OVER (PARTITION BY regNo ORDER BY createdAt DESC) AS rank
-    FROM ${tableName}
-    WHERE lastDigit = ?
-)
-WHERE rank = 1
-ORDER BY regNoAlpha ASC, regNoNumeric ASC;
-
+    select * from $tableName where lastDigit LIKE =
+    ORDER BY 
+      LENGTH(regNo), 
+      regNo ASC
     ''', [lastDigit]);
     //print(files);
     final List<VehicleModel> vehicles = files.map((Map<String, dynamic> row) {
