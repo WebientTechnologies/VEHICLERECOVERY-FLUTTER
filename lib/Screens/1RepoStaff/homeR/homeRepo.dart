@@ -434,7 +434,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
             ),
 
             Obx(() => ssc.isDownloading.value
-                ? Column(
+                ? Stack(
                     children: [
                       SizedBox(
                           width: 50,
@@ -443,7 +443,7 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                             value: ssc.progress.value,
                           )),
                       Text(
-                        '${(ssc.progress.value * 100).toStringAsFixed(0)} %',
+                        '${(ssc.progress.value * 100).toStringAsFixed(0)}',
                         style: TextStyles.aqua18,
                       )
                     ],

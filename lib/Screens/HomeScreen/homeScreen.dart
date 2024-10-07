@@ -15,6 +15,7 @@ import '../../core/constants/helper.dart';
 import '../../core/constants/shared_preferences_var.dart';
 import '../../core/response/status.dart';
 import '../../core/sqlite/vehicledb.dart';
+import '../../core/styles/text_styles.dart';
 import '../searchVehicle/controller/searchController.dart';
 import '../splashSCreen/controller/splashscreen_controller.dart';
 
@@ -503,6 +504,25 @@ class _HomeSCreenState extends State<HomeSCreen> {
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 10,
+              ),
+              Obx(() => ssc.isDownloading.value
+                  ? Stack(
+                      children: [
+                        SizedBox(
+                            width: 50,
+                            height: 50,
+                            child: CircularProgressIndicator(
+                              value: ssc.progress.value,
+                            )),
+                        Text(
+                          '${(ssc.progress.value * 100).toStringAsFixed(0)} %',
+                          style: TextStyles.aqua18,
+                        )
+                      ],
+                    )
+                  : const SizedBox()),
               const SizedBox(
                 height: 10,
               ),
