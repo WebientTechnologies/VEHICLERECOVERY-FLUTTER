@@ -435,15 +435,16 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
 
             Obx(() => ssc.isDownloading.value
                 ? Stack(
+                    alignment: Alignment.center,
                     children: [
                       SizedBox(
-                          width: 50,
-                          height: 50,
+                          width: 55,
+                          height: 55,
                           child: CircularProgressIndicator(
                             value: ssc.progress.value,
                           )),
                       Text(
-                        '${(ssc.progress.value * 100).toStringAsFixed(0)}',
+                        '${(ssc.progress.value * 100).toStringAsFixed(0)} %',
                         style: TextStyles.aqua18,
                       )
                     ],

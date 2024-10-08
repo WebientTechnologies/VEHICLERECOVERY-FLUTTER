@@ -509,10 +509,11 @@ class _HomeSCreenState extends State<HomeSCreen> {
               ),
               Obx(() => ssc.isDownloading.value
                   ? Stack(
+                      alignment: Alignment.center,
                       children: [
                         SizedBox(
-                            width: 50,
-                            height: 50,
+                            width: 55,
+                            height: 55,
                             child: CircularProgressIndicator(
                               value: ssc.progress.value,
                             )),
