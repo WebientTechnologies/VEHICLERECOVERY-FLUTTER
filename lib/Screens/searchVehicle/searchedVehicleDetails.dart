@@ -499,10 +499,15 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           enableIcon: true,
                           from == 'home' || from == 'homee'
                               ? data.callCenterNo1 != null
-                                  ? data.callCenterNo1
+                                  ? data.callCenterNo1.length > 10
+                                      ? data.callCenterNo1.substring(0, 10)
+                                      : data.callCenterNo1
                                   : ''
                               : data.vehicleId!.callCenterNo1 != null
-                                  ? data.vehicleId!.callCenterNo1
+                                  ? data.vehicleId!.callCenterNo1.length > 10
+                                      ? data.vehicleId!.callCenterNo1
+                                          .substring(0, 10)
+                                      : data.vehicleId!.callCenterNo1
                                   : '',
                           text:
                               '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
@@ -537,10 +542,15 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           enableIcon: true,
                           from == 'home' || from == 'homee'
                               ? data.callCenterNo2 != null
-                                  ? data.callCenterNo2
+                                  ? data.callCenterNo2.length > 10
+                                      ? data.callCenterNo2.substring(0, 10)
+                                      : data.callCenterNo2
                                   : ''
                               : data.vehicleId!.callCenterNo2 != null
-                                  ? data.vehicleId!.callCenterNo2
+                                  ? data.vehicleId!.callCenterNo2.length > 10
+                                      ? data.vehicleId!.callCenterNo2
+                                          .substring(0, 10)
+                                      : data.vehicleId!.callCenterNo2
                                   : '',
                           text:
                               '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
@@ -575,10 +585,15 @@ class _SearchLDVehicleDetailsState extends State<SearchLDVehicleDetails> {
                           enableIcon: true,
                           from == 'home' || from == 'homee'
                               ? data.callCenterNo3 != null
-                                  ? data.callCenterNo3
+                                  ? data.callCenterNo3.length > 10
+                                      ? data.callCenterNo3.substring(0, 10)
+                                      : data.callCenterNo3
                                   : ''
                               : data.vehicleId!.callCenterNo3 != null
-                                  ? data.vehicleId!.callCenterNo3
+                                  ? data.vehicleId!.callCenterNo3.length > 10
+                                      ? data.vehicleId!.callCenterNo3
+                                          .substring(0, 10)
+                                      : data.vehicleId!.callCenterNo3
                                   : '',
                           text:
                               '''Respected Sir\n\nThis Vehicle Has Been Traced Out By Our Ground Team. Detail Of Customer And Their Vehicle Is Given Below.\n\nBank:${from == 'home' || from == 'homee' ? data.bankName != null ? data.bankName : '' : data.vehicleId!.bankName != null ? data.vehicleId!.bankName : ''}\nCustomer Name:${from == 'home' || from == 'homee' ? data.customerName != null ? data.customerName : '' : data.vehicleId!.customerName != null ? data.vehicleId!.customerName : ''}\nRegistration:${from == 'home' || from == 'homee' ? data.regNo != null ? data.regNo : '' : data.vehicleId!.regNo != null ? data.vehicleId!.regNo : ''}\nChasis No:${from == 'home' || from == 'homee' ? data.chasisNo != null ? data.chasisNo : '' : data.vehicleId!.chasisNo != null ? data.vehicleId!.chasisNo : ''}\nMaker:maker\nModel:\nAllocated Name:\nAllocated Dpd Bucket:\nOpning Od Bucket:\nOpning Od Amount:\nList Upload Date:\nVehicle Location:\nLoad Status:${sc.selectedLoadStatus.value}\nLoad Item:${sc.loadItemCont.value.text}\n\nPlease confirm This Vehicle On Urgent Basis Either Repo Or Release It.\n\nConfirmation Department\n${isRepoAgent ? '' : stafMobile}\n*VINAYAK ASSOCIATES*
