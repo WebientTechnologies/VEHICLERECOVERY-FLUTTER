@@ -274,82 +274,73 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
-                    child: Focus(
-                      onFocusChange: (value) {
-                        if (value) {
-                          chasisNoHaveFocus = true;
-                        } else {
-                          chasisNoHaveFocus = false;
-                        }
-                      },
-                      child: TextFormField(
-                        controller: chasisNoCont,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              chasisNoCont.text = '';
-                              setState(() {
-                                showChasisNo = false;
-                                showlastdata = false;
-                                sc.firstHalf.clear();
-                                sc.secondHalf.clear();
-                              });
-                            },
-                            icon: const Icon(Icons.close),
-                            color: ColorConstants.aqua,
-                          ),
-                          hintText: 'Chasis No.',
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 16.0),
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(color: ColorConstants.aqua),
+                    child: TextFormField(
+                      controller: chasisNoCont,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            chasisNoCont.text = '';
+                            setState(() {
+                              showChasisNo = false;
+                              showlastdata = false;
+                              sc.firstHalf.clear();
+                              sc.secondHalf.clear();
+                            });
+                          },
+                          icon: const Icon(Icons.close),
+                          color: ColorConstants.aqua,
                         ),
-                        onChanged: (value) async {
-                          if (value.length == 6) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            if (isOnline) {
-                              sc.getAllSearchByChasisApiData(
-                                  chasisNoCont.value.text.substring(0, 6));
+                        hintText: 'Chasis No.',
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 16.0),
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(color: ColorConstants.aqua),
+                      ),
+                      onChanged: (value) async {
+                        if (value.length == 6) {
+                          // FocusManager.instance.primaryFocus?.unfocus();
+                          if (isOnline) {
+                            sc.getAllSearchByChasisApiData(
+                                chasisNoCont.value.text.substring(0, 6));
 
-                              // if (sc.searchbyChasisNoModel.value.data != null &&
-                              //     sc.searchbyChasisNoModel.value.data!
-                              //         .isNotEmpty) {
+                            // if (sc.searchbyChasisNoModel.value.data != null &&
+                            //     sc.searchbyChasisNoModel.value.data!
+                            //         .isNotEmpty) {
+                            setState(() {
+                              showChasisNo = true;
+                              showlastdata = false;
+                            });
+                            // } else {
+                            //   setState(() {
+                            //     showlastdata = false;
+                            //   });
+                            // }
+                            //chasisNoCont.text = '';
+                          } else {
+                            // final vehicleDb = VehicleDb();
+                            // sc.offlineData.value =
+                            //     await vehicleDb.fetchByChasis(value);
+                            await sc.searchOfflineChasisData(value);
+
+                            if (sc.offlineDataFiltered.isNotEmpty) {
                               setState(() {
                                 showChasisNo = true;
                                 showlastdata = false;
                               });
-                              // } else {
-                              //   setState(() {
-                              //     showlastdata = false;
-                              //   });
-                              // }
-                              //chasisNoCont.text = '';
                             } else {
-                              // final vehicleDb = VehicleDb();
-                              // sc.offlineData.value =
-                              //     await vehicleDb.fetchByChasis(value);
-                              await sc.searchOfflineChasisData(value);
-
-                              if (sc.offlineDataFiltered.isNotEmpty) {
-                                setState(() {
-                                  showChasisNo = true;
-                                  showlastdata = false;
-                                });
-                              } else {
-                                setState(() {
-                                  showlastdata = false;
-                                });
-                              }
+                              setState(() {
+                                showlastdata = false;
+                              });
                             }
-                            chasisNoCont.text = '';
-                          } else {
-                            setState(() {
-                              //showChasisNo = false;
-                              showlastdata = false;
-                            });
                           }
-                        },
-                      ),
+                          chasisNoCont.text = '';
+                        } else {
+                          setState(() {
+                            //showChasisNo = false;
+                            showlastdata = false;
+                          });
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -360,70 +351,60 @@ class _HomeScreenRepoStaffState extends State<HomeScreenRepoStaff> {
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(color: ColorConstants.aqua)),
                   child: Center(
-                    child: Focus(
-                      onFocusChange: (value) {
-                        if (value) {
-                          last4digitHaveFocus = true;
-                        } else {
-                          last4digitHaveFocus = false;
-                        }
-                      },
-                      child: TextFormField(
-                        autofocus: true,
-                        focusNode: _focusNode,
-                        style: TextStyle(color: ColorConstants.aqua),
-                        controller: last4digit,
-                        maxLength: 4,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              last4digit.text = '';
-                              setState(() {
-                                showlastdata = false;
-                                sc.firstHalf.clear();
-                                sc.secondHalf.clear();
-                              });
-                            },
-                            icon: const Icon(Icons.close),
-                            color: ColorConstants.aqua,
-                          ),
-                          hintText: 'Last 4 Digits',
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 12.0, horizontal: 16.0),
-                          border: InputBorder.none,
-                          counterText: '',
-                          hintStyle: TextStyle(color: ColorConstants.aqua),
-                        ),
-                        onChanged: (value) async {
-                          if (value.length == 4) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            // bool isOnline = await Helper.getBoolPreferences(
-                            //     SharedPreferencesVar.isOnline);
-                            if (isOnline) {
-                              sc.getAllSearchByLastDigitData(
-                                  last4digit.value.text);
-                              setState(() {
-                                showlastdata = true;
-                              });
-                            } else {
-                              // final vehicleDb = VehicleDb();
-                              // sc.offlineData.value =
-                              //     await vehicleDb.fetchByReg(value);
-
-                              sc.searchOfflineLastDigitData(value);
-                              setState(() {
-                                showlastdata = true;
-                              });
-                            }
+                    child: TextFormField(
+                      autofocus: true,
+                      style: TextStyle(color: ColorConstants.aqua),
+                      controller: last4digit,
+                      maxLength: 4,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
                             last4digit.text = '';
-                          } else {
                             setState(() {
-                              // showlastdata = false;
+                              showlastdata = false;
+                              sc.firstHalf.clear();
+                              sc.secondHalf.clear();
+                            });
+                          },
+                          icon: const Icon(Icons.close),
+                          color: ColorConstants.aqua,
+                        ),
+                        hintText: 'Last 4 Digits',
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 16.0),
+                        border: InputBorder.none,
+                        counterText: '',
+                        hintStyle: TextStyle(color: ColorConstants.aqua),
+                      ),
+                      onChanged: (value) async {
+                        if (value.length == 4) {
+                          // FocusManager.instance.primaryFocus?.unfocus();
+                          // bool isOnline = await Helper.getBoolPreferences(
+                          //     SharedPreferencesVar.isOnline);
+                          if (isOnline) {
+                            sc.getAllSearchByLastDigitData(
+                                last4digit.value.text);
+                            setState(() {
+                              showlastdata = true;
+                            });
+                          } else {
+                            // final vehicleDb = VehicleDb();
+                            // sc.offlineData.value =
+                            //     await vehicleDb.fetchByReg(value);
+
+                            sc.searchOfflineLastDigitData(value);
+                            setState(() {
+                              showlastdata = true;
                             });
                           }
-                        },
-                      ),
+                          last4digit.text = '';
+                        } else {
+                          setState(() {
+                            // showlastdata = false;
+                          });
+                        }
+                      },
                     ),
                   ),
                 ),
